@@ -1,12 +1,13 @@
-// Copyright (c) 2019-2021 The PIVX Core developers
+// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_OPENURIDIALOG_H
-#define PIVX_QT_OPENURIDIALOG_H
+#ifndef BITCOIN_QT_OPENURIDIALOG_H
+#define BITCOIN_QT_OPENURIDIALOG_H
 
-#include "snackbar.h"
 #include <QDialog>
+#include "qt/pivx/snackbar.h"
 
 namespace Ui
 {
@@ -27,10 +28,13 @@ public:
 protected Q_SLOTS:
     void accept() override;
 
+private Q_SLOTS:
+    void on_selectFileButton_clicked();
+
 private:
     Ui::OpenURIDialog* ui;
     SnackBar *snackBar = nullptr;
     void inform(const QString& str);
 };
 
-#endif // PIVX_QT_OPENURIDIALOG_H
+#endif // BITCOIN_QT_OPENURIDIALOG_H

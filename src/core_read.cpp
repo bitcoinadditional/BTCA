@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2015-2021 The PIVX Core developers
+// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,15 +11,17 @@
 #include "script/script.h"
 #include "serialize.h"
 #include "streams.h"
-#include "util/system.h"
+#include <univalue.h>
+#include "util.h"
 #include "utilstrencodings.h"
 #include "version.h"
 
 #include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/assign/list_of.hpp>
 
-#include <univalue.h>
 
 CScript ParseScript(std::string s)
 {
@@ -27,19 +30,19 @@ CScript ParseScript(std::string s)
     static std::map<std::string, opcodetype> mapOpNames;
 
     if (mapOpNames.empty()) {
-        for (int op = 0; op <= OP_ZEROCOINSPEND; op++) {
+        for (int op = 0; op <= MAX_OPCODE; op++) {
             // Allow OP_RESERVED to get into mapOpNames
             if (op < OP_NOP && op != OP_RESERVED)
                 continue;
 
-            const char* name = GetOpName(static_cast<opcodetype>(op));
+            const char* name = GetOpName((opcodetype)op);
             if (strcmp(name, "OP_UNKNOWN") == 0)
                 continue;
             std::string strName(name);
-            mapOpNames[strName] = static_cast<opcodetype>(op);
+            mapOpNames[strName] = (opcodetype)op;
             // Convenience: OP_ADD and just ADD are both recognized:
             boost::algorithm::replace_first(strName, "OP_", "");
-            mapOpNames[strName] = static_cast<opcodetype>(op);
+            mapOpNames[strName] = (opcodetype)op;
         }
     }
 
@@ -49,16 +52,16 @@ CScript ParseScript(std::string s)
     for (std::vector<std::string>::const_iterator w = words.begin(); w != words.end(); ++w) {
         if (w->empty()) {
             // Empty string, ignore. (boost::split given '' will return one word)
-        } else if (std::all_of(w->begin(), w->end(), ::IsDigit) ||
-                   (w->front() == '-' && w->size() > 1 && std::all_of(w->begin()+1, w->end(), ::IsDigit))) {
+        } else if (all(*w, boost::algorithm::is_digit()) ||
+                   (boost::algorithm::starts_with(*w, "-") && all(std::string(w->begin() + 1, w->end()), boost::algorithm::is_digit()))) {
             // Number
             int64_t n = atoi64(*w);
             result << n;
-        } else if (w->substr(0,2) == "0x" && w->size() > 2 && IsHex(std::string(w->begin()+2, w->end()))) {
+        } else if (boost::algorithm::starts_with(*w, "0x") && (w->begin() + 2 != w->end()) && IsHex(std::string(w->begin() + 2, w->end()))) {
             // Raw hex data, inserted NOT pushed onto stack:
             std::vector<unsigned char> raw = ParseHex(std::string(w->begin() + 2, w->end()));
             result.insert(result.end(), raw.begin(), raw.end());
-        } else if (w->size() >= 2 && w->front() == '\'' && w->back() == '\'') {
+        } else if (w->size() >= 2 && boost::algorithm::starts_with(*w, "'") && boost::algorithm::ends_with(*w, "'")) {
             // Single-quoted string, pushed as data. NOTE: this is poor-man's
             // parsing, spaces/tabs/newlines in single-quoted strings won't work.
             std::vector<unsigned char> value(w->begin() + 1, w->end() - 1);
@@ -74,7 +77,7 @@ CScript ParseScript(std::string s)
     return result;
 }
 
-bool DecodeHexTx(CMutableTransaction& tx, const std::string& strHexTx)
+bool DecodeHexTx(CTransaction& tx, const std::string& strHexTx)
 {
     if (!IsHex(strHexTx))
         return false;
@@ -122,15 +125,6 @@ uint256 ParseHashStr(const std::string& strHex, const std::string& strName)
     uint256 result;
     result.SetHex(strHex);
     return result;
-}
-
-bool ParseHashStr(const std::string& strReq, uint256& v)
-{
-    if (!IsHex(strReq) || (strReq.size() != 64))
-        return false;
-
-    v.SetHex(strReq);
-    return true;
 }
 
 std::vector<unsigned char> ParseHexUV(const UniValue& v, const std::string& strName)

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=BTCa 
+Comment=BTCa P2P Cryptocurrency
+Comment[fr]=BTCa, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=BTCa, eşten eşe kriptografik sanal para birimi
+Exec=btca-qt %u
+Terminal=false
+Type=Application
+Icon=pivx128
+MimeType=x-scheme-handler/btca;
+Categories=Office;Finance;
+StartupWMClass=btca-qt

@@ -5,7 +5,7 @@
 """Test transaction signing using the signrawtransaction RPC."""
 
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import assert_equal
+from test_framework.util import *
 
 
 class SignRawTransactionsTest(PivxTestFramework):

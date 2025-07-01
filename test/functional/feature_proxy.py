@@ -2,13 +2,13 @@
 # Copyright (c) 2015-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Test pivxd with different proxy configuration.
+"""Test bitcoind with different proxy configuration.
 
 Test plan:
-- Start pivxd's with different proxy configurations
+- Start btcad's with different proxy configurations
 - Use addnode to initiate connections
 - Verify that proxies are connected to, and the right connection command is given
-- Proxy configurations to test on pivxd side:
+- Proxy configurations to test on btcad side:
     - `-proxy` (proxy everything)
     - `-onion` (proxy just onions)
     - `-proxyrandomize` Circuit randomization
@@ -18,21 +18,18 @@ Test plan:
     - proxy on IPv6
 
 - Create various proxies (as threads)
-- Create pivxds that connect to them
-- Manipulate the pivxds using addnode (onetry) an observe effects
+- Create btcads that connect to them
+- Manipulate the btcads using addnode (onetry) an observe effects
 
 addnode connect to IPv4
 addnode connect to IPv6
 addnode connect to onion
 addnode connect to generic DNS name
-
-- Test getnetworkinfo for each node
 """
 
-import os
 import socket
+import os
 
-from test_framework.netutil import test_ipv6_local
 from test_framework.socks5 import Socks5Configuration, Socks5Command, Socks5Server, AddressType
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
@@ -40,19 +37,9 @@ from test_framework.util import (
     PORT_RANGE,
     assert_equal,
 )
-
+from test_framework.netutil import test_ipv6_local
 
 RANGE_BEGIN = PORT_MIN + 2 * PORT_RANGE  # Start after p2p and rpc ports
-
-# Networks returned by RPC getpeerinfo, defined in src/netbase.cpp::GetNetworkName()
-NET_UNROUTABLE = "unroutable"
-NET_IPV4 = "ipv4"
-NET_IPV6 = "ipv6"
-NET_ONION = "onion"
-
-# Networks returned by RPC getnetworkinfo, defined in src/rpc/net.cpp::GetNetworksInfo()
-NETWORKS = frozenset({NET_IPV4, NET_IPV6, NET_ONION})
-
 
 class ProxyTest(PivxTestFramework):
     def set_test_params(self):
@@ -89,14 +76,14 @@ class ProxyTest(PivxTestFramework):
             self.serv3 = Socks5Server(self.conf3)
             self.serv3.start()
 
-        # Note: proxies are not used to connect to local nodes. This is because the proxy to
-        # use is based on CService.GetNetwork(), which returns NET_UNROUTABLE for localhost.
+        # Note: proxies are not used to connect to local nodes
+        # this is because the proxy to use is based on CService.GetNetwork(), which return NET_UNROUTABLE for localhost
         args = [
             ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-proxyrandomize=1'],
             ['-listen', '-proxy=%s:%i' % (self.conf1.addr),'-onion=%s:%i' % (self.conf2.addr),'-proxyrandomize=0'],
             ['-listen', '-proxy=%s:%i' % (self.conf2.addr),'-proxyrandomize=1'],
             []
-        ]
+            ]
         if self.have_ipv6:
             args[3] = ['-listen', '-proxy=[%s]:%i' % (self.conf3.addr),'-proxyrandomize=0', '-noonion']
         self.add_nodes(self.num_nodes, extra_args=args)
@@ -107,8 +94,8 @@ class ProxyTest(PivxTestFramework):
         # Test: outgoing IPv4 connection through node
         node.addnode("15.61.23.23:1234", "onetry")
         cmd = proxies[0].queue.get()
-        assert isinstance(cmd, Socks5Command)
-        # Note: pivxd's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
+        assert(isinstance(cmd, Socks5Command))
+        # Note: bitcoind's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"15.61.23.23")
         assert_equal(cmd.port, 1234)
@@ -121,8 +108,8 @@ class ProxyTest(PivxTestFramework):
             # Test: outgoing IPv6 connection through node
             node.addnode("[1233:3432:2434:2343:3234:2345:6546:4534]:5443", "onetry")
             cmd = proxies[1].queue.get()
-            assert isinstance(cmd, Socks5Command)
-            # Note: pivxd's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
+            assert(isinstance(cmd, Socks5Command))
+            # Note: bitcoind's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
             assert_equal(cmd.addr, b"1233:3432:2434:2343:3234:2345:6546:4534")
             assert_equal(cmd.port, 5443)
@@ -135,7 +122,7 @@ class ProxyTest(PivxTestFramework):
             # Test: outgoing onion connection through node
             node.addnode("bitcoinostk4e4re.onion:8333", "onetry")
             cmd = proxies[2].queue.get()
-            assert isinstance(cmd, Socks5Command)
+            assert(isinstance(cmd, Socks5Command))
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
             assert_equal(cmd.addr, b"bitcoinostk4e4re.onion")
             assert_equal(cmd.port, 8333)
@@ -147,7 +134,7 @@ class ProxyTest(PivxTestFramework):
         # Test: outgoing DNS name connection through node
         node.addnode("node.noumenon:8333", "onetry")
         cmd = proxies[3].queue.get()
-        assert isinstance(cmd, Socks5Command)
+        assert(isinstance(cmd, Socks5Command))
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"node.noumenon")
         assert_equal(cmd.port, 8333)
@@ -181,17 +168,15 @@ class ProxyTest(PivxTestFramework):
                 r[x['name']] = x
             return r
 
-        self.log.info("Test RPC getnetworkinfo")
+        # test RPC getnetworkinfo
         n0 = networks_dict(self.nodes[0].getnetworkinfo())
-        assert_equal(NETWORKS, n0.keys())
-        for net in NETWORKS:
+        for net in ['ipv4','ipv6','onion']:
             assert_equal(n0[net]['proxy'], '%s:%i' % (self.conf1.addr))
             assert_equal(n0[net]['proxy_randomize_credentials'], True)
         assert_equal(n0['onion']['reachable'], True)
 
         n1 = networks_dict(self.nodes[1].getnetworkinfo())
-        assert_equal(NETWORKS, n1.keys())
-        for net in ['ipv4', 'ipv6']:
+        for net in ['ipv4','ipv6']:
             assert_equal(n1[net]['proxy'], '%s:%i' % (self.conf1.addr))
             assert_equal(n1[net]['proxy_randomize_credentials'], False)
         assert_equal(n1['onion']['proxy'], '%s:%i' % (self.conf2.addr))
@@ -199,16 +184,14 @@ class ProxyTest(PivxTestFramework):
         assert_equal(n1['onion']['reachable'], True)
 
         n2 = networks_dict(self.nodes[2].getnetworkinfo())
-        assert_equal(NETWORKS, n2.keys())
-        for net in NETWORKS:
+        for net in ['ipv4','ipv6','onion']:
             assert_equal(n2[net]['proxy'], '%s:%i' % (self.conf2.addr))
             assert_equal(n2[net]['proxy_randomize_credentials'], True)
         assert_equal(n2['onion']['reachable'], True)
 
         if self.have_ipv6:
             n3 = networks_dict(self.nodes[3].getnetworkinfo())
-            assert_equal(NETWORKS, n3.keys())
-            for net in NETWORKS:
+            for net in ['ipv4','ipv6']:
                 assert_equal(n3[net]['proxy'], '[%s]:%i' % (self.conf3.addr))
                 assert_equal(n3[net]['proxy_randomize_credentials'], False)
             assert_equal(n3['onion']['reachable'], False)

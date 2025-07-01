@@ -1,11 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2021 The PIVX Core developers
+// Copyright (c) 2017-2018 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_COMPAT_H
-#define PIVX_COMPAT_H
+#ifndef BITCOIN_COMPAT_H
+#define BITCOIN_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/pivx-config.h"
@@ -39,7 +40,6 @@
 #include <net/if.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <netinet/tcp.h>
 #include <sys/fcntl.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
@@ -94,25 +94,13 @@ typedef u_int SOCKET;
 size_t strnlen( const char *start, size_t max_len);
 #endif // HAVE_DECL_STRNLEN
 
-#ifndef WIN32
-typedef void* sockopt_arg_type;
-#else
-typedef char* sockopt_arg_type;
-#endif
-
-// Note these both should work with the current usage of poll, but best to be safe
-// WIN32 poll is broken https://daniel.haxx.se/blog/2012/10/10/wsapoll-is-broken/
-// __APPLE__ poll is broke https://github.com/bitcoin/bitcoin/pull/14336#issuecomment-437384408
-#if defined(__linux__)
-#define USE_POLL
-#endif
-
-bool static inline IsSelectableSocket(const SOCKET& s) {
-#if defined(USE_POLL) || defined(WIN32)
+bool static inline IsSelectableSocket(SOCKET s)
+{
+#ifdef WIN32
     return true;
 #else
     return (s < FD_SETSIZE);
 #endif
 }
 
-#endif // PIVX_COMPAT_H
+#endif // BITCOIN_COMPAT_H

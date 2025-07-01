@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Pieter Wuille
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -8,9 +9,8 @@
 // 6 characters of which are a checksum.
 //
 // For more information, see BIP 173.
-
-#ifndef PIVX_BECH32_H
-#define PIVX_BECH32_H
+#ifndef BITCOIN_BECH32_H
+#define BITCOIN_BECH32_H
 
 #include <stdint.h>
 #include <string>
@@ -27,4 +27,4 @@ std::pair<std::string, std::vector<uint8_t>> Decode(const std::string& str);
 
 } // namespace bech32
 
-#endif // PIVX_BECH32_H
+#endif // BITCOIN_BECH32_H

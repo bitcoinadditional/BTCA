@@ -1,11 +1,8 @@
 // Copyright (c) 2014-2017 The Bitcoin developers
-// Copyright (c) 2017-2021 The PIVX Core developers
+// Copyright (c) 2017-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-#if defined(HAVE_CONFIG_H)
-#include "config/pivx-config.h"
-#endif
 
 #include "timedata.h"
 
@@ -13,8 +10,8 @@
 #include "guiinterface.h"
 #include "netaddress.h"
 #include "sync.h"
-#include "util/system.h"
-#include "warnings.h"
+#include "util.h"
+#include "utilstrencodings.h"
 
 
 static RecursiveMutex cs_nTimeOffset;
@@ -78,18 +75,18 @@ void AddTimeData(const CNetAddr& ip, int64_t nOffsetSample, int nOffsetLimit)
         // Only let other nodes change our time by so much
         if (abs64(nMedian) < nOffsetLimit) {
             nTimeOffset = nMedian;
-            SetMiscWarning("");
+            strMiscWarning = "";
         } else {
             nTimeOffset = (nMedian > 0 ? 1 : -1) * nOffsetLimit;
-            std::string strMessage = strprintf(_("Warning: Please check that your computer's date and time are correct! If your clock is wrong %s will not work properly."), PACKAGE_NAME);
-            SetMiscWarning(strMessage);
+            std::string strMessage = _("Warning: Please check that your computer's date and time are correct! If your clock is wrong BTCa will not work properly.");
+            strMiscWarning = strMessage;
             LogPrintf("*** %s\n", strMessage);
-            uiInterface.ThreadSafeMessageBox(strMessage, "", CClientUIInterface::MSG_ERROR);
+            //uiInterface.ThreadSafeMessageBox(strMessage, "", CClientUIInterface::MSG_INFORMATION);
         }
-        if (!gArgs.GetBoolArg("-shrinkdebugfile", g_logger->DefaultShrinkDebugFile())) {
+        if (!GetBoolArg("-shrinkdebugfile", g_logger->DefaultShrinkDebugFile())) {
             for (int64_t n : vSorted)
-                LogPrintf("%+d  ", n); /* Continued */
-            LogPrintf("|  "); /* Continued */
+                LogPrintf("%+d  ", n);
+            LogPrintf("|  ");
         }
         LogPrintf("nTimeOffset = %+d\n", nTimeOffset);
     }
@@ -106,4 +103,9 @@ int64_t GetTimeSlot(const int64_t nTime)
 int64_t GetCurrentTimeSlot()
 {
     return GetTimeSlot(GetAdjustedTime());
+}
+
+int64_t GetNextTimeSlot()
+{
+    return GetCurrentTimeSlot() + Params().GetConsensus().nTimeSlotLength;
 }

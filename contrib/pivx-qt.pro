@@ -57,6 +57,8 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += src/activemasternode.h \
+           src/activemasternodeman.h \
+           src/activemasternodeconfig.h \
            src/addrman.h \
            src/alert.h \
            src/allocators.h \
@@ -84,14 +86,12 @@ HEADERS += src/activemasternode.h \
            src/ecwrapper.h \
            src/hash.h \
            src/init.h \
-           src/swifttx.h \
            src/keepass.h \
            src/key.h \
            src/keystore.h \
            src/leveldbwrapper.h \
            src/limitedmap.h \
            src/main.h \
-           src/masternode-budget.h \
            src/masternode-payments.h \
            src/masternode-sync.h \
            src/masternode.h \
@@ -107,11 +107,13 @@ HEADERS += src/activemasternode.h \
            src/protocol.h \
            src/pubkey.h \
            src/random.h \
+           src/rewards.h \
            src/rpcclient.h \
            src/rpcprotocol.h \
            src/rpcserver.h \
            src/serialize.h \
            src/spork.h \
+           src/sqlite3/sqlite3.h \
            src/streams.h \
            src/sync.h \
            src/threadsafety.h \
@@ -133,6 +135,8 @@ HEADERS += src/activemasternode.h \
            src/compat/sanity.h \
            src/config/pivx-config.h \
            src/crypto/common.h \
+           src/crypto/google_authenticator.h \
+           src/crypto/hmac_sha1.h \
            src/crypto/hmac_sha256.h \
            src/crypto/hmac_sha512.h \
            src/crypto/rfc6979_hmac_sha256.h \
@@ -355,6 +359,8 @@ FORMS += src/qt/forms/addressbookpage.ui \
          src/qt/forms/signverifymessagedialog.ui \
          src/qt/forms/transactiondescdialog.ui
 SOURCES += src/activemasternode.cpp \
+           src/activemasternodeconfig.cpp \
+           src/activemasternodeman.cpp \
            src/addrman.cpp \
            src/alert.cpp \
            src/allocators.cpp \
@@ -382,13 +388,11 @@ SOURCES += src/activemasternode.cpp \
            src/editaddressdialog.cpp \
            src/hash.cpp \
            src/init.cpp \
-           src/swifttx.cpp \
            src/keepass.cpp \
            src/key.cpp \
            src/keystore.cpp \
            src/leveldbwrapper.cpp \
            src/main.cpp \
-           src/masternode-budget.cpp \
            src/masternode-payments.cpp \
            src/masternode-sync.cpp \
            src/masternode.cpp \
@@ -404,10 +408,10 @@ SOURCES += src/activemasternode.cpp \
            src/pubkey.cpp \
            src/random.cpp \
            src/rest.cpp \
+           src/rewards.cpp \
            src/rpcblockchain.cpp \
            src/rpcclient.cpp \
            src/rpcdump.cpp \
-           src/rpcmasternode-budget.cpp \
            src/rpcmasternode.cpp \
            src/rpcmining.cpp \
            src/rpcmisc.cpp \
@@ -417,6 +421,7 @@ SOURCES += src/activemasternode.cpp \
            src/rpcserver.cpp \
            src/rpcwallet.cpp \
            src/spork.cpp \
+           src/sqlite3/sqlite3.c \
            src/sync.cpp \
            src/timedata.cpp \
            src/txdb.cpp \
@@ -440,6 +445,8 @@ SOURCES += src/activemasternode.cpp \
            src/crypto/cubehash.c \
            src/crypto/echo.c \
            src/crypto/groestl.c \
+           src/crypto/google_authenticator.cpp \
+           src/crypto/hmac_sha1.cpp \
            src/crypto/hmac_sha256.cpp \
            src/crypto/hmac_sha512.cpp \
            src/crypto/jh.c \
@@ -482,7 +489,6 @@ SOURCES += src/activemasternode.cpp \
            src/qt/optionsmodel.cpp \
            src/qt/overviewpage.cpp \
            src/qt/paymentrequest.pb.cc \
-           src/qt/paymentrequestplus.cpp \
            src/qt/paymentserver.cpp \
            src/qt/peertablemodel.cpp \
            src/qt/qvalidatedlineedit.cpp \
@@ -544,7 +550,6 @@ SOURCES += src/activemasternode.cpp \
            src/test/sanity_tests.cpp \
            src/test/script_P2SH_tests.cpp \
            src/test/script_tests.cpp \
-           src/test/scriptnum_tests.cpp \
            src/test/serialize_tests.cpp \
            src/test/sighash_tests.cpp \
            src/test/sigopcount_tests.cpp \

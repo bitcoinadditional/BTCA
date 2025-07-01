@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,52 +9,14 @@
 #include "policy/policy.h"
 
 #include "consensus/tx_verify.h" // for IsFinal()
+#include "main.h"
 #include "tinyformat.h"
-#include "util/system.h"
+#include "util.h"
 #include "utilstrencodings.h"
-#include "validation.h"
 
+#include <boost/foreach.hpp>
 
 bool fIsBareMultisigStd = DEFAULT_PERMIT_BAREMULTISIG;
-
-CFeeRate dustRelayFee = CFeeRate(DUST_RELAY_TX_FEE);
-
-CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFeeIn)
-{
-    // "Dust" is defined in terms of dustRelayFee,
-    // which has units satoshis-per-kilobyte.
-    // If you'd pay more in fees than the value of the output
-    // to spend something, then we consider it dust.
-    // A typical spendable txout is 34 bytes big, and will
-    // need a CTxIn of at least 148 bytes to spend:
-    // so dust is a spendable txout less than
-    // 546*dustRelayFee/1000 (in satoshis).
-    if (txout.scriptPubKey.IsUnspendable())
-        return 0;
-
-    size_t nSize = GetSerializeSize(txout, 0);
-    nSize += (32 + 4 + 1 + 107 + 4); // the 148 mentioned above
-    return dustRelayFeeIn.GetFee(nSize);
-}
-
-CAmount GetDustThreshold(const CFeeRate& dustRelayFeeIn)
-{
-    // return the dust threshold for a typical 34 bytes output
-    return dustRelayFeeIn.GetFee(182);
-}
-
-bool IsDust(const CTxOut& txout, const CFeeRate& dustRelayFeeIn)
-{
-    return (txout.nValue < GetDustThreshold(txout, dustRelayFeeIn));
-}
-
-CAmount GetShieldedDustThreshold(const CFeeRate& dustRelayFeeIn)
-{
-    unsigned int K = DEFAULT_SHIELDEDTXFEE_K;   // Fixed (100) for now
-    return K * dustRelayFeeIn.GetFee(SPENDDESCRIPTION_SIZE +
-                                     CTXOUT_REGULAR_SIZE +
-                                     BINDINGSIG_SIZE);
-}
 
 /**
  * Check transaction inputs to mitigate two
@@ -91,23 +54,19 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType)
         if (m < 1 || m > n)
             return false;
     } else if (whichType == TX_NULL_DATA &&
-               (!gArgs.GetBoolArg("-datacarrier", DEFAULT_ACCEPT_DATACARRIER) || scriptPubKey.size() > nMaxDatacarrierBytes))
+               (!GetBoolArg("-datacarrier", DEFAULT_ACCEPT_DATACARRIER) || scriptPubKey.size() > nMaxDatacarrierBytes))
         return false;
 
     return whichType != TX_NONSTANDARD;
 }
 
-bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reason)
+bool IsStandardTx(const CTransaction& tx, std::string& reason)
 {
     AssertLockHeld(cs_main);
-    if (!Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
-        // Before v5, all txes with version other than STANDARD_VERSION (1) are considered non-standard
-        if (tx->nVersion != CTransaction::TxVersion::LEGACY) {
-            reason = "version";
-            return false;
-        }
+    if (tx.nVersion > CTransaction::CURRENT_VERSION || tx.nVersion < 1) {
+        reason = "version";
+        return false;
     }
-    // After v5, all txes with a version number accepted by consensus are considered standard.
 
     // Treat non-final transactions as non-standard to prevent a specific type
     // of double-spend attack, as well as DoS attacks. (if the transaction
@@ -126,7 +85,7 @@ bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reas
     // Timestamps on the other hand don't get any special treatment, because we
     // can't know what timestamp the next block will have, and there aren't
     // timestamp applications where it matters.
-    if (!IsFinalTx(tx, nBlockHeight)) {
+    if (!IsFinalTx(tx, chainActive.Height() + 1)) {
         reason = "non-final";
         return false;
     }
@@ -135,14 +94,15 @@ bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reas
     // almost as much to process as they cost the sender in fees, because
     // computing signature hashes is O(ninputs*txsize). Limiting transactions
     // to MAX_STANDARD_TX_SIZE mitigates CPU exhaustion attacks.
-    unsigned int sz = tx->GetTotalSize();
-    unsigned int nMaxSize = tx->IsShieldedTx() ? MAX_TX_SIZE_AFTER_SAPLING : MAX_STANDARD_TX_SIZE;
+    unsigned int sz = GetSerializeSize(tx, SER_NETWORK, CTransaction::CURRENT_VERSION);
+    unsigned int nMaxSize = MAX_STANDARD_TX_SIZE;
     if (sz >= nMaxSize) {
         reason = "tx-size";
         return false;
     }
 
-    for (const CTxIn& txin : tx->vin) {
+    for (const CTxIn& txin : tx.vin) {
+
         // Biggest 'standard' txin is a 15-of-15 P2SH multisig with compressed
         // keys. (remember the 520 byte limit on redeemScript size) That works
         // out to a (15*(33+1))+3=513 byte redeemScript, 513+1+15*(73+1)+3=1627
@@ -162,7 +122,7 @@ bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reas
 
     unsigned int nDataOut = 0;
     txnouttype whichType;
-    for (const CTxOut& txout : tx->vout) {
+    for (const CTxOut& txout : tx.vout) {
         if (!::IsStandard(txout.scriptPubKey, whichType)) {
             reason = "scriptpubkey";
             return false;
@@ -173,7 +133,7 @@ bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reas
         else if ((whichType == TX_MULTISIG) && (!fIsBareMultisigStd)) {
             reason = "bare-multisig";
             return false;
-        } else if (IsDust(txout, dustRelayFee)) {
+        } else if (txout.IsDust(::minRelayTxFee)) {
             reason = "dust";
             return false;
         }
@@ -190,9 +150,8 @@ bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reas
 
 bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs)
 {
-    if (tx.IsCoinBase()) {
-        return true; // coinbases don't use vin normally
-    }
+    if (tx.IsCoinBase())
+        return true; // coinbase has no inputs 
 
     for (unsigned int i = 0; i < tx.vin.size(); i++) {
         const CTxOut& prev = mapInputs.AccessCoin(tx.vin[i].prevout).out;
@@ -203,20 +162,41 @@ bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs)
         const CScript& prevScript = prev.scriptPubKey;
         if (!Solver(prevScript, whichType, vSolutions))
             return false;
+        int nArgsExpected = ScriptSigArgsExpected(whichType, vSolutions);
+        if (nArgsExpected < 0)
+            return false;
 
-        if (whichType == TX_SCRIPTHASH)
-        {
-            std::vector<std::vector<unsigned char> > stack;
-            // convert the scriptSig into a stack, so we can inspect the redeemScript
-            if (!EvalScript(stack, tx.vin[i].scriptSig, SCRIPT_VERIFY_NONE, BaseSignatureChecker(), tx.GetRequiredSigVersion()))
-                return false;
+        // Transactions with extra stuff in their scriptSigs are
+        // non-standard. Note that this EvalScript() call will
+        // be quick, because if there are any operations
+        // beside "push data" in the scriptSig
+        // IsStandard() will have already returned false
+        // and this method isn't called.
+        std::vector<std::vector<unsigned char> > stack;
+        if (!EvalScript(stack, tx.vin[i].scriptSig, false, BaseSignatureChecker(), SIGVERSION_BASE))
+            return false;
+
+        if (whichType == TX_SCRIPTHASH) {
             if (stack.empty())
                 return false;
             CScript subscript(stack.back().begin(), stack.back().end());
-            if (subscript.GetSigOpCount(true) > MAX_P2SH_SIGOPS) {
-                return false;
+            std::vector<std::vector<unsigned char> > vSolutions2;
+            txnouttype whichType2;
+            if (Solver(subscript, whichType2, vSolutions2)) {
+                int tmpExpected = ScriptSigArgsExpected(whichType2, vSolutions2);
+                if (tmpExpected < 0)
+                    return false;
+                nArgsExpected += tmpExpected;
+            } else {
+                // Any other Script with less than 15 sigops OK:
+                unsigned int sigops = subscript.GetSigOpCount(true);
+                // ... extra data left on the stack after execution is OK, too:
+                return (sigops <= MAX_P2SH_SIGOPS);
             }
         }
+
+        if (stack.size() != (unsigned int)nArgsExpected)
+            return false;
     }
 
     return true;

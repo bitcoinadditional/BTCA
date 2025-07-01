@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2020 The PIVX Core developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -140,10 +141,10 @@ void TrafficGraphWidget::updateRates()
     }
 
     float tmax = 0.0f;
-    for (float f : vSamplesIn) {
+    Q_FOREACH (float f, vSamplesIn) {
         if (f > tmax) tmax = f;
     }
-    for (float f : vSamplesOut) {
+    Q_FOREACH (float f, vSamplesOut) {
         if (f > tmax) tmax = f;
     }
     fMax = tmax;

@@ -1,10 +1,11 @@
 // Copyright (c) 2012-2014 The Bitcoin developers
-// Copyright (c) 2019 The PIVX Core developers
+// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_LIMITEDMAP_H
-#define PIVX_LIMITEDMAP_H
+#ifndef BITCOIN_LIMITEDMAP_H
+#define BITCOIN_LIMITEDMAP_H
 
 #include <assert.h>
 #include <map>
@@ -28,7 +29,7 @@ protected:
     size_type nMaxSize;
 
 public:
-    explicit limitedmap(size_type nMaxSizeIn = 0) { nMaxSize = nMaxSizeIn; }
+    limitedmap(size_type nMaxSizeIn = 0) { nMaxSize = nMaxSizeIn; }
     const_iterator begin() const { return map.begin(); }
     const_iterator end() const { return map.end(); }
     size_type size() const { return map.size(); }
@@ -92,4 +93,4 @@ public:
     }
 };
 
-#endif // PIVX_LIMITEDMAP_H
+#endif // BITCOIN_LIMITEDMAP_H

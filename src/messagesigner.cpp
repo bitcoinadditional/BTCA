@@ -1,35 +1,24 @@
 // Copyright (c) 2014-2018 The Dash Core developers
-// Copyright (c) 2018-2021 The PIVX Core developers
+// Copyright (c) 2018-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "bls/bls_wrapper.h"
+#include "base58.h"
 #include "hash.h"
-#include "key_io.h"
+#include "main.h" // For strMessageMagic
 #include "messagesigner.h"
+#include "masternodeman.h"  // For GetPublicKey (of MN from its vin)
 #include "tinyformat.h"
-#include "util/system.h"
-#include "util/validation.h"
 #include "utilstrencodings.h"
-
 
 bool CMessageSigner::GetKeysFromSecret(const std::string& strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 {
-    keyRet = KeyIO::DecodeSecret(strSecret);
+    keyRet = DecodeSecret(strSecret);
     if (!keyRet.IsValid())
         return false;
 
     pubkeyRet = keyRet.GetPubKey();
-    return pubkeyRet.IsValid();
-}
-
-bool CMessageSigner::GetKeysFromSecret(const std::string& strSecret, CKey& keyRet, CKeyID& keyIDRet)
-{
-    CPubKey pubkey;
-    if (!GetKeysFromSecret(strSecret, keyRet, pubkey)) {
-        return false;
-    }
-    keyIDRet = pubkey.GetID();
     return true;
 }
 
@@ -46,11 +35,6 @@ bool CMessageSigner::SignMessage(const std::string& strMessage, std::vector<unsi
     return CHashSigner::SignHash(GetMessageHash(strMessage), key, vchSigRet);
 }
 
-bool CMessageSigner::SignMessage(const std::string& strMessage, std::vector<unsigned char>& vchSigRet, const CBLSSecretKey& key)
-{
-    return CHashSigner::SignHash(GetMessageHash(strMessage), key, vchSigRet);
-}
-
 bool CMessageSigner::VerifyMessage(const CPubKey& pubkey, const std::vector<unsigned char>& vchSig, const std::string& strMessage, std::string& strErrorRet)
 {
     return VerifyMessage(pubkey.GetID(), vchSig, strMessage, strErrorRet);
@@ -61,23 +45,9 @@ bool CMessageSigner::VerifyMessage(const CKeyID& keyID, const std::vector<unsign
     return CHashSigner::VerifyHash(GetMessageHash(strMessage), keyID, vchSig, strErrorRet);
 }
 
-bool CMessageSigner::VerifyMessage(const CBLSPublicKey& pk, const std::vector<unsigned char>& vchSig, const std::string& strMessage)
-{
-    return CHashSigner::VerifyHash(GetMessageHash(strMessage), pk, vchSig);
-}
-
 bool CHashSigner::SignHash(const uint256& hash, const CKey& key, std::vector<unsigned char>& vchSigRet)
 {
     return key.SignCompact(hash, vchSigRet);
-}
-
-bool CHashSigner::SignHash(const uint256& hash, const CBLSSecretKey& key, std::vector<unsigned char>& vchSigRet)
-{
-    if (!key.IsValid()) {
-        return false;
-    }
-    vchSigRet = key.Sign(hash).ToByteVector();
-    return true;
 }
 
 bool CHashSigner::VerifyHash(const uint256& hash, const CPubKey& pubkey, const std::vector<unsigned char>& vchSig, std::string& strErrorRet)
@@ -96,34 +66,43 @@ bool CHashSigner::VerifyHash(const uint256& hash, const CKeyID& keyID, const std
     if(pubkeyFromSig.GetID() != keyID) {
         strErrorRet = strprintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
                 EncodeDestination(keyID), EncodeDestination(pubkeyFromSig.GetID()),
-                hash.ToString(), EncodeBase64(vchSig));
+                hash.ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
         return false;
     }
 
     return true;
 }
 
-bool CHashSigner::VerifyHash(const uint256& hash, const CBLSPublicKey& pk, const std::vector<unsigned char>& vchSig)
-{
-    return CBLSSignature(vchSig).VerifyInsecure(pk, hash);
-}
-
 /** CSignedMessage Class
  *  Functions inherited by network signed-messages
  */
 
-bool CSignedMessage::Sign(const CKey& key, const CKeyID& keyID)
+bool CSignedMessage::Sign(const CKey& key, const CPubKey& pubKey)
 {
-    nMessVersion = MessageVersion::MESS_VER_HASH;
     std::string strError = "";
-    uint256 hash = GetSignatureHash();
 
-    if(!CHashSigner::SignHash(hash, key, vchSig)) {
-        return error("%s : SignHash() failed", __func__);
-    }
+    if (Params().GetConsensus().NetworkUpgradeActive(chainActive.Height(), Consensus::UPGRADE_STAKE_MODIFIER_V2)) {
+        nMessVersion = MessageVersion::MESS_VER_HASH;
+        uint256 hash = GetSignatureHash();
 
-    if (!CHashSigner::VerifyHash(hash, keyID, vchSig, strError)) {
-        return error("%s : VerifyHash() failed, error: %s", __func__, strError);
+        if (!CHashSigner::SignHash(hash, key, vchSig)) {
+            return error("%s : SignHash() failed", __func__);
+        }
+
+        if (!CHashSigner::VerifyHash(hash, pubKey, vchSig, strError)) {
+            return error("%s : VerifyHash() failed, error: %s", __func__, strError);
+        }
+    } else {
+        nMessVersion = MessageVersion::MESS_VER_STRMESS;
+        std::string strMessage = GetStrMessage();
+
+        if (!CMessageSigner::SignMessage(strMessage, vchSig, key)) {
+            return error("%s : SignMessage() failed", __func__);
+        }
+
+        if (!CMessageSigner::VerifyMessage(pubKey, vchSig, strMessage, strError)) {
+            return error("%s : VerifyMessage() failed, error: %s\n", __func__, strError);
+        }
     }
 
     return true;
@@ -138,45 +117,57 @@ bool CSignedMessage::Sign(const std::string strSignKey)
         return error("%s : Invalid strSignKey", __func__);
     }
 
-    return Sign(key, pubkey.GetID());
+    return Sign(key, pubkey);
 }
 
-bool CSignedMessage::Sign(const CBLSSecretKey& sk)
-{
-    nMessVersion = MessageVersion::MESS_VER_HASH;
-
-    if(!CHashSigner::SignHash(GetSignatureHash(), sk, vchSig)) {
-        return error("%s : SignHash() failed", __func__);
-    }
-
-    return true;
-}
-
-bool CSignedMessage::CheckSignature(const CKeyID& keyID) const
+bool CSignedMessage::CheckSignature(const CPubKey& pubKey) const
 {
     std::string strError = "";
 
     if (nMessVersion == MessageVersion::MESS_VER_HASH) {
         uint256 hash = GetSignatureHash();
-        return CHashSigner::VerifyHash(hash, keyID, vchSig, strError);
+        return CHashSigner::VerifyHash(hash, pubKey, vchSig, strError);
     }
 
     std::string strMessage = GetStrMessage();
-    return CMessageSigner::VerifyMessage(keyID, vchSig, strMessage, strError);
+    return CMessageSigner::VerifyMessage(pubKey, vchSig, strMessage, strError);
 }
 
-bool CSignedMessage::CheckSignature(const CBLSPublicKey& pk) const
+bool CSignedMessage::CheckSignature() const
 {
-    // Only MESS_VER_HASH allowed
-    if (nMessVersion != MessageVersion::MESS_VER_HASH) {
-        return false;
-    }
+    std::string strError = "";
 
-    return CHashSigner::VerifyHash(GetSignatureHash(), pk, vchSig);
+    const CPubKey pubkey = GetPublicKey(strError);
+    if (pubkey == CPubKey())
+        return error("%s : %s", __func__, strError);
+
+    return CheckSignature(pubkey);
+}
+
+const CPubKey CSignedMessage::GetPublicKey(std::string& strErrorRet) const
+{
+    const CTxIn vin = GetVin();
+    CMasternode* pmn = mnodeman.Find(vin);
+    if(pmn) {
+        return pmn->pubKeyMasternode;
+    }
+    strErrorRet = strprintf("Unable to find masternode vin %s", vin.prevout.hash.GetHex());
+    return CPubKey();
 }
 
 std::string CSignedMessage::GetSignatureBase64() const
 {
-    return EncodeBase64(vchSig);
+    return EncodeBase64(&vchSig[0], vchSig.size());
+}
+
+void CSignedMessage::swap(CSignedMessage& first, CSignedMessage& second) // nothrow
+{
+    // enable ADL (not necessary in our case, but good practice)
+    using std::swap;
+
+    // by swapping the members of two classes,
+    // the two classes are effectively swapped
+    swap(first.vchSig, second.vchSig);
+    swap(first.nMessVersion, second.nMessVersion);
 }
 

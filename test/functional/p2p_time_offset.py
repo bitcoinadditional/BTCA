@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2021 The PIVX Core developers
+# Copyright (c) 2019-2020 The PIVX developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,10 +8,13 @@ import time
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
+    connect_nodes,
     set_node_times,
-    wait_until,
 )
 
+def connect_nodes_bi(nodes, a, b):
+    connect_nodes(nodes[a], b)
+    connect_nodes(nodes[b], a)
 
 class TimeOffsetTest(PivxTestFramework):
     def set_test_params(self):
@@ -22,10 +25,6 @@ class TimeOffsetTest(PivxTestFramework):
     def setup_network(self):
         # don't connect nodes yet
         self.setup_nodes()
-
-    def connect_nodes_bi(self, a, b, wait_for_connect = True):
-        self.connect_nodes(a, b, wait_for_connect)
-        self.connect_nodes(b, a, wait_for_connect)
 
     def check_connected_nodes(self):
         ni = [node.getnetworkinfo() for node in self.connected_nodes]
@@ -52,8 +51,8 @@ class TimeOffsetTest(PivxTestFramework):
 
         # connect nodes 1 and 2
         self.log.info("Connecting with node-1 (+10 s) and node-2 (+15 s)...")
-        self.connect_nodes_bi(0, 1)
-        self.connect_nodes_bi(0, 2)
+        connect_nodes_bi(self.nodes, 0, 1)
+        connect_nodes_bi(self.nodes, 0, 2)
         self.log.info("--> samples = [+0, +10, (+10), +15, +15]")
         ni = self.nodes[0].getnetworkinfo()
         assert_equal(ni['connections'], 4)
@@ -64,7 +63,7 @@ class TimeOffsetTest(PivxTestFramework):
 
         # connect node 3
         self.log.info("Connecting with node-3 (+20 s). This will print the warning...")
-        self.connect_nodes_bi(0, 3)
+        connect_nodes_bi(self.nodes, 0, 3)
         self.log.info("--> samples = [+0, +10, +10, (+15), +15, +20, +20]")
         ni = self.nodes[0].getnetworkinfo()
         assert_equal(ni['connections'], 6)
@@ -75,7 +74,7 @@ class TimeOffsetTest(PivxTestFramework):
 
         # connect node 6
         self.log.info("Connecting with node-6 (-5 s)...")
-        self.connect_nodes_bi(0, 6)
+        connect_nodes_bi(self.nodes, 0, 6)
         self.log.info("--> samples = [-5, -5, +0, +10, (+10), +15, +15, +20, +20]")
         ni = self.nodes[0].getnetworkinfo()
         assert_equal(ni['connections'], 8)
@@ -86,7 +85,7 @@ class TimeOffsetTest(PivxTestFramework):
 
         # connect node 4
         self.log.info("Connecting with node-4 (+25 s). This will print the warning...")
-        self.connect_nodes_bi(0, 4)
+        connect_nodes_bi(self.nodes, 0, 4)
         self.log.info("--> samples = [-5, -5, +0, +10, +10, (+15), +15, +20, +20, +25, +25]")
         ni = self.nodes[0].getnetworkinfo()
         assert_equal(ni['connections'], 10)
@@ -97,16 +96,16 @@ class TimeOffsetTest(PivxTestFramework):
 
         # try to connect node 5 and check that it can't
         self.log.info("Trying to connect with node-5 (+30 s)...")
-        # Don't wait for a connection that will never be established.
-        self.connect_nodes_bi(0, 5, False)
-        wait_until(lambda: self.nodes[0].getnetworkinfo()['connections'] == 10)
+        connect_nodes_bi(self.nodes, 0, 5)
+        ni = self.nodes[0].getnetworkinfo()
+        assert_equal(ni['connections'], 10)
         assert_equal(ni['timeoffset'], 15)
         self.log.info("Not connected.")
         self.log.info("Node-0 nTimeOffset: +%d seconds" % ni['timeoffset'])
 
         # connect node 7
         self.log.info("Connecting with node-7 (-10 s)...")
-        self.connect_nodes_bi(0, 7)
+        connect_nodes_bi(self.nodes, 0, 7)
         self.log.info("--> samples = [-10, -10, -5, -5, +0, +10, (+10), +15, +15, +20, +20, +25, +25]")
         ni = self.nodes[0].getnetworkinfo()
         assert_equal(ni['connections'], 12)

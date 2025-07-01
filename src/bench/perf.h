@@ -1,10 +1,11 @@
 // Copyright (c) 2016 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /** Functions for measurement of CPU cycles */
-#ifndef PIVX_BENCH_PERF_H
-#define PIVX_BENCH_PERF_H
+#ifndef H_PERF
+#define H_PERF
 
 #include <stdint.h>
 
@@ -34,4 +35,4 @@ uint64_t perf_cpucycles(void);
 void perf_init(void);
 void perf_fini(void);
 
-#endif // PIVX_BENCH_PERF_H
+#endif // H_PERF

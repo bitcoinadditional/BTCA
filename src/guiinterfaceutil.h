@@ -1,13 +1,10 @@
-// Copyright (c) 2020-2021 The PIVX Core developers
+// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_GUIINTERFACEUTIL_H
-#define PIVX_GUIINTERFACEUTIL_H
-
-#include "guiinterface.h"
-#include "tinyformat.h"
-#include "util/system.h"
+#ifndef GUIINTERFACEUTIL_H
+#define GUIINTERFACEUTIL_H
 
 inline static bool UIError(const std::string &str)
 {
@@ -26,4 +23,4 @@ inline static std::string AmountErrMsg(const char * const optname, const std::st
     return strprintf(_("Invalid amount for -%s=<amount>: '%s'"), optname, strValue);
 }
 
-#endif // PIVX_GUIINTERFACEUTIL_H
+#endif //GUIINTERFACEUTIL_H

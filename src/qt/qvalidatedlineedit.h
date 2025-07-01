@@ -1,9 +1,10 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_QVALIDATEDLINEEDIT_H
-#define PIVX_QT_QVALIDATEDLINEEDIT_H
+#ifndef BITCOIN_QT_QVALIDATEDLINEEDIT_H
+#define BITCOIN_QT_QVALIDATEDLINEEDIT_H
 
 #include <QLineEdit>
 
@@ -36,4 +37,4 @@ private Q_SLOTS:
     void checkValidity();
 };
 
-#endif // PIVX_QT_QVALIDATEDLINEEDIT_H
+#endif // BITCOIN_QT_QVALIDATEDLINEEDIT_H

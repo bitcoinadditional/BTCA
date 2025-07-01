@@ -1,4 +1,5 @@
 // Copyright (c) 2013-2014 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,12 +7,13 @@
 // Unit tests for block.CheckBlock()
 //
 
-#include "test/test_pivx.h"
+
 
 #include "clientversion.h"
 #include "fs.h"
+#include "main.h"
 #include "utiltime.h"
-#include "validation.h"
+#include "test/test_pivx.h"
 
 #include <cstdio>
 
@@ -54,7 +56,6 @@ BOOST_AUTO_TEST_CASE(May15)
     CBlock forkingBlock;
     if (read_block("Mar12Fork.dat", forkingBlock))
     {
-        LOCK(cs_main);
         CValidationState state;
 
         // After May 15'th, big blocks are OK:

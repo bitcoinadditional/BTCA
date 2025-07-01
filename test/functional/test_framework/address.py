@@ -7,7 +7,7 @@
 from .script import hash256, hash160, sha256, CScript, OP_0
 from .util import hex_str_to_bytes
 
-# --- Base58Check encoding
+## --- Base58Check encoding
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
 b58chars = __b58chars
@@ -95,9 +95,7 @@ def wif_to_privkey(secretString):
         return None
 
 PK_ADD_VERSION = 30
-COLD_ADD_VERSION = 63
 TNET_PK_ADD_VERSION = 139
-TNET_COLD_ADD_VERSION = 73
 SCRIPT_VERSION = 13
 TNET_SCRIPT_VERSION = 19
 
@@ -106,22 +104,19 @@ def byte_to_base58(b, version):
     checksum = hash256(data)[0:4]
     return b58encode(data + checksum)
 
-def keyhash_to_p2pkh(hash, main=False, isCold=False):
-    assert len(hash) == 20
-    if isCold:
-        version = COLD_ADD_VERSION if main else TNET_COLD_ADD_VERSION
-    else:
-        version = PK_ADD_VERSION if main else TNET_PK_ADD_VERSION
+def keyhash_to_p2pkh(hash):
+    assert (len(hash) == 20)
+    version = PK_ADD_VERSION
     return byte_to_base58(hash, version)
 
 def scripthash_to_p2sh(hash, main = False):
-    assert len(hash) == 20
+    assert (len(hash) == 20)
     version = SCRIPT_VERSION if main else TNET_SCRIPT_VERSION
     return byte_to_base58(hash, version)
 
-def key_to_p2pkh(key, main = False, isCold=False):
+def key_to_p2pkh(key, main = False):
     key = check_key(key)
-    return keyhash_to_p2pkh(hash160(key), main, isCold)
+    return keyhash_to_p2pkh(hash160(key), main)
 
 def script_to_p2sh(script, main = False):
     script = check_script(script)
@@ -142,11 +137,11 @@ def check_key(key):
         key = hex_str_to_bytes(key) # Assuming this is hex string
     if (type(key) is bytes and (len(key) == 33 or len(key) == 65)):
         return key
-    assert False
+    assert(False)
 
 def check_script(script):
     if (type(script) is str):
         script = hex_str_to_bytes(script) # Assuming this is hex string
     if (type(script) is bytes or type(script) is CScript):
         return script
-    assert False
+    assert(False)

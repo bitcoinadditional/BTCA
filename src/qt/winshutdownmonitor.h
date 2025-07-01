@@ -1,9 +1,10 @@
 // Copyright (c) 2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_WINSHUTDOWNMONITOR_H
-#define PIVX_QT_WINSHUTDOWNMONITOR_H
+#ifndef BITCOIN_QT_WINSHUTDOWNMONITOR_H
+#define BITCOIN_QT_WINSHUTDOWNMONITOR_H
 
 #ifdef WIN32
 #include <QByteArray>
@@ -24,4 +25,4 @@ public:
 };
 #endif
 
-#endif // PIVX_QT_WINSHUTDOWNMONITOR_H
+#endif // BITCOIN_QT_WINSHUTDOWNMONITOR_H

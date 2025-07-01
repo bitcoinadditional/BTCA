@@ -1,11 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2018-2020 The PIVX Core developers
+// Copyright (c) 2018-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_SCRIPT_SCRIPT_ERROR_H
-#define PIVX_SCRIPT_SCRIPT_ERROR_H
+#ifndef BITCOIN_SCRIPT_SCRIPT_ERROR_H
+#define BITCOIN_SCRIPT_SCRIPT_ERROR_H
 
 typedef enum ScriptError_t
 {
@@ -25,8 +26,6 @@ typedef enum ScriptError_t
     /* Failed verify operations */
     SCRIPT_ERR_VERIFY,
     SCRIPT_ERR_EQUALVERIFY,
-    SCRIPT_ERR_EXCHANGEADDRVERIFY,
-    SCRIPT_ERR_CHECKCOLDSTAKEVERIFY,
     SCRIPT_ERR_CHECKMULTISIGVERIFY,
     SCRIPT_ERR_CHECKSIGVERIFY,
     SCRIPT_ERR_NUMEQUALVERIFY,
@@ -50,7 +49,6 @@ typedef enum ScriptError_t
     SCRIPT_ERR_SIG_HIGH_S,
     SCRIPT_ERR_SIG_NULLDUMMY,
     SCRIPT_ERR_PUBKEYTYPE,
-    SCRIPT_ERR_CLEANSTACK,
 
     /* softfork safeness */
     SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS,
@@ -62,4 +60,4 @@ typedef enum ScriptError_t
 
 const char* ScriptErrorString(const ScriptError error);
 
-#endif // PIVX_SCRIPT_SCRIPT_ERROR_H
+#endif // BITCOIN_SCRIPT_SCRIPT_ERROR_H

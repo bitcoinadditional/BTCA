@@ -1,15 +1,16 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2021 The PIVX Core developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_ASKPASSPHRASEDIALOG_H
-#define PIVX_QT_ASKPASSPHRASEDIALOG_H
+#ifndef BITCOIN_QT_ASKPASSPHRASEDIALOG_H
+#define BITCOIN_QT_ASKPASSPHRASEDIALOG_H
 
-#include "prunnable.h"
-#include "support/allocators/secure.h"
-#include <QCheckBox>
 #include <QDialog>
+#include "qt/pivx/prunnable.h"
+#include "allocators.h"
+#include <QCheckBox>
 
 class WalletModel;
 class PIVXGUI;
@@ -43,7 +44,7 @@ public:
         Encrypt,        /** Encrypt unencrypted wallet */
         ToggleLock,     /** Toggle wallet lock state */
         ChangePass,     /** Change passphrase */
-        Send_PIV,       /** Send PIV */
+        Send_PIV,       /** Send BTCA */
         BIP_38,         /** BIP38 menu */
         Multi_Sig,      /** Multi-Signature dialog */
         Sign_Message,   /** Sign/verify message dialog */
@@ -83,4 +84,4 @@ protected:
     bool eventFilter(QObject* object, QEvent* event) override;
 };
 
-#endif // PIVX_QT_ASKPASSPHRASEDIALOG_H
+#endif // BITCOIN_QT_ASKPASSPHRASEDIALOG_H

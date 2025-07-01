@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the zapwallettxes functionality.
 
-- start two pivxd nodes
+- start two btcad nodes
 - create two transactions on node 0 - one is confirmed and one is unconfirmed.
 - restart node 0 and verify that both the confirmed and the unconfirmed
   transactions are still available.
@@ -14,19 +14,17 @@
   transactions are still available, but that the unconfirmed transaction has
   been zapped.
 """
-
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
+    sync_mempools,
 )
 
 class ZapWalletTXesTest (PivxTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
-        # whitelist all peers to speed up tx relay / mempool sync
-        self.extra_args = [["-whitelist=127.0.0.1"]] * self.num_nodes
 
     def run_test(self):
         self.log.info("Mining blocks...")
@@ -46,7 +44,7 @@ class ZapWalletTXesTest (PivxTestFramework):
 
         # This transaction will not be confirmed
         txid2 = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 20)
-        self.sync_mempools(wait=.1)
+        sync_mempools(self.nodes, wait=.1)
 
         # Confirmed and unconfirmed transactions are now in the wallet.
         assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
@@ -56,9 +54,9 @@ class ZapWalletTXesTest (PivxTestFramework):
         assert_equal(self.nodes[1].getwalletinfo()["unconfirmed_balance"], 20)
         assert_equal(self.nodes[1].getunconfirmedbalance(), 20)
 
-        # Restart node0. Both confirmed and unconfirmed transactions remain in the wallet.
-        self.restart_node(0)
-
+        # Stop-start node0. Both confirmed and unconfirmed transactions remain in the wallet.
+        self.stop_node(0)
+        self.start_node(0)
         assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
         assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)
 

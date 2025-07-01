@@ -5,10 +5,10 @@
 """Test the wallet accounts properly when there are cloned transactions with malleated scriptsigs."""
 
 import io
-
-from test_framework.messages import CTransaction, COIN
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import assert_equal
+from test_framework.util import *
+from test_framework.messages import CTransaction, COIN
+
 
 class TxnMallTest(PivxTestFramework):
     def set_test_params(self):
@@ -21,11 +21,11 @@ class TxnMallTest(PivxTestFramework):
     def setup_network(self):
         # Start with split network:
         super(TxnMallTest, self).setup_network()
-        self.disconnect_nodes(1, 2)
-        self.disconnect_nodes(2, 1)
+        disconnect_nodes(self.nodes[1], 2)
+        disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 6,250 PIV:
+        # All nodes should start with 6,250 BTCA:
         starting_balance = 6250
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -69,7 +69,7 @@ class TxnMallTest(PivxTestFramework):
 
         if (rawtx1 == clone_raw):
             print("## !! Equal hex!!")
-            assert False
+            assert(False)
 
         # Use a different signature hash type to sign.  This creates an equivalent but malleated clone.
         # Don't send the clone anywhere yet
@@ -79,7 +79,7 @@ class TxnMallTest(PivxTestFramework):
         # Have node0 mine a block, if requested:
         if (self.options.mine_block):
             self.nodes[0].generate(1)
-            self.sync_blocks(self.nodes[0:2])
+            sync_blocks(self.nodes[0:2])
 
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
@@ -87,8 +87,7 @@ class TxnMallTest(PivxTestFramework):
         # Node0's balance should be starting balance, plus 50BTC for another
         # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + node0_tx1["fee"] + node0_tx2["fee"]
-        if self.options.mine_block:
-            expected += 250
+        if self.options.mine_block: expected += 250
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
         assert_equal(self.nodes[0].getbalance(), expected)
@@ -107,15 +106,15 @@ class TxnMallTest(PivxTestFramework):
         self.nodes[2].generate(1)
 
         # Reconnect the split network, and sync chain:
-        self.connect_nodes(1, 2)
-        self.connect_nodes(0, 2)
-        self.connect_nodes(2, 0)
-        self.connect_nodes(2, 1)
+        connect_nodes(self.nodes[1], 2)
+        connect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[2], 0)
+        connect_nodes(self.nodes[2], 1)
 
         self.nodes[2].sendrawtransaction(node0_tx2["hex"])
         self.nodes[2].sendrawtransaction(tx2["hex"])
         self.nodes[2].generate(1)  # Mine another block to make sure we sync
-        self.sync_blocks()
+        sync_blocks(self.nodes)
 
         # Re-fetch transaction info:
         tx1 = self.nodes[0].gettransaction(txid1)

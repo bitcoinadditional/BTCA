@@ -1,9 +1,10 @@
 // Copyright (c) 2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CRYPTO_SHA1_H
-#define PIVX_CRYPTO_SHA1_H
+#ifndef BITCOIN_CRYPTO_SHA1_H
+#define BITCOIN_CRYPTO_SHA1_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -25,4 +26,4 @@ public:
     CSHA1& Reset();
 };
 
-#endif // PIVX_CRYPTO_SHA1_H
+#endif // BITCOIN_CRYPTO_SHA1_H

@@ -13,11 +13,7 @@ but less mature coinbase spends are NOT.
 """
 
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import (
-    assert_equal,
-    assert_raises_rpc_error,
-    create_tx
-)
+from test_framework.util import *
 
 # Create one-input, one-output, no-fee transaction:
 class MempoolSpendCoinbaseTest(PivxTestFramework):

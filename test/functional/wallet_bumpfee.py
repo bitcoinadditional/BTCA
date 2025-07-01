@@ -12,22 +12,15 @@ top-level functions named as test_<test_case_description>. The test functions
 can be disabled or reordered if needed for debugging. If new test cases are
 added in the future, they should try to follow the same convention and not
 make assumptions about execution order.
+"""
 
-
-from decimal import Decimal
-import io
-
-from test_framework import blocktools
 from test_framework.blocktools import send_to_witness
-from test_framework.messages import CTransaction
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import (
-    assert_equal,
-    assert_greater_than,
-    assert_raises_rpc_error,
-    hex_str_to_bytes
-)
+from test_framework import blocktools
+from test_framework.mininode import CTransaction
+from test_framework.util import *
 
+import io
 
 # Sequence number that is BIP 125 opt-in and BIP 68-compliant
 BIP125_SEQUENCE_NUMBER = 0xfffffffd
@@ -45,9 +38,11 @@ class BumpFeeTest(PivxTestFramework):
 
     def run_test(self):
         # Encrypt wallet for test_locked_wallet_fails test
-        self.nodes[1].encryptwallet(WALLET_PASSPHRASE)
+        self.nodes[1].node_encrypt_wallet(WALLET_PASSPHRASE)
+        self.start_node(1)
         self.nodes[1].walletpassphrase(WALLET_PASSPHRASE, WALLET_PASSPHRASE_TIMEOUT)
 
+        connect_nodes(self.nodes[0], 1)
         self.sync_all()
 
         peer_node, rbf_node = self.nodes
@@ -66,7 +61,7 @@ class BumpFeeTest(PivxTestFramework):
 
         self.log.info("Running tests")
         dest_address = peer_node.getnewaddress()
-        test_simple_bumpfee_succeeds(self, rbf_node, peer_node, dest_address)
+        test_simple_bumpfee_succeeds(rbf_node, peer_node, dest_address)
         test_segwit_bumpfee_succeeds(rbf_node, dest_address)
         test_nonrbf_bumpfee_fails(peer_node, dest_address)
         test_notmine_bumpfee_fails(rbf_node, peer_node, dest_address)
@@ -82,16 +77,16 @@ class BumpFeeTest(PivxTestFramework):
         self.log.info("Success")
 
 
-def test_simple_bumpfee_succeeds(test, rbf_node, peer_node, dest_address):
+def test_simple_bumpfee_succeeds(rbf_node, peer_node, dest_address):
     rbfid = spend_one_input(rbf_node, dest_address)
     rbftx = rbf_node.gettransaction(rbfid)
-    test.sync_mempools((rbf_node, peer_node))
+    sync_mempools((rbf_node, peer_node))
     assert rbfid in rbf_node.getrawmempool() and rbfid in peer_node.getrawmempool()
     bumped_tx = rbf_node.bumpfee(rbfid)
     assert_equal(bumped_tx["errors"], [])
     assert bumped_tx["fee"] - abs(rbftx["fee"]) > 0
     # check that bumped_tx propagates, original tx was evicted and has a wallet conflict
-    test.sync_mempools((rbf_node, peer_node))
+    sync_mempools((rbf_node, peer_node))
     assert bumped_tx["txid"] in rbf_node.getrawmempool()
     assert bumped_tx["txid"] in peer_node.getrawmempool()
     assert rbfid not in rbf_node.getrawmempool()
@@ -297,10 +292,9 @@ def submit_block_with_tx(node, tx):
     block.hashMerkleRoot = block.calc_merkle_root()
     blocktools.add_witness_commitment(block)
     block.solve()
-    node.submitblock(block.serialize(True).hex())
+    node.submitblock(bytes_to_hex_str(block.serialize(True)))
     return block
 
 
 if __name__ == "__main__":
     BumpFeeTest().main()
-"""

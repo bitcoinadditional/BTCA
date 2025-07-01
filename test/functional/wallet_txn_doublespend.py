@@ -4,10 +4,9 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet accounts properly when there is a double-spend conflict."""
 
-from decimal import Decimal
-
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import assert_equal, find_output
+from test_framework.util import *
+import time
 
 class TxnMallTest(PivxTestFramework):
     def set_test_params(self):
@@ -20,11 +19,11 @@ class TxnMallTest(PivxTestFramework):
     def setup_network(self):
         # Start with split network:
         super().setup_network()
-        self.disconnect_nodes(1, 2)
-        self.disconnect_nodes(2, 1)
+        disconnect_nodes(self.nodes[1], 2)
+        disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 6,250 PIV:
+        # All nodes should start with 6,250 BTCA:
         starting_balance = 6250
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -45,7 +44,7 @@ class TxnMallTest(PivxTestFramework):
         # Coins are sent to node1_address
         node1_address = self.nodes[1].getnewaddress()
 
-        # First: use raw transaction API to send 1240 * 5 PIV to node1_address,
+        # First: use raw transaction API to send 1240 * 5 BTCA to node1_address,
         # but don't broadcast:
         doublespend_fee = Decimal('-.02')
         rawtx_input_0 = {}
@@ -70,7 +69,7 @@ class TxnMallTest(PivxTestFramework):
         # Have node0 mine a block:
         if (self.options.mine_block):
             self.nodes[0].generate(1)
-            self.sync_blocks(self.nodes[0:2])
+            sync_blocks(self.nodes[0:2])
 
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
@@ -78,20 +77,19 @@ class TxnMallTest(PivxTestFramework):
         # Node0's balance should be starting balance, plus 50BTC for another
         # matured block, minus 40, minus 20, and minus transaction fees:
         expected = starting_balance + fund_foo_tx["fee"] + fund_bar_tx["fee"]
-        if self.options.mine_block:
-            expected += 250
+        if self.options.mine_block: expected += 250
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
         assert_equal(self.nodes[0].getbalance(), expected)
 
         if self.options.mine_block:
-            assert_equal(tx1["confirmations"], 1)
-            assert_equal(tx2["confirmations"], 1)
+            assert_equal(tx1["bcconfirmations"], 1)
+            assert_equal(tx2["bcconfirmations"], 1)
             # Node1's balance should be both transaction amounts:
             assert_equal(self.nodes[1].getbalance(), starting_balance - tx1["amount"] - tx2["amount"])
         else:
-            assert_equal(tx1["confirmations"], 0)
-            assert_equal(tx2["confirmations"], 0)
+            assert_equal(tx1["bcconfirmations"], 0)
+            assert_equal(tx2["bcconfirmations"], 0)
 
         # Now give doublespend and its parents to miner:
         self.nodes[2].sendrawtransaction(fund_foo_tx["hex"])
@@ -102,12 +100,12 @@ class TxnMallTest(PivxTestFramework):
         self.nodes[2].generate(1)
 
         # Reconnect the split network, and sync chain:
-        self.connect_nodes(1, 2)
-        self.connect_nodes(0, 2)
-        self.connect_nodes(2, 0)
-        self.connect_nodes(2, 1)
+        connect_nodes(self.nodes[1], 2)
+        connect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[2], 0)
+        connect_nodes(self.nodes[2], 1)
         self.nodes[2].generate(1)  # Mine another block to make sure we sync
-        self.sync_blocks()
+        sync_blocks(self.nodes)
         assert_equal(self.nodes[0].gettransaction(doublespend_txid)["confirmations"], 2)
 
         # Re-fetch transaction info:
@@ -115,8 +113,8 @@ class TxnMallTest(PivxTestFramework):
         tx2 = self.nodes[0].gettransaction(txid2)
 
         # Both transactions should be conflicted
-        assert_equal(tx1["confirmations"], -2)
-        assert_equal(tx2["confirmations"], -2)
+        assert_equal(tx1["bcconfirmations"], -2)
+        assert_equal(tx2["bcconfirmations"], -2)
 
         # Node0's total balance should be starting balance, plus 100BTC for
         # two more matured blocks, minus 1240 for the double-spend, plus fees (which are

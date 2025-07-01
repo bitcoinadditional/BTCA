@@ -1,9 +1,10 @@
 // Copyright (c) 2014-2018 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CRYPTO_COMMON_H
-#define PIVX_CRYPTO_COMMON_H
+#ifndef BITCOIN_CRYPTO_COMMON_H
+#define BITCOIN_CRYPTO_COMMON_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/pivx-config.h>
@@ -53,13 +54,6 @@ void static inline WriteLE64(unsigned char* ptr, uint64_t x)
     memcpy(ptr, (char*)&v, 8);
 }
 
-uint16_t static inline ReadBE16(const unsigned char* ptr)
-{
-    uint16_t x;
-    memcpy((char*)&x, ptr, 2);
-    return be16toh(x);
-}
-
 uint32_t static inline ReadBE32(const unsigned char* ptr)
 {
     uint32_t x;
@@ -107,4 +101,4 @@ uint64_t static inline CountBits(uint64_t x)
     return ret;
 }
 
-#endif // PIVX_CRYPTO_COMMON_H
+#endif // BITCOIN_CRYPTO_COMMON_H

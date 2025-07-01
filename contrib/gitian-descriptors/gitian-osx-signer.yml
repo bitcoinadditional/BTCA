@@ -1,5 +1,5 @@
 ---
-name: "pivx-dmg-signer"
+name: "btca-dmg-signer"
 distro: "ubuntu"
 suites:
 - "bionic"
@@ -7,19 +7,18 @@ architectures:
 - "amd64"
 packages:
 - "faketime"
-- "xorriso"
 remotes:
-- "url": "https://github.com/pivx-project/pivx-detached-sigs.git"
+- "url": "https://github.com/bitcoinadditional/BTCA-detached-sigs.git"
   "dir": "signature"
 files:
-- "pivx-osx-unsigned.tar.gz"
+- "btca-osx-unsigned.tar.gz"
 script: |
   set -e -o pipefail
 
   WRAP_DIR=$HOME/wrapped
   mkdir -p ${WRAP_DIR}
-  export PATH="$PWD":$PATH
-  FAKETIME_PROGS="dmg xorrisofs"
+  export PATH=`pwd`:$PATH
+  FAKETIME_PROGS="dmg genisoimage"
 
   # Create global faketime wrappers
   for prog in ${FAKETIME_PROGS}; do
@@ -31,11 +30,11 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=pivx-osx-unsigned.tar.gz
-  SIGNED=pivx-osx-signed.dmg
+  UNSIGNED=btca-osx-unsigned.tar.gz
+  SIGNED=btca-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   OSX_VOLNAME="$(cat osx_volname)"
   ./detached-sig-apply.sh ${UNSIGNED} signature/osx
-  ${WRAP_DIR}/xorrisofs -D -l -V "${OSX_VOLNAME}" -no-pad -r -dir-mode 0755 -o uncompressed.dmg signed-app
+  ${WRAP_DIR}/genisoimage -no-cache-inodes -D -l -probe -V "${OSX_VOLNAME}" -no-pad -r -dir-mode 0755 -apple -o uncompressed.dmg signed-app
   ${WRAP_DIR}/dmg dmg uncompressed.dmg ${OUTDIR}/${SIGNED}

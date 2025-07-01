@@ -3,31 +3,23 @@
 // Copyright (c) 2011-2013 The PPCoin developers
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
-// Copyright (c) 2015-2021 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CHAIN_H
-#define PIVX_CHAIN_H
+#ifndef BITCOIN_CHAIN_H
+#define BITCOIN_CHAIN_H
 
 #include "chainparams.h"
-#include "flatfile.h"
-#include "optional.h"
+#include "pow.h"
 #include "primitives/block.h"
 #include "timedata.h"
 #include "tinyformat.h"
 #include "uint256.h"
-#include "util/system.h"
-#include "libzerocoin/Denominations.h"
+#include "util.h"
 
 #include <vector>
-
-/**
- * Timestamp window used as a grace period by code that compares external
- * timestamps (such as timestamps passed to RPCs, or wallet key creation times)
- * to block timestamps.
- */
-static constexpr int64_t TIMESTAMP_WINDOW = 2 * 60 * 60;
 
 class CBlockFileInfo
 {
@@ -40,15 +32,18 @@ public:
     uint64_t nTimeFirst;       //!< earliest time of block in file
     uint64_t nTimeLast;        //!< latest time of block in file
 
-    SERIALIZE_METHODS(CBlockFileInfo, obj)
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
     {
-        READWRITE(VARINT(obj.nBlocks));
-        READWRITE(VARINT(obj.nSize));
-        READWRITE(VARINT(obj.nUndoSize));
-        READWRITE(VARINT(obj.nHeightFirst));
-        READWRITE(VARINT(obj.nHeightLast));
-        READWRITE(VARINT(obj.nTimeFirst));
-        READWRITE(VARINT(obj.nTimeLast));
+        READWRITE(VARINT(nBlocks));
+        READWRITE(VARINT(nSize));
+        READWRITE(VARINT(nUndoSize));
+        READWRITE(VARINT(nHeightFirst));
+        READWRITE(VARINT(nHeightLast));
+        READWRITE(VARINT(nTimeFirst));
+        READWRITE(VARINT(nTimeLast));
     }
 
     void SetNull()
@@ -82,6 +77,48 @@ public:
         if (nTimeIn > nTimeLast)
             nTimeLast = nTimeIn;
     }
+};
+
+struct CDiskBlockPos {
+    int nFile;
+    unsigned int nPos;
+
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(VARINT(nFile));
+        READWRITE(VARINT(nPos));
+    }
+
+    CDiskBlockPos()
+    {
+        SetNull();
+    }
+
+    CDiskBlockPos(int nFileIn, unsigned int nPosIn)
+    {
+        nFile = nFileIn;
+        nPos = nPosIn;
+    }
+
+    friend bool operator==(const CDiskBlockPos& a, const CDiskBlockPos& b)
+    {
+        return (a.nFile == b.nFile && a.nPos == b.nPos);
+    }
+
+    friend bool operator!=(const CDiskBlockPos& a, const CDiskBlockPos& b)
+    {
+        return !(a == b);
+    }
+
+    void SetNull()
+    {
+        nFile = -1;
+        nPos = 0;
+    }
+    bool IsNull() const { return (nFile == -1); }
 };
 
 enum BlockStatus {
@@ -160,7 +197,7 @@ public:
     unsigned int nUndoPos{0};
 
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
-    arith_uint256 nChainWork{};
+    uint256 nChainWork{};
 
     //! Number of transactions in this block.
     //! Note: in a potential headers-first mode, this number cannot be relied upon
@@ -172,7 +209,7 @@ public:
     unsigned int nChainTx{0};
 
     //! Verification status of this block. See enum BlockStatus
-    uint32_t nStatus{0};
+    unsigned int nStatus{0};
 
     // proof-of-stake specific fields
     // char vector holding the stake modifier bytes. It is empty for PoW blocks.
@@ -180,42 +217,33 @@ public:
     std::vector<unsigned char> vStakeModifier{};
     unsigned int nFlags{0};
 
-    //! Change in value held by the Sapling circuit over this block.
-    //! Not a Optional because this was added before Sapling activated, so we can
-    //! rely on the invariant that every block before this was added had nSaplingValue = 0.
-    CAmount nSaplingValue{0};
-
-    //! (memory only) Total value held by the Sapling circuit up to and including this block.
-    //! Will be nullopt if nChainTx is zero.
-   Optional<CAmount> nChainSaplingValue{nullopt};
+    //! Money supply at this block.
+    Optional<CAmount> nMoneySupply{0};
 
     //! block header
-    int32_t nVersion{0};
+    int nVersion{0};
     uint256 hashMerkleRoot{};
-    uint256 hashFinalSaplingRoot{};
-    uint32_t nTime{0};
-    uint32_t nBits{0};
-    uint32_t nNonce{0};
+    unsigned int nTime{0};
+    unsigned int nBits{0};
+    unsigned int nNonce{0};
     uint256 nAccumulatorCheckpoint{};
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId{0};
 
-    //! (memory only) Maximum nTime in the chain upto and including this block.
-    unsigned int nTimeMax{0};
+    //! (memory only) paid masternode.
+    CScript* paidPayee{nullptr};
 
     CBlockIndex() {}
-    explicit CBlockIndex(const CBlock& block);
+    CBlockIndex(const CBlock& block);
 
     std::string ToString() const;
 
-    FlatFilePos GetBlockPos() const;
-    FlatFilePos GetUndoPos() const;
+    CDiskBlockPos GetBlockPos() const;
+    CDiskBlockPos GetUndoPos() const;
     CBlockHeader GetBlockHeader() const;
     uint256 GetBlockHash() const { return *phashBlock; }
     int64_t GetBlockTime() const { return (int64_t)nTime; }
-    int64_t GetBlockTimeMax() const { return (int64_t)nTimeMax; }
-
     int64_t GetMedianTimePast() const;
 
     int64_t MaxFutureBlockTime() const;
@@ -235,9 +263,7 @@ public:
     void SetNewStakeModifier(const uint256& prevoutId);     // generates and sets new v2 modifier
     uint64_t GetStakeModifierV1() const;
     uint256 GetStakeModifierV2() const;
-
-    // Update Sapling chain value
-    void SetChainSaplingValue();
+    CScript* GetPaidPayee();
 
     //! Check whether this block index entry is valid up to the passed validity level.
     bool IsValid(enum BlockStatus nUpTo = BLOCK_VALID_TRANSACTIONS) const;
@@ -251,14 +277,12 @@ public:
     const CBlockIndex* GetAncestor(int height) const;
 };
 
-/** Find the forking point between two chain tips. */
-const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb);
-
 /** Used to marshal pointers into hashes for db storage. */
 
-// New serialization introduced with 4.0.99
-static const int DBI_OLD_SER_VERSION = 4009900;
-static const int DBI_SER_VERSION_NO_ZC = 4009902;   // removes mapZerocoinSupply, nMoneySupply
+// New serialization introduced on PIVX
+static const int DBI_SER_VERSION_NO_MS = 1004000;   // removes nMoneySupply from persisted block index
+// New serialization introduced on BTCA
+static const int DBI_SER_VERSION_MS = 1050200;   // reintroduces the nMoneySupply to the persisted block index
 
 class CDiskBlockIndex : public CBlockIndex
 {
@@ -275,92 +299,79 @@ public:
         hashPrev = (pprev ? pprev->GetBlockHash() : UINT256_ZERO);
     }
 
-    SERIALIZE_METHODS(CDiskBlockIndex, obj)
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
     {
         int nSerVersion = s.GetVersion();
-        if (!(s.GetType() & SER_GETHASH)) READWRITE(VARINT_MODE(nSerVersion, VarIntMode::NONNEGATIVE_SIGNED));
+        if (!(s.GetType() & SER_GETHASH))
+            READWRITE(VARINT(nSerVersion));
 
-        READWRITE(VARINT_MODE(obj.nHeight, VarIntMode::NONNEGATIVE_SIGNED));
-        READWRITE(VARINT(obj.nStatus));
-        READWRITE(VARINT(obj.nTx));
-        if (obj.nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO)) READWRITE(VARINT_MODE(obj.nFile, VarIntMode::NONNEGATIVE_SIGNED));
-        if (obj.nStatus & BLOCK_HAVE_DATA) READWRITE(VARINT(obj.nDataPos));
-        if (obj.nStatus & BLOCK_HAVE_UNDO) READWRITE(VARINT(obj.nUndoPos));
+        READWRITE(VARINT(nHeight));
+        READWRITE(VARINT(nStatus));
+        READWRITE(VARINT(nTx));
+        if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
+            READWRITE(VARINT(nFile));
+        if (nStatus & BLOCK_HAVE_DATA)
+            READWRITE(VARINT(nDataPos));
+        if (nStatus & BLOCK_HAVE_UNDO)
+            READWRITE(VARINT(nUndoPos));
 
-        if (nSerVersion >= DBI_SER_VERSION_NO_ZC) {
-            // Serialization with CLIENT_VERSION = 4009902+
-            READWRITE(obj.nFlags);
-            READWRITE(obj.nVersion);
-            READWRITE(obj.vStakeModifier);
-            READWRITE(obj.hashPrev);
-            READWRITE(obj.hashMerkleRoot);
-            READWRITE(obj.nTime);
-            READWRITE(obj.nBits);
-            READWRITE(obj.nNonce);
-            if(obj.nVersion > 3 && obj.nVersion < 7)
-                READWRITE(obj.nAccumulatorCheckpoint);
+        if (nSerVersion >= DBI_SER_VERSION_NO_MS) {
+            // Serialization with CLIENT_VERSION >= DBI_SER_VERSION_NO_MS
+            READWRITE(nFlags);
+            READWRITE(this->nVersion);
+            READWRITE(vStakeModifier);
+            READWRITE(hashPrev);
+            READWRITE(hashMerkleRoot);
+            READWRITE(nTime);
+            READWRITE(nBits);
+            READWRITE(nNonce);
 
-            // Sapling blocks
-            if (obj.nVersion >= 8) {
-                READWRITE(obj.hashFinalSaplingRoot);
-                READWRITE(obj.nSaplingValue);
+            if(this->nVersion > 3 && this->nVersion < 7) {
+                READWRITE(nAccumulatorCheckpoint);
             }
-        } else if (nSerVersion > DBI_OLD_SER_VERSION && ser_action.ForRead()) {
-            // Serialization with CLIENT_VERSION = 4009901
-            std::map<libzerocoin::CoinDenomination, int64_t> mapZerocoinSupply;
-            int64_t nMoneySupply = 0;
-            READWRITE(nMoneySupply);
-            READWRITE(obj.nFlags);
-            READWRITE(obj.nVersion);
-            READWRITE(obj.vStakeModifier);
-            READWRITE(obj.hashPrev);
-            READWRITE(obj.hashMerkleRoot);
-            READWRITE(obj.nTime);
-            READWRITE(obj.nBits);
-            READWRITE(obj.nNonce);
-            if (obj.nVersion > 3) {
-                READWRITE(mapZerocoinSupply);
-                if (obj.nVersion < 7) READWRITE(obj.nAccumulatorCheckpoint);
+
+            if (this->nVersion >= 7 && nSerVersion >= DBI_SER_VERSION_MS) {
+                READWRITE(nMoneySupply);
             }
+
         } else if (ser_action.ForRead()) {
-            // Serialization with CLIENT_VERSION = 4009900-
+            // Serialization with CLIENT_VERSION <= DBI_SER_VERSION_NO_MS
             int64_t nMint = 0;
             uint256 hashNext{};
-            int64_t nMoneySupply = 0;
             READWRITE(nMint);
             READWRITE(nMoneySupply);
-            READWRITE(obj.nFlags);
-            if (!Params().GetConsensus().NetworkUpgradeActive(obj.nHeight, Consensus::UPGRADE_V3_4)) {
+            READWRITE(nFlags);
+            if (!Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_STAKE_MODIFIER_V2)) {
                 uint64_t nStakeModifier = 0;
                 READWRITE(nStakeModifier);
-                SER_READ(obj, obj.SetStakeModifier(nStakeModifier, obj.GeneratedStakeModifier()));
+                this->SetStakeModifier(nStakeModifier, this->GeneratedStakeModifier());
             } else {
                 uint256 nStakeModifierV2;
                 READWRITE(nStakeModifierV2);
-                SER_READ(obj, obj.SetStakeModifier(nStakeModifierV2));
+                this->SetStakeModifier(nStakeModifierV2);
             }
-            if (obj.IsProofOfStake()) {
+            if (IsProofOfStake()) {
                 COutPoint prevoutStake;
                 unsigned int nStakeTime = 0;
                 READWRITE(prevoutStake);
                 READWRITE(nStakeTime);
             }
-            READWRITE(obj.nVersion);
-            READWRITE(obj.hashPrev);
+            READWRITE(this->nVersion);
+            READWRITE(hashPrev);
             READWRITE(hashNext);
-            READWRITE(obj.hashMerkleRoot);
-            READWRITE(obj.nTime);
-            READWRITE(obj.nBits);
-            READWRITE(obj.nNonce);
-            if (obj.nVersion > 3) {
-                std::map<libzerocoin::CoinDenomination, int64_t> mapZerocoinSupply;
-                std::vector<libzerocoin::CoinDenomination> vMintDenominationsInBlock;
-                READWRITE(obj.nAccumulatorCheckpoint);
-                READWRITE(mapZerocoinSupply);
-                READWRITE(vMintDenominationsInBlock);
+            READWRITE(hashMerkleRoot);
+            READWRITE(nTime);
+            READWRITE(nBits);
+            READWRITE(nNonce);
+            if(this->nVersion > 3) {
+                READWRITE(nAccumulatorCheckpoint);
             }
         }
     }
+
 
     uint256 GetBlockHash() const
     {
@@ -373,8 +384,6 @@ public:
         block.nNonce = nNonce;
         if (nVersion > 3 && nVersion < 7)
             block.nAccumulatorCheckpoint = nAccumulatorCheckpoint;
-        if (nVersion >= 8)
-            block.hashFinalSaplingRoot = hashFinalSaplingRoot;
         return block.GetHash();
     }
 
@@ -392,36 +401,44 @@ public:
 class CChain
 {
 private:
+    mutable RecursiveMutex cs;
     std::vector<CBlockIndex*> vChain;
 
 public:
-    /** Returns the index entry for the genesis block of this chain, or nullptr if none. */
+    /** Returns the index entry for the genesis block of this chain, or NULL if none. */
     CBlockIndex* Genesis() const
     {
-        return vChain.size() > 0 ? vChain[0] : nullptr;
+        return WITH_LOCK(cs, return vChain.size() > 0 ? vChain[0] : NULL);
     }
 
-    /** Returns the index entry for the tip of this chain, or nullptr if none. */
-    CBlockIndex* Tip(bool fProofOfStake = false) const
+    /** Returns the index entry for the tip of this chain, or NULL if none. */
+    CBlockIndex* Tip() const
     {
-        if (vChain.size() < 1)
-            return nullptr;
+        LOCK(cs);
 
-        CBlockIndex* pindex = vChain[vChain.size() - 1];
-
-        if (fProofOfStake) {
-            while (pindex && pindex->pprev && !pindex->IsProofOfStake())
-                pindex = pindex->pprev;
-        }
-        return pindex;
+        auto s = vChain.size();
+        if (s < 1) return nullptr;
+        return vChain[s - 1];
     }
 
-    /** Returns the index entry at a particular height in this chain, or nullptr if no such height exists. */
+    inline uint256 TipHash() 
+    {
+        const auto tip = WITH_LOCK(cs, return Tip());
+        if(tip) return Tip()->GetBlockHash();
+        return UINT256_ZERO;
+    }
+
+    inline uint64_t TipTime()
+    {
+        const auto tip = WITH_LOCK(cs, return Tip());
+        if(tip) return Tip()->GetBlockTime();
+        return 0;
+    }
+
+    /** Returns the index entry at a particular height in this chain, or NULL if no such height exists. */
     CBlockIndex* operator[](int nHeight) const
     {
-        if (nHeight < 0 || nHeight >= (int)vChain.size())
-            return nullptr;
-        return vChain[nHeight];
+        return WITH_LOCK(cs, return nHeight < 0 || nHeight >= (int)vChain.size() ? nullptr : vChain[nHeight]);
     }
 
     /** Compare two chains efficiently. */
@@ -434,35 +451,32 @@ public:
     /** Efficiently check whether a block is present in this chain. */
     bool Contains(const CBlockIndex* pindex) const
     {
-        return (*this)[pindex->nHeight] == pindex;
+        return WITH_LOCK(cs, return (*this)[pindex->nHeight] == pindex);
     }
 
-    /** Find the successor of a block in this chain, or nullptr if the given index is not found or is the tip. */
+    /** Find the successor of a block in this chain, or NULL if the given index is not found or is the tip. */
     CBlockIndex* Next(const CBlockIndex* pindex) const
     {
-        if (Contains(pindex))
-            return (*this)[pindex->nHeight + 1];
-        else
-            return nullptr;
+        return WITH_LOCK(cs, return Contains(pindex) ? (*this)[pindex->nHeight + 1] : nullptr);
     }
 
     /** Return the maximal height in the chain. Is equal to chain.Tip() ? chain.Tip()->nHeight : -1. */
     int Height() const
     {
-        return vChain.size() - 1;
+        return WITH_LOCK(cs, return vChain.size() - 1);
     }
 
     /** Set/initialize a chain with a given tip. */
     void SetTip(CBlockIndex* pindex);
 
     /** Return a CBlockLocator that refers to a block in this chain (by default the tip). */
-    CBlockLocator GetLocator(const CBlockIndex* pindex = nullptr) const;
+    CBlockLocator GetLocator(const CBlockIndex* pindex = NULL) const;
 
     /** Find the last common block between this chain and a block index entry. */
     const CBlockIndex* FindFork(const CBlockIndex* pindex) const;
-
-    /** Find the earliest block with timestamp equal or greater than the given. */
-    CBlockIndex* FindEarliestAtLeast(int64_t nTime) const;
 };
 
-#endif // PIVX_CHAIN_H
+/** The currently-connected chain of blocks (protected by cs_main). */
+extern CChain chainActive;
+
+#endif // BITCOIN_CHAIN_H

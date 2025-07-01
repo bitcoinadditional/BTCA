@@ -1,13 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-#ifndef PIVX_POLICY_FEES_H
-#define PIVX_POLICY_FEES_H
+#ifndef BITCOIN_POLICYESTIMATOR_H
+#define BITCOIN_POLICYESTIMATOR_H
 
 #include "amount.h"
-#include "feerate.h"
 #include "uint256.h"
 
 #include <map>
@@ -79,13 +78,13 @@ private:
     // Count the total # of txs in each bucket
     // Track the historical moving average of this total over blocks
     std::vector<double> txCtAvg;
-    // and calculate the total for the current block to update the moving average
+    // and calcuate the total for the current block to update the moving average
     std::vector<int> curBlockTxCt;
 
     // Count the total # of txs confirmed within Y blocks in each bucket
-    // Track the historical moving average of these totals over blocks
+    // Track the historical moving average of theses totals over blocks
     std::vector<std::vector<double> > confAvg; // confAvg[Y][X]
-    // and calculate the totals for the current block to update the moving averages
+    // and calcuate the totals for the current block to update the moving averages
     std::vector<std::vector<int> > curBlockConf; // curBlockConf[Y][X]
 
     // Sum the total feerate of all tx's in each bucket
@@ -97,7 +96,7 @@ private:
     // Combine the conf counts with tx counts to calculate the confirmation % for each Y,X
     // Combine the total value with the tx counts to calculate the avg feerate per bucket
 
-    double decay{0.0};
+    double decay;
 
     // Mempool counts of outstanding transactions
     // For each bucket X, track the number of transactions in the mempool
@@ -181,9 +180,10 @@ static const double UNLIKELY_PCT = .5;
 static const double SUFFICIENT_FEETXS = 1;
 
 // Minimum and Maximum values for tracking feerates
-static constexpr double MIN_FEERATE = 10;
+static const double MIN_FEERATE = 10;
 static const double MAX_FEERATE = 1e7;
 static const double INF_FEERATE = 1e16;
+static const double INF_PRIORITY = 1e25;
 
 // We have to lump transactions into buckets based on feerate, but we want to be able
 // to give accurate estimates over a large range of potential fees and priorities
@@ -201,20 +201,20 @@ class CBlockPolicyEstimator
 {
 public:
     /** Create new BlockPolicyEstimator and initialize stats tracking classes with default values */
-    explicit CBlockPolicyEstimator(const CFeeRate& minRelayFee);
+    CBlockPolicyEstimator(const CFeeRate& minRelayFee);
 
     /** Process all the transactions that have been included in a block */
     void processBlock(unsigned int nBlockHeight,
-                      std::vector<const CTxMemPoolEntry*>& entries);
+                      std::vector<CTxMemPoolEntry>& entries, bool fCurrentEstimate);
 
     /** Process a transaction confirmed in a block*/
-    bool processBlockTx(unsigned int nBlockHeight, const CTxMemPoolEntry* entry);
+    void processBlockTx(unsigned int nBlockHeight, const CTxMemPoolEntry& entry);
 
     /** Process a transaction accepted to the mempool*/
-    void processTransaction(const CTxMemPoolEntry& entry, bool validFeeEstimate);
+    void processTransaction(const CTxMemPoolEntry& entry, bool fCurrentEstimate);
 
     /** Remove a transaction from the mempool tracking stats*/
-    bool removeTx(const uint256& hash);
+    void removeTx(uint256 hash);
 
     /** Return a feerate estimate */
     CFeeRate estimateFee(int confTarget);
@@ -224,6 +224,20 @@ public:
      *  estimate at the lowest target where one can be given.
      */
     CFeeRate estimateSmartFee(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
+
+    /** Return a priority estimate.
+     *  DEPRECATED
+     *  Returns -1
+     */
+    double estimatePriority(int confTarget);
+
+    /** Estimate priority needed to get be included in a block within
+     *  confTarget blocks.
+     *  DEPRECATED
+     *  Returns -1 unless mempool is currently limited then returns INF_PRIORITY
+     *  answerFoundAtTarget is set to confTarget
+     */
+    double estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
 
     /** Write estimation data to a file */
     void Write(CAutoFile& fileout);
@@ -246,8 +260,5 @@ private:
 
     /** Classes to track historical data on transaction confirmations */
     TxConfirmStats feeStats;
-
-    unsigned int trackedTxs;
-    unsigned int untrackedTxs;
 };
-#endif // PIVX_POLICY_FEES_H
+#endif /*BITCOIN_POLICYESTIMATOR_H */

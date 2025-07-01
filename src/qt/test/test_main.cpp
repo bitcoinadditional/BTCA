@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2021 The PIVX Core developers
+// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +9,7 @@
 #include "config/pivx-config.h"
 #endif
 
-#include "util/system.h"
+#include "util.h"
 #include "uritests.h"
 
 #include <QCoreApplication>
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
     // Don't remove this, it's needed to access
     // QCoreApplication:: in the tests
     QCoreApplication app(argc, argv);
-    app.setApplicationName("Pivx-Qt-test");
+    app.setApplicationName("BTCa-Qt-test");
 
     URITests test1;
     if (QTest::qExec(&test1) != 0)

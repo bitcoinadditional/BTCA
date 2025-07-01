@@ -1,27 +1,26 @@
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2022 The PIVX Core developers
-// Distributed under the MIT software license, see the accompanying
-// file COPYING or https://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_MASTERNODE_SYNC_H
-#define PIVX_MASTERNODE_SYNC_H
-
-#include "net.h"    // for NodeId
-#include "uint256.h"
+#ifndef MASTERNODE_SYNC_H
+#define MASTERNODE_SYNC_H
 
 #include <atomic>
-#include <string>
-#include <map>
+
+#define MASTERNODE_SYNC_INITIAL 0
+#define MASTERNODE_SYNC_SPORKS 1
+#define MASTERNODE_SYNC_LIST 2
+#define MASTERNODE_SYNC_MNW 3
+#define MASTERNODE_SYNC_FAILED 998
+#define MASTERNODE_SYNC_FINISHED 999
 
 #define MASTERNODE_SYNC_TIMEOUT 5
+#define MASTERNODE_SYNC_THRESHOLD 2
 
 class CMasternodeSync;
 extern CMasternodeSync masternodeSync;
-
-struct TierTwoPeerData {
-    // map of message --> last request timestamp, bool hasResponseArrived.
-    std::map<const char*, std::pair<int64_t, bool>> mapMsgData;
-};
 
 //
 // CMasternodeSync : Sync masternode assets in stages
@@ -30,23 +29,26 @@ struct TierTwoPeerData {
 class CMasternodeSync
 {
 public:
+    std::map<uint256, int> mapSeenSyncMNB;
+    std::map<uint256, int> mapSeenSyncMNW;
+
+    int64_t lastMasternodeList;
+    int64_t lastMasternodeWinner;
     int64_t lastFailure;
     int nCountFailures;
 
     std::atomic<int64_t> lastProcess;
+    std::atomic<bool> fBlockchainSynced;
 
     // sum of all counts
     int sumMasternodeList;
     int sumMasternodeWinner;
-    int sumBudgetItemProp;
-    int sumBudgetItemFin;
     // peers that reported counts
     int countMasternodeList;
     int countMasternodeWinner;
-    int countBudgetItemProp;
-    int countBudgetItemFin;
 
     // Count peers we've requested the list from
+    int RequestedMasternodeAssets;
     int RequestedMasternodeAttempt;
 
     // Time when current masternode asset sync started
@@ -54,11 +56,11 @@ public:
 
     CMasternodeSync();
 
-    void SwitchToNextAsset();
+    void AddedMasternodeList(const uint256& hash);
+    void AddedMasternodeWinner(const uint256& hash);
+    void GetNextAsset();
     std::string GetSyncStatus();
-    void ProcessSyncStatusMsg(int nItemID, int itemCount);
-    bool IsBudgetFinEmpty();
-    bool IsBudgetPropEmpty();
+    void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
 
     void Reset();
     void Process();
@@ -67,37 +69,13 @@ public:
      * If it returns false, the Process() step is complete.
      * Otherwise Process() calls it again for a different node.
      */
-    bool SyncWithNode(CNode* pnode, bool fLegacyMnObsolete);
+    bool SyncWithNode(CNode* pnode, bool isRegTestNet);
+    bool IsSynced();
     bool NotCompleted();
-    void UpdateBlockchainSynced(bool isRegTestNet);
+    bool IsSporkListSynced();
+    bool IsMasternodeListSynced();
+    bool IsBlockchainSynced();
     void ClearFulfilledRequest();
-
-    // Sync message dispatcher
-    bool MessageDispatcher(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
-
-private:
-
-    // Tier two sync node state
-    // map of nodeID --> TierTwoPeerData
-    std::map<NodeId, TierTwoPeerData> peersSyncState;
-    static int GetNextAsset(int currentAsset);
-
-    void SyncRegtest(CNode* pnode);
-
-    template <typename... Args>
-    void RequestDataTo(CNode* pnode, const char* msg, bool forceRequest, Args&&... args);
-
-    template <typename... Args>
-    void PushMessage(CNode* pnode, const char* msg, Args&&... args);
-
-    // update peer sync state data
-    bool UpdatePeerSyncState(const NodeId& id, const char* msg, const int nextSyncStatus);
-
-    // Check if an update is needed
-    void CheckAndUpdateSyncStatus();
-
-    // Mark sync timeout
-    void syncTimeout(const std::string& reason);
 };
 
-#endif // PIVX_MASTERNODE_SYNC_H
+#endif

@@ -1,15 +1,18 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2016-2021 The PIVX Core developers
+// Copyright (c) 2016-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "ismine.h"
 
+#include "key.h"
 #include "keystore.h"
 #include "script/script.h"
 #include "script/sign.h"
-#include "util/system.h"
+#include "script/standard.h"
+#include "util.h"
 
 
 
@@ -30,45 +33,6 @@ isminetype IsMine(const CKeyStore& keystore, const CTxDestination& dest)
 {
     CScript script = GetScriptForDestination(dest);
     return IsMine(keystore, script);
-}
-
-isminetype IsMine(const CKeyStore& keystore, const libzcash::SaplingPaymentAddress& pa)
-{
-    libzcash::SaplingIncomingViewingKey ivk;
-    libzcash::SaplingExtendedFullViewingKey exfvk;
-    if (keystore.GetSaplingIncomingViewingKey(pa, ivk) &&
-        keystore.GetSaplingFullViewingKey(ivk, exfvk) &&
-        keystore.HaveSaplingSpendingKey(exfvk)) {
-        return ISMINE_SPENDABLE_SHIELDED;
-    } else if (!ivk.IsNull()) {
-        return ISMINE_WATCH_ONLY_SHIELDED;
-    } else {
-        return ISMINE_NO;
-    }
-}
-
-namespace
-{
-    class CWDestinationVisitor : public boost::static_visitor<isminetype>
-    {
-    private:
-        const CKeyStore& keystore;
-    public:
-        explicit CWDestinationVisitor(const CKeyStore& _keystore) : keystore(_keystore) {}
-
-        isminetype operator()(const CTxDestination& dest) const {
-            return ::IsMine(keystore, dest);
-        }
-
-        isminetype operator()(const libzcash::SaplingPaymentAddress& pa) const {
-            return ::IsMine(keystore, pa);
-        }
-    };
-}
-
-isminetype IsMine(const CKeyStore& keystore, const CWDestination& dest)
-{
-    return boost::apply_visitor(CWDestinationVisitor(keystore), dest);
 }
 
 isminetype IsMine(const CKeyStore& keystore, const CScript& scriptPubKey)
@@ -94,7 +58,6 @@ isminetype IsMine(const CKeyStore& keystore, const CScript& scriptPubKey)
             return ISMINE_SPENDABLE;
         break;
     case TX_PUBKEYHASH:
-    case TX_EXCHANGEADDR:
         keyID = CKeyID(uint160(vSolutions[0]));
         if(keystore.HaveKey(keyID))
             return ISMINE_SPENDABLE;
@@ -106,23 +69,6 @@ isminetype IsMine(const CKeyStore& keystore, const CScript& scriptPubKey)
             isminetype ret = IsMine(keystore, subscript);
             if(ret != ISMINE_NO)
                 return ret;
-        }
-        break;
-    }
-    case TX_COLDSTAKE: {
-        CKeyID stakeKeyID = CKeyID(uint160(vSolutions[0]));
-        bool stakeKeyIsMine = keystore.HaveKey(stakeKeyID);
-        CKeyID ownerKeyID = CKeyID(uint160(vSolutions[1]));
-        bool spendKeyIsMine = keystore.HaveKey(ownerKeyID);
-
-        if (spendKeyIsMine) {
-            // If the wallet has both keys, ISMINE_SPENDABLE_DELEGATED
-            // takes precedence over ISMINE_COLD
-            return ISMINE_SPENDABLE_DELEGATED;
-        } else if (stakeKeyIsMine) {
-            return ISMINE_COLD;
-        } else {
-            // todo: Include watch only..
         }
         break;
     }

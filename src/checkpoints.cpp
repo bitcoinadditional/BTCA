@@ -1,17 +1,19 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2021 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "checkpoints.h"
 
-#include "chain.h"
 #include "chainparams.h"
-#include "reverse_iterate.h"
+#include "main.h"
+#include "uint256.h"
 
 #include <stdint.h>
 
+#include <boost/foreach.hpp>
 
 namespace Checkpoints
 {
@@ -42,10 +44,10 @@ bool CheckBlock(int nHeight, const uint256& hash, bool fMatchesCheckpoint)
 //! Guess how far we are in the verification process at the given block index
 double GuessVerificationProgress(const CBlockIndex* pindex, bool fSigchecks)
 {
-    if (pindex == nullptr)
+    if (pindex == NULL)
         return 0.0;
 
-    int64_t nNow = time(nullptr);
+    int64_t nNow = time(NULL);
 
     double fSigcheckVerificationFactor = fSigchecks ? SIGCHECK_VERIFICATION_FACTOR : 1.0;
     double fWorkBefore = 0.0; // Amount of work done before pindex
@@ -80,6 +82,22 @@ int GetTotalBlocksEstimate()
     const MapCheckpoints& checkpoints = *Params().Checkpoints().mapCheckpoints;
 
     return checkpoints.rbegin()->first;
+}
+
+CBlockIndex* GetLastCheckpoint()
+{
+    if (!fEnabled)
+        return NULL;
+
+    const MapCheckpoints& checkpoints = *Params().Checkpoints().mapCheckpoints;
+
+    BOOST_REVERSE_FOREACH (const MapCheckpoints::value_type& i, checkpoints) {
+        const uint256& hash = i.second;
+        BlockMap::const_iterator t = mapBlockIndex.find(hash);
+        if (t != mapBlockIndex.end())
+            return t->second;
+    }
+    return NULL;
 }
 
 } // namespace Checkpoints

@@ -1,10 +1,10 @@
-// Copyright (c) 2015-2021 The Bitcoin Core developers
-// Copyright (c) 2021 The PIVX Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_HTTPSERVER_H
-#define PIVX_HTTPSERVER_H
+#ifndef BITCOIN_HTTPSERVER_H
+#define BITCOIN_HTTPSERVER_H
 
 #include <string>
 #include <stdint.h>
@@ -62,7 +62,7 @@ private:
     bool replySent;
 
 public:
-    explicit HTTPRequest(struct evhttp_request* req);
+    HTTPRequest(struct evhttp_request* req);
     ~HTTPRequest();
 
     enum RequestMethod {
@@ -149,6 +149,4 @@ private:
     struct event* ev;
 };
 
-std::string urlDecode(const std::string &urlEncoded);
-
-#endif // PIVX_HTTPSERVER_H
+#endif // BITCOIN_HTTPSERVER_H

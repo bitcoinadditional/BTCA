@@ -1,34 +1,19 @@
-// Copyright (c) 2016-2021 The Bitcoin Core developers
-// Copyright (c) 2020-2021 The PIVX Core developers
+// Copyright (c) 2016 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_WALLET_TEST_WALLET_TEST_FIXTURE_H
-#define PIVX_WALLET_TEST_WALLET_TEST_FIXTURE_H
+#ifndef BITCOIN_WALLET_TEST_FIXTURE_H
+#define BITCOIN_WALLET_TEST_FIXTURE_H
 
-#include "test/librust/sapling_test_fixture.h"
-#include "wallet/wallet.h"
-
+#include "test/test_pivx.h"
 
 /** Testing setup and teardown for wallet.
  */
-struct WalletTestingSetupBase : public SaplingTestingSetup
-{
-    WalletTestingSetupBase(const std::string& chainName,
-                           const std::string& wallet_name,
-                           std::unique_ptr<WalletDatabase> db);
-    ~WalletTestingSetupBase();
-    CWallet m_wallet;
+struct WalletTestingSetup: public TestingSetup {
+    WalletTestingSetup();
+    ~WalletTestingSetup();
 };
 
-struct WalletTestingSetup : public WalletTestingSetupBase
-{
-    explicit WalletTestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
-};
+#endif
 
-struct WalletRegTestingSetup : public WalletTestingSetup
-{
-    WalletRegTestingSetup() : WalletTestingSetup(CBaseChainParams::REGTEST) {}
-};
-
-#endif // PIVX_WALLET_TEST_WALLET_TEST_FIXTURE_H

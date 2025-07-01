@@ -1,24 +1,23 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2022 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#if defined(HAVE_CONFIG_H)
-#include "config/pivx-config.h"
-#endif
-
 #include "askpassphrasedialog.h"
 #include "ui_askpassphrasedialog.h"
+#include <QGraphicsDropShadowEffect>
 
-#include "defaultdialog.h"
 #include "guiconstants.h"
 #include "guiutil.h"
-#include "loadingdialog.h"
-#include "qtutils.h"
 #include "walletmodel.h"
+#include "qt/pivx/qtutils.h"
+#include "qt/pivx/loadingdialog.h"
+#include "qt/pivx/defaultdialog.h"
+#include "qt/pivx/pivxgui.h"
+#include <QDebug>
 
-#include <QGraphicsDropShadowEffect>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QPushButton>
@@ -249,7 +248,7 @@ void AskPassphraseDialog::textChanged()
     switch (mode) {
     case Mode::Encrypt: // New passphrase x2
         acceptable = !ui->passEdit2->text().isEmpty() && !ui->passEdit3->text().isEmpty() && // Passphrases are not empty
-                     ui->passEdit2->text() == ui->passEdit3->text();                         // Passphrases match each other
+                     ui->passEdit2->text() == ui->passEdit3->text();                         // Passphrases match eachother
         break;
     case Mode::UnlockAnonymize: // Old passphrase x1
     case Mode::Unlock:          // Old passphrase x1
@@ -258,7 +257,7 @@ void AskPassphraseDialog::textChanged()
         break;
     case Mode::ChangePass: // Old passphrase x1, new passphrase x2
         acceptable = !ui->passEdit2->text().isEmpty() && !ui->passEdit3->text().isEmpty() && // New passphrases are not empty
-                     ui->passEdit2->text() == ui->passEdit3->text() &&                       // New passphrases match each other
+                     ui->passEdit2->text() == ui->passEdit3->text() &&                       // New passphrases match eachother
                      !ui->passEdit1->text().isEmpty();                                       // Old passphrase is not empty
         break;
     }
@@ -349,9 +348,9 @@ void AskPassphraseDialog::warningMessage()
     openStandardDialog(
             tr("Wallet encrypted"),
             "<qt>" +
-            tr("Your wallet is now encrypted. "
+            tr("BTCa will close now to finish the encryption process. "
                "Remember that encrypting your wallet cannot fully protect "
-               "your PIVs from being stolen by malware infecting your computer.") +
+               "your BTCAs from being stolen by malware infecting your computer.") +
             "<br><br><b>" +
             tr("IMPORTANT: Any previous backups you have made of your wallet file "
                "should be replaced with the newly generated, encrypted wallet file. "
@@ -360,6 +359,7 @@ void AskPassphraseDialog::warningMessage()
             "</b></qt>",
             tr("OK")
             );
+    QApplication::quit();
 }
 
 void AskPassphraseDialog::errorEncryptingWallet()

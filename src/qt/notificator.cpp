@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2021 The PIVX Core developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +8,7 @@
 
 #include <QApplication>
 #include <QByteArray>
+#include <QIcon>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMetaType>
@@ -18,8 +20,13 @@
 #include <QtDBus>
 #include <stdint.h>
 #endif
+// Include ApplicationServices.h after QtDbus to avoid redefinition of check().
+// This affects at least OSX 10.6. See /usr/include/AssertMacros.h for details.
+// Note: This could also be worked around using:
+// #define __ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES 0
 #ifdef Q_OS_MAC
 #include "macnotificationhandler.h"
+#include <ApplicationServices/ApplicationServices.h>
 #endif
 
 
@@ -70,7 +77,7 @@ class FreedesktopImage
 {
 public:
     FreedesktopImage() {}
-    explicit FreedesktopImage(const QImage& img);
+    FreedesktopImage(const QImage& img);
 
     static int metaType();
 
@@ -78,11 +85,11 @@ public:
     static QVariant toVariant(const QImage& img);
 
 private:
-    int width{0}, height{0}, stride{0};
-    bool hasAlpha{false};
-    int channels{0};
-    int bitsPerSample{0};
-    QByteArray image{};
+    int width, height, stride;
+    bool hasAlpha;
+    int channels;
+    int bitsPerSample;
+    QByteArray image;
 
     friend QDBusArgument& operator<<(QDBusArgument& a, const FreedesktopImage& i);
     friend const QDBusArgument& operator>>(const QDBusArgument& a, FreedesktopImage& i);

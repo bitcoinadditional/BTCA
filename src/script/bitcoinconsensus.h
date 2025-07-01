@@ -1,10 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_SCRIPT_BITCOINCONSENSUS_H
-#define PIVX_SCRIPT_BITCOINCONSENSUS_H
+#ifndef BITCOIN_BITCOINCONSENSUS_H
+#define BITCOIN_BITCOINCONSENSUS_H
 
 #if defined(BUILD_BITCOIN_INTERNAL) && defined(HAVE_CONFIG_H)
 #include "config/pivx-config.h"
@@ -52,7 +53,7 @@ enum
 /// Returns 1 if the input nIn of the serialized transaction pointed to by
 /// txTo correctly spends the scriptPubKey pointed to by scriptPubKey under
 /// the additional constraints specified by flags.
-/// If not nullptr, err will contain an error/success code for the operation
+/// If not NULL, err will contain an error/success code for the operation
 EXPORT_SYMBOL int bitcoinconsensus_verify_script(const unsigned char *scriptPubKey, unsigned int scriptPubKeyLen,
                                     const unsigned char *txTo        , unsigned int txToLen,
                                     unsigned int nIn, unsigned int flags, bitcoinconsensus_error* err);
@@ -65,4 +66,4 @@ EXPORT_SYMBOL unsigned int bitcoinconsensus_version();
 
 #undef EXPORT_SYMBOL
 
-#endif // PIVX_SCRIPT_BITCOINCONSENSUS_H
+#endif // BITCOIN_BITCOINCONSENSUS_H

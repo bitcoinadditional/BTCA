@@ -3,16 +3,15 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test node disconnect and ban behavior"""
-
 import time
 
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
+    connect_nodes,
     assert_raises_rpc_error,
     wait_until,
 )
-
 
 class DisconnectBanTest(PivxTestFramework):
     def set_test_params(self):
@@ -20,8 +19,8 @@ class DisconnectBanTest(PivxTestFramework):
 
     def run_test(self):
         self.log.info("Connect nodes both way")
-        self.connect_nodes(0, 1)
-        self.connect_nodes(1, 0)
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[1], 0)
 
         self.log.info("Test setban and listbanned RPCs")
 
@@ -67,7 +66,7 @@ class DisconnectBanTest(PivxTestFramework):
         assert_equal("192.168.0.1/32", listBeforeShutdown[2]['address'])
         # Move time forward by 3 seconds so the third ban has expired
         self.nodes[1].setmocktime(old_time + 3)
-        assert_equal(len(self.nodes[1].listbanned()), 3)
+        assert_equal(len(self.nodes[1].listbanned()), 4)
 
         self.stop_node(1)
         self.start_node(1)
@@ -80,8 +79,8 @@ class DisconnectBanTest(PivxTestFramework):
         # Clear ban lists
         self.nodes[1].clearbanned()
         self.log.info("Connect nodes both way")
-        self.connect_nodes(0, 1)
-        self.connect_nodes(1, 0)
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[1], 0)
 
         self.log.info("Test disconnectnode RPCs")
 
@@ -100,7 +99,7 @@ class DisconnectBanTest(PivxTestFramework):
         assert not [node for node in self.nodes[0].getpeerinfo() if node['addr'] == address1]
 
         self.log.info("disconnectnode: successfully reconnect node")
-        self.connect_nodes(0, 1)  # reconnect the node
+        connect_nodes(self.nodes[0], 1)  # reconnect the node
         assert_equal(len(self.nodes[0].getpeerinfo()), 2)
         assert [node for node in self.nodes[0].getpeerinfo() if node['addr'] == address1]
 

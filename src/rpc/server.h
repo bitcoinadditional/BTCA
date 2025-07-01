@@ -1,11 +1,12 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2015-2022 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_RPC_SERVER_H
-#define PIVX_RPC_SERVER_H
+#ifndef BITCOIN_RPCSERVER_H
+#define BITCOIN_RPCSERVER_H
 
 #include "amount.h"
 #include "rpc/protocol.h"
@@ -25,19 +26,11 @@ namespace RPCServer
     void OnStarted(std::function<void ()> slot);
     void OnStopped(std::function<void ()> slot);
     void OnPreCommand(std::function<void (const CRPCCommand&)> slot);
+    void OnPostCommand(std::function<void (const CRPCCommand&)> slot);
 }
 
 class CBlockIndex;
 class CNetAddr;
-
-/** Wrapper for UniValue::VType, which includes typeAny:
- * Used to denote don't care type. Only used by RPCTypeCheckObj */
-struct UniValueType {
-    UniValueType(UniValue::VType _type) : typeAny(false), type(_type) {}
-    UniValueType() : typeAny(true) {}
-    bool typeAny;
-    UniValue::VType type{UniValue::VNULL};
-};
 
 class JSONRPCRequest
 {
@@ -70,22 +63,17 @@ bool RPCIsInWarmup(std::string* statusOut);
 /**
  * Type-check arguments; throws JSONRPCError if wrong type given. Does not check that
  * the right number of arguments are passed, just that any passed are the correct type.
+ * Use like:  RPCTypeCheck(params, boost::assign::list_of(str_type)(int_type)(obj_type));
  */
 void RPCTypeCheck(const UniValue& params,
                   const std::list<UniValue::VType>& typesExpected, bool fAllowNull=false);
 
 /**
- * Type-check one argument; throws JSONRPCError if wrong type given.
- */
-void RPCTypeCheckArgument(const UniValue& value, const UniValueType& typeExpected);
-
-/**
  * Check for expected keys/value types in an Object.
+ * Use like: RPCTypeCheckObj(object, boost::assign::map_list_of("name", str_type)("value", int_type));
  */
 void RPCTypeCheckObj(const UniValue& o,
-    const std::map<std::string, UniValueType>& typesExpected,
-    bool fAllowNull=false,
-    bool fStrict=false);
+                  const std::map<std::string, UniValue::VType>& typesExpected, bool fAllowNull=false, bool fStrict=false);
 
 /** Opaque base class for timers returned by NewTimerFunc.
  * This provides no methods at the moment, but makes sure that delete
@@ -137,11 +125,10 @@ public:
     std::string name;
     rpcfn_type actor;
     bool okSafeMode;
-    std::vector<std::string> argNames;
 };
 
 /**
- * PIVX RPC command dispatcher.
+ * BTCA RPC command dispatcher.
  */
 class CRPCTable
 {
@@ -151,7 +138,7 @@ private:
 public:
     CRPCTable();
     const CRPCCommand* operator[](const std::string& name) const;
-    std::string help(const std::string& name, const JSONRPCRequest& helpreq) const;
+    std::string help(std::string name) const;
 
     /**
      * Execute a method.
@@ -189,13 +176,108 @@ extern std::vector<unsigned char> ParseHexV(const UniValue& v, std::string strNa
 extern std::vector<unsigned char> ParseHexO(const UniValue& o, std::string strKey);
 extern int ParseInt(const UniValue& o, std::string strKey);
 extern bool ParseBool(const UniValue& o, std::string strKey);
-extern double ParseDoubleV(const UniValue& v, const std::string &strName);
 
+extern int64_t nWalletUnlockTime;
 extern CAmount AmountFromValue(const UniValue& value);
 extern UniValue ValueFromAmount(const CAmount& amount);
-extern double GetDifficulty(const CBlockIndex* blockindex = nullptr);
+extern double GetDifficulty(const CBlockIndex* blockindex = NULL);
+extern std::string HelpRequiringPassphrase();
 extern std::string HelpExampleCli(std::string methodname, std::string args);
 extern std::string HelpExampleRpc(std::string methodname, std::string args);
+
+extern void EnsureWalletIsUnlocked(bool fAllowAnonOnly = false);
+// Ensure the wallet's existence.
+extern void EnsureWallet();
+
+extern UniValue getconnectioncount(const JSONRPCRequest& request); // in rpc/net.cpp
+extern UniValue getpeerinfo(const JSONRPCRequest& request);
+extern UniValue ping(const JSONRPCRequest& request);
+extern UniValue addnode(const JSONRPCRequest& request);
+extern UniValue disconnectnode(const JSONRPCRequest& request);
+extern UniValue getaddednodeinfo(const JSONRPCRequest& request);
+extern UniValue getnettotals(const JSONRPCRequest& request);
+extern UniValue setban(const JSONRPCRequest& request);
+extern UniValue listbanned(const JSONRPCRequest& request);
+extern UniValue clearbanned(const JSONRPCRequest& request);
+extern UniValue checkconnection(const JSONRPCRequest& request);
+
+extern UniValue bip38encrypt(const JSONRPCRequest& request);
+extern UniValue bip38decrypt(const JSONRPCRequest& request);
+
+extern UniValue getgenerate(const JSONRPCRequest& request); // in rpc/mining.cpp
+extern UniValue setgenerate(const JSONRPCRequest& request);
+extern UniValue generate(const JSONRPCRequest& request);
+extern UniValue getnetworkhashps(const JSONRPCRequest& request);
+extern UniValue gethashespersec(const JSONRPCRequest& request);
+extern UniValue getmininginfo(const JSONRPCRequest& request);
+extern UniValue prioritisetransaction(const JSONRPCRequest& request);
+extern UniValue getblocktemplate(const JSONRPCRequest& request);
+extern UniValue submitblock(const JSONRPCRequest& request);
+extern UniValue estimatefee(const JSONRPCRequest& request);
+extern UniValue estimatesmartfee(const JSONRPCRequest& request);
+extern UniValue getaddressinfo(const JSONRPCRequest& request);
+extern UniValue getblockchaininfo(const JSONRPCRequest& request);
+extern UniValue getnetworkinfo(const JSONRPCRequest& request);
+extern UniValue multisend(const JSONRPCRequest& request);
+
+extern UniValue getrawtransaction(const JSONRPCRequest& request); // in rpc/rawtransaction.cpp
+extern UniValue createrawtransaction(const JSONRPCRequest& request);
+extern UniValue decoderawtransaction(const JSONRPCRequest& request);
+extern UniValue decodescript(const JSONRPCRequest& request);
+extern UniValue fundrawtransaction(const JSONRPCRequest& request);
+extern UniValue signrawtransaction(const JSONRPCRequest& request);
+extern UniValue sendrawtransaction(const JSONRPCRequest& request);
+
+extern UniValue getblockcount(const JSONRPCRequest& request);
+extern UniValue getbestblockhash(const JSONRPCRequest& request);
+extern UniValue waitfornewblock(const JSONRPCRequest& request);
+extern UniValue waitforblock(const JSONRPCRequest& request);
+extern UniValue waitforblockheight(const JSONRPCRequest& request);
+extern UniValue getdifficulty(const JSONRPCRequest& request);
+extern UniValue getmempoolinfo(const JSONRPCRequest& request);
+extern UniValue getrawmempool(const JSONRPCRequest& request);
+extern UniValue getblockhash(const JSONRPCRequest& request);
+extern UniValue getblock(const JSONRPCRequest& request);
+extern UniValue getblockheader(const JSONRPCRequest& request);
+extern UniValue getfeeinfo(const JSONRPCRequest& request);
+extern UniValue gettxoutsetinfo(const JSONRPCRequest& request);
+extern UniValue gettxout(const JSONRPCRequest& request);
+extern UniValue verifychain(const JSONRPCRequest& request);
+extern UniValue getchaintips(const JSONRPCRequest& request);
+extern UniValue invalidateblock(const JSONRPCRequest& request);
+extern UniValue reconsiderblock(const JSONRPCRequest& request);
+extern UniValue getblockindexstats(const JSONRPCRequest& request);
+extern UniValue getburnaddresses(const JSONRPCRequest& request);
+extern UniValue rewindblockindex(const JSONRPCRequest& request);
+extern void validaterange(const UniValue& params, int& heightStart, int& heightEnd, int minHeightStart=1);
+
+// in rpc/masternode.cpp
+extern UniValue listmasternodes(const JSONRPCRequest& request);
+extern UniValue getmasternodecount(const JSONRPCRequest& request);
+extern UniValue createmasternodebroadcast(const JSONRPCRequest& request);
+extern UniValue decodemasternodebroadcast(const JSONRPCRequest& request);
+extern UniValue relaymasternodebroadcast(const JSONRPCRequest& request);
+extern UniValue masternodecurrent(const JSONRPCRequest& request);
+extern UniValue reloadmasternodeconfig(const JSONRPCRequest& request);
+extern UniValue startmasternode(const JSONRPCRequest& request);
+extern UniValue createmasternodekey(const JSONRPCRequest& request);
+extern UniValue getmasternodeoutputs(const JSONRPCRequest& request);
+extern UniValue listmasternodeconf(const JSONRPCRequest& request);
+extern UniValue getactivemasternodecount(const JSONRPCRequest& request);
+extern UniValue getmasternodestatus(const JSONRPCRequest& request);
+extern UniValue getmasternodewinners(const JSONRPCRequest& request);
+extern UniValue getmasternodescores(const JSONRPCRequest& request);
+extern UniValue mnping(const JSONRPCRequest& request);
+
+extern UniValue getinfo(const JSONRPCRequest& request); // in rpc/misc.cpp
+extern UniValue logging(const JSONRPCRequest& request);
+extern UniValue mnsync(const JSONRPCRequest& request);
+extern UniValue spork(const JSONRPCRequest& request);
+extern UniValue validateaddress(const JSONRPCRequest& request);
+extern UniValue createmultisig(const JSONRPCRequest& request);
+extern UniValue verifymessage(const JSONRPCRequest& request);
+extern UniValue setmocktime(const JSONRPCRequest& request);
+extern UniValue getstakingstatus(const JSONRPCRequest& request);
 
 bool StartRPC();
 void InterruptRPC();
@@ -203,4 +285,4 @@ void StopRPC();
 std::string JSONRPCExecBatch(const UniValue& vReq);
 void RPCNotifyBlockChange(bool fInitialDownload, const CBlockIndex* pindex);
 
-#endif // PIVX_RPC_SERVER_H
+#endif // BITCOIN_RPCSERVER_H

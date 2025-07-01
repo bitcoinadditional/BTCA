@@ -1,4 +1,5 @@
 // Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -128,13 +129,13 @@ static void MerkleComputation(const std::vector<uint256>& leaves, uint256* proot
 
 uint256 ComputeMerkleRoot(const std::vector<uint256>& leaves, bool* mutated) {
     uint256 hash;
-    MerkleComputation(leaves, &hash, mutated, -1, nullptr);
+    MerkleComputation(leaves, &hash, mutated, -1, NULL);
     return hash;
 }
 
 std::vector<uint256> ComputeMerkleBranch(const std::vector<uint256>& leaves, uint32_t position) {
     std::vector<uint256> ret;
-    MerkleComputation(leaves, nullptr, nullptr, position, &ret);
+    MerkleComputation(leaves, NULL, NULL, position, &ret);
     return ret;
 }
 
@@ -156,7 +157,7 @@ uint256 BlockMerkleRoot(const CBlock& block, bool* mutated)
     std::vector<uint256> leaves;
     leaves.resize(block.vtx.size());
     for (size_t s = 0; s < block.vtx.size(); s++) {
-        leaves[s] = block.vtx[s]->GetHash();
+        leaves[s] = block.vtx[s].GetHash();
     }
     return ComputeMerkleRoot(leaves, mutated);
 }
@@ -166,7 +167,7 @@ std::vector<uint256> BlockMerkleBranch(const CBlock& block, uint32_t position)
     std::vector<uint256> leaves;
     leaves.resize(block.vtx.size());
     for (size_t s = 0; s < block.vtx.size(); s++) {
-        leaves[s] = block.vtx[s]->GetHash();
+        leaves[s] = block.vtx[s].GetHash();
     }
     return ComputeMerkleBranch(leaves, position);
 }

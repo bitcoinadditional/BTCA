@@ -1,10 +1,11 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2019 The PIVX Core developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_EDITADDRESSDIALOG_H
-#define PIVX_QT_EDITADDRESSDIALOG_H
+#ifndef BITCOIN_QT_EDITADDRESSDIALOG_H
+#define BITCOIN_QT_EDITADDRESSDIALOG_H
 
 #include <QDialog>
 
@@ -56,4 +57,4 @@ private:
     QString address;
 };
 
-#endif // PIVX_QT_EDITADDRESSDIALOG_H
+#endif // BITCOIN_QT_EDITADDRESSDIALOG_H

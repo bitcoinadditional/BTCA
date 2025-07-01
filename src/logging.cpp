@@ -1,9 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin developers
-// Copyright (c) 2015-2022 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "chainparamsbase.h"
 #include "logging.h"
 #include "utiltime.h"
 
@@ -101,13 +103,17 @@ const CLogCategoryDesc LogCategories[] = {
         {BCLog::TOR,            "tor"},
         {BCLog::MEMPOOL,        "mempool"},
         {BCLog::HTTP,           "http"},
-        {BCLog::BENCHMARK,      "bench"},
+        {BCLog::BENCH,          "bench"},
         {BCLog::ZMQ,            "zmq"},
         {BCLog::DB,             "db"},
         {BCLog::RPC,            "rpc"},
         {BCLog::ESTIMATEFEE,    "estimatefee"},
         {BCLog::ADDRMAN,        "addrman"},
+        {BCLog::SELECTCOINS,    "selectcoins"},
         {BCLog::REINDEX,        "reindex"},
+        {BCLog::CMPCTBLOCK,     "cmpctblock"},
+        {BCLog::RAND,           "rand"},
+        {BCLog::PRUNE,          "prune"},
         {BCLog::PROXY,          "proxy"},
         {BCLog::MEMPOOLREJ,     "mempoolrej"},
         {BCLog::LIBEVENT,       "libevent"},
@@ -116,16 +122,7 @@ const CLogCategoryDesc LogCategories[] = {
         {BCLog::LEVELDB,        "leveldb"},
         {BCLog::STAKING,        "staking"},
         {BCLog::MASTERNODE,     "masternode"},
-        {BCLog::MNBUDGET,       "mnbudget"},
-        {BCLog::LEGACYZC,       "zero"},
         {BCLog::MNPING,         "mnping"},
-        {BCLog::SAPLING,        "sapling"},
-        {BCLog::SPORKS,         "sporks"},
-        {BCLog::VALIDATION,     "validation"},
-        {BCLog::LLMQ,           "llmq"},
-        {BCLog::NET_MN,         "net_mn"},
-        {BCLog::DKG,            "dkg"},
-        {BCLog::CHAINLOCKS,     "chainlocks"},
         {BCLog::ALL,            "1"},
         {BCLog::ALL,            "all"},
 };
@@ -182,19 +179,9 @@ std::string BCLog::Logger::LogTimestampStr(const std::string &str)
     if (!m_log_timestamps)
         return str;
 
-    if (m_started_new_line) {
-        int64_t nTimeMicros = GetTimeMicros();
-        strStamped = FormatISO8601DateTime(nTimeMicros/1000000);
-        if (m_log_time_micros) {
-            strStamped.pop_back();
-            strStamped += strprintf(".%06dZ", nTimeMicros % 1000000);
-        }
-        int64_t mocktime = GetMockTime();
-        if (mocktime) {
-            strStamped += " (mocktime: " + FormatISO8601DateTime(mocktime) + ")";
-        }
-        strStamped += ' ' + str;
-    } else
+    if (m_started_new_line)
+        strStamped =  DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()) + ' ' + str;
+    else
         strStamped = str;
 
     if (!str.empty() && str[str.size()-1] == '\n')
@@ -205,37 +192,36 @@ std::string BCLog::Logger::LogTimestampStr(const std::string &str)
     return strStamped;
 }
 
-void BCLog::Logger::LogPrintStr(const std::string &str)
+int BCLog::Logger::LogPrintStr(const std::string &str)
 {
-    std::string strTimestamped = LogTimestampStr(str);
-
+    int ret = 0; // Returns total number of characters written
     if (m_print_to_console) {
         // print to console
-        fwrite(strTimestamped.data(), 1, strTimestamped.size(), stdout);
+        ret = fwrite(str.data(), 1, str.size(), stdout);
         fflush(stdout);
-    }
-
-    if (m_print_to_file) {
+    } else if (m_print_to_file) {
         std::lock_guard<std::mutex> scoped_lock(m_file_mutex);
 
+        std::string strTimestamped = LogTimestampStr(str);
+
         // buffer if we haven't opened the log yet
-        if (m_fileout == nullptr) {
+        if (m_fileout == NULL) {
+            ret = strTimestamped.length();
             m_msgs_before_open.push_back(strTimestamped);
 
         } else {
             // reopen the log file, if requested
             if (m_reopen_file) {
                 m_reopen_file = false;
-                FILE* new_fileout = fsbridge::fopen(m_file_path, "a");
-                if (new_fileout) {
-                    setbuf(new_fileout, nullptr); // unbuffered
-                    fclose(m_fileout);
-                    m_fileout = new_fileout;
-                }
+                if (fsbridge::freopen(m_file_path,"a",m_fileout) != NULL)
+                    setbuf(m_fileout, NULL); // unbuffered
             }
-            FileWriteStr(strTimestamped, m_fileout);
+
+            ret = FileWriteStr(strTimestamped, m_fileout);
         }
     }
+
+    return ret;
 }
 
 void BCLog::Logger::ShrinkDebugFile()
@@ -259,30 +245,6 @@ void BCLog::Logger::ShrinkDebugFile()
             fwrite(vch.data(), 1, nBytes, file);
             fclose(file);
         }
-    } else if (file != nullptr)
+    } else if (file != NULL)
         fclose(file);
-}
-
-/// PIVX
-
-CBatchedLogger::CBatchedLogger(BCLog::Logger* _logger, BCLog::LogFlags _category, const std::string& _header) :
-    logger(_logger),
-    accept(LogAcceptCategory(_category)),
-    header(_header)
-{}
-
-CBatchedLogger::~CBatchedLogger()
-{
-    Flush();
-}
-
-void CBatchedLogger::Flush()
-{
-    if (!accept || msg.empty()) {
-        return;
-    }
-    if (logger && logger->Enabled()) {
-        logger->LogPrintStr(strprintf("%s:\n%s", header, msg));
-    msg.clear();
-    }
 }

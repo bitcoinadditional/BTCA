@@ -1,9 +1,10 @@
 // Copyright (c) 2016 Jeremy Rubin
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CUCKOOCACHE_H
-#define PIVX_CUCKOOCACHE_H
+#ifndef _BITCOIN_CUCKOOCACHE_H_
+#define _BITCOIN_CUCKOOCACHE_H_
 
 #include <array>
 #include <algorithm>
@@ -257,7 +258,7 @@ private:
      *
      * First, epoch_check decrements and checks the cheap heuristic, and then does
      * a more expensive scan if the cheap heuristic runs out. If the expensive
-     * scan succeeds, the epochs are aged and old elements are allow_erased. The
+     * scan suceeds, the epochs are aged and old elements are allow_erased. The
      * cheap heuristic is reset to retrigger after the worst case growth of the
      * current epoch's elements would exceed the epoch_size.
      */
@@ -395,7 +396,7 @@ public:
             * 1) On first iteration, last_loc == invalid(), find returns last, so
             *    last_loc defaults to locs[0].
             * 2) On further iterations, where last_loc == locs[k], last_loc will
-            *    go to locs[k+1 % 8], i.e., next of the 8 indices wrapping around
+            *    go to locs[k+1 % 8], i.e., next of the 8 indicies wrapping around
             *    to 0 if needed.
             *
             * This prevents moving the element we just put in.
@@ -454,4 +455,4 @@ public:
 };
 } // namespace CuckooCache
 
-#endif // PIVX_CUCKOOCACHE_H
+#endif

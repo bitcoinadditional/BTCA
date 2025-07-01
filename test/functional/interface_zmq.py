@@ -3,20 +3,18 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the ZMQ notification interface."""
-
 import configparser
-from io import BytesIO
 import os
 import struct
 import time
 
-from test_framework.messages import CTransaction
 from test_framework.test_framework import PivxTestFramework, SkipTest
-from test_framework.util import (
-    assert_equal,
-    hash256
-)
-
+from test_framework.mininode import CTransaction
+from test_framework.util import (assert_equal,
+                                 bytes_to_hex_str,
+                                 hash256,
+                                )
+from io import BytesIO
 
 class ZMQSubscriber:
     def __init__(self, socket, topic):
@@ -48,14 +46,14 @@ class ZMQTest (PivxTestFramework):
         except ImportError:
             raise SkipTest("python3-zmq module not available.")
 
-        # Check that pivx has been built with ZMQ enabled.
+        # Check that btca has been built with ZMQ enabled.
         config = configparser.ConfigParser()
         if not self.options.configfile:
             self.options.configfile = os.path.abspath(os.path.join(os.path.dirname(__file__), "../config.ini"))
         config.read_file(open(self.options.configfile))
 
         if not config["components"].getboolean("ENABLE_ZMQ"):
-            raise SkipTest("pivxd has not been built with zmq enabled.")
+            raise SkipTest("btcad has not been built with zmq enabled.")
 
         # Initialize ZMQ context and socket.
         # All messages are received in the same socket which means
@@ -102,17 +100,17 @@ class ZMQTest (PivxTestFramework):
             tx = CTransaction()
             tx.deserialize(BytesIO(hex))
             tx.calc_sha256()
-            assert_equal(tx.hash, txid.hex())
+            assert_equal(tx.hash, bytes_to_hex_str(txid))
 
             # Should receive the generated block hash.
-            hash = self.hashblock.receive().hex()
+            hash = bytes_to_hex_str(self.hashblock.receive())
             assert_equal(genhashes[x], hash)
             # The block should only have the coinbase txid.
-            assert_equal([txid.hex()], self.nodes[1].getblock(hash)["tx"])
+            assert_equal([bytes_to_hex_str(txid)], self.nodes[1].getblock(hash)["tx"])
 
             # Should receive the generated raw block.
             block = self.rawblock.receive()
-            assert_equal(genhashes[x], hash256(block[:80]).hex())
+            assert_equal(genhashes[x], bytes_to_hex_str(hash256(block[:112])))
 
         self.log.info("Wait for tx from second node")
         payment_txid = self.nodes[1].sendtoaddress(self.nodes[0].getnewaddress(), 1.0)
@@ -120,11 +118,11 @@ class ZMQTest (PivxTestFramework):
 
         # Should receive the broadcasted txid.
         txid = self.hashtx.receive()
-        assert_equal(payment_txid, txid.hex())
+        assert_equal(payment_txid, bytes_to_hex_str(txid))
 
         # Should receive the broadcasted raw transaction.
         hex = self.rawtx.receive()
-        assert_equal(payment_txid, hash256(hex).hex())
+        assert_equal(payment_txid, bytes_to_hex_str(hash256(hex)))
 
 if __name__ == '__main__':
     ZMQTest().main()

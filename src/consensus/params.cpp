@@ -1,11 +1,12 @@
 // Copyright (c) 2019 The Zcash developers
-// Copyright (c) 2020-2021 The PIVX Core developers
+// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
 #include "consensus/params.h"
 #include "consensus/upgrades.h"
-#include "util/system.h"
+#include "util.h"
 
 namespace Consensus {
 
@@ -20,15 +21,6 @@ bool Params::NetworkUpgradeActive(int nHeight, Consensus::UpgradeIndex idx) cons
                 __func__, NetworkUpgradeInfo[idx].strName, nHeight);
 
     return NetworkUpgradeState(nHeight, *this, idx) == UPGRADE_ACTIVE;
-}
-
-Optional<LLMQParams> Params::GetLLMQParams(uint8_t llmqtype) const
-{
-    const auto it = llmqs.find((LLMQType)llmqtype);
-    if (it == llmqs.end()) {
-        return nullopt;
-    }
-    return Optional<LLMQParams>(it->second);
 }
 
 } // End consensus namespace

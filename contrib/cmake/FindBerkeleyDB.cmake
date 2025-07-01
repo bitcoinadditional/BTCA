@@ -29,8 +29,6 @@ else()
     list(APPEND _BERKELEYDB_PATHS
             "/usr/local/Cellar/berkeley-db@4"
             "/usr/local/Cellar/berkeley-db"
-            "/opt/homebrew/Cellar/berkeley-db@4"
-            "/opt/homebrew/Cellar/berkeley-db"
             "/opt"
             "/opt/local"
             "/usr/local"

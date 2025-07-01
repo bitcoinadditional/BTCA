@@ -1,10 +1,11 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2021 The PIVX Core developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_TRANSACTIONFILTERPROXY_H
-#define PIVX_QT_TRANSACTIONFILTERPROXY_H
+#ifndef BITCOIN_QT_TRANSACTIONFILTERPROXY_H
+#define BITCOIN_QT_TRANSACTIONFILTERPROXY_H
 
 #include "amount.h"
 
@@ -42,6 +43,7 @@ public:
             setDateRange(MIN_DATE, MAX_DATE);
     }
 
+    void setAddressPrefix(const QString& addrPrefix);
     /**
       @note Type filter takes a bit field created with TYPE() or ALL_TYPES
      */
@@ -58,8 +60,13 @@ public:
     /** Set whether to hide orphan stakes. */
     void setHideOrphans(bool fHide);
 
+    /** Only stakes txes **/
+    void setOnlyStakesandMN(bool fOnlyStakesandMN);
+
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     static bool isOrphan(const int status, const int type);
+
+    //QVariant dataFromSourcePos(int sourceRow, int role) const;
 
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
@@ -67,12 +74,17 @@ protected:
 private:
     QDateTime dateFrom;
     QDateTime dateTo;
+    QString addrPrefix;
     quint32 typeFilter;
     WatchOnlyFilter watchOnlyFilter;
     CAmount minAmount;
     int limitRows;
     bool showInactive;
     bool fHideOrphans = true;
+    bool fOnlyStakesandMN = false;
+
+    bool isStakeTx(int type) const;
+	bool isMasternodeRewardTx(int type) const;
 };
 
-#endif // PIVX_QT_TRANSACTIONFILTERPROXY_H
+#endif // BITCOIN_QT_TRANSACTIONFILTERPROXY_H

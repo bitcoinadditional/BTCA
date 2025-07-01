@@ -1,9 +1,10 @@
 // Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_ZMQ_ZMQPUBLISHNOTIFIER_H
-#define PIVX_ZMQ_ZMQPUBLISHNOTIFIER_H
+#ifndef BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#define BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
 
 #include "zmqabstractnotifier.h"
 
@@ -12,7 +13,7 @@ class CBlockIndex;
 class CZMQAbstractPublishNotifier : public CZMQAbstractNotifier
 {
 private:
-    uint32_t nSequence{0}; // upcounting per message sequence number
+    uint32_t nSequence; // upcounting per message sequence number
 
 public:
 
@@ -40,6 +41,12 @@ public:
     bool NotifyTransaction(const CTransaction &transaction);
 };
 
+class CZMQPublishHashTransactionLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyTransactionLock(const CTransaction &transaction);
+};
+
 class CZMQPublishRawBlockNotifier : public CZMQAbstractPublishNotifier
 {
 public:
@@ -52,4 +59,10 @@ public:
     bool NotifyTransaction(const CTransaction &transaction);
 };
 
-#endif // PIVX_ZMQ_ZMQPUBLISHNOTIFIER_H
+class CZMQPublishRawTransactionLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyTransactionLock(const CTransaction &transaction);
+};
+
+#endif // BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H

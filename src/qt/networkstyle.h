@@ -1,9 +1,10 @@
 // Copyright (c) 2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_QT_NETWORKSTYLE_H
-#define PIVX_QT_NETWORKSTYLE_H
+#ifndef BITCOIN_QT_NETWORKSTYLE_H
+#define BITCOIN_QT_NETWORKSTYLE_H
 
 #include <QIcon>
 #include <QPixmap>
@@ -13,7 +14,7 @@
 class NetworkStyle
 {
 public:
-    /** Get style associated with provided network id, or 0 if not known */
+    /** Get style associated with provided BIP70 network id, or 0 if not known */
     static const NetworkStyle* instantiate(const QString& networkId);
 
     const QString& getAppName() const { return appName; }
@@ -30,4 +31,4 @@ private:
     QPixmap splashImage;
 };
 
-#endif // PIVX_QT_NETWORKSTYLE_H
+#endif // BITCOIN_QT_NETWORKSTYLE_H

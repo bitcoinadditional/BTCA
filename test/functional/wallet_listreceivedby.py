@@ -3,7 +3,6 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the listreceivedbyaddress RPC."""
-
 from decimal import Decimal
 
 from test_framework.test_framework import PivxTestFramework
@@ -11,6 +10,7 @@ from test_framework.util import (
     assert_array_result,
     assert_equal,
     assert_raises_rpc_error,
+    sync_blocks,
 )
 
 
@@ -21,7 +21,7 @@ class ReceivedByTest(PivxTestFramework):
     def run_test(self):
         # Generate block to get out of IBD
         self.nodes[0].generate(1)
-        self.sync_blocks()
+        sync_blocks(self.nodes)
 
         self.log.info("listreceivedbyaddress Test")
 
@@ -143,7 +143,7 @@ class ReceivedByTest(PivxTestFramework):
         # listreceivedbylabel should return updated received list
         assert_array_result(self.nodes[1].listreceivedbylabel(),
                             {"label": label},
-                            {"label": received_by_label_json["label"], "amount": (received_by_label_json["amount"] + Decimal("0.1"))})
+                            {"label": received_by_label_json["account"], "amount": (received_by_label_json["amount"] + Decimal("0.1"))})
 
         # getreceivedbylabel should return updated receive total
         balance = self.nodes[1].getreceivedbylabel(label)

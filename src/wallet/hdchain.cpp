@@ -1,13 +1,14 @@
-// Copyright (c) 2020-2021 The PIVX Core developers
+// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "wallet/hdchain.h"
 
+#include "base58.h"
 #include "chainparams.h"
-#include "key_io.h"
 #include "tinyformat.h"
-#include "util/system.h"
+#include "util.h"
 #include "utilstrencodings.h"
 
 bool CHDChain::SetNull()
@@ -16,7 +17,7 @@ bool CHDChain::SetNull()
     seed_id = CKeyID();
     nExternalChainCounter = 0;
     nInternalChainCounter = 0;
-    nStakingChainCounter = 0;
+    nECommerceChainCounter = 0;
     return IsNull();
 }
 

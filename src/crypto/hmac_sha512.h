@@ -1,9 +1,10 @@
 // Copyright (c) 2014 The Bitcoin developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CRYPTO_HMAC_SHA512_H
-#define PIVX_CRYPTO_HMAC_SHA512_H
+#ifndef BITCOIN_CRYPTO_HMAC_SHA512_H
+#define BITCOIN_CRYPTO_HMAC_SHA512_H
 
 #include "crypto/sha512.h"
 
@@ -29,4 +30,4 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // PIVX_CRYPTO_HMAC_SHA512_H
+#endif // BITCOIN_CRYPTO_HMAC_SHA512_H

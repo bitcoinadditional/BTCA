@@ -1,6 +1,33 @@
 <TS language="zh_CN" version="2.1">
 <context>
+    <name>AddNewAddressDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>地址</translation>
+    </message>
+    <message>
+        <source>PushButton</source>
+        <translation>按钮</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>保存</translation>
+    </message>
+</context>
+<context>
     <name>AddNewContactDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
     <message>
         <source>CANCEL</source>
         <translation>删除</translation>
@@ -68,11 +95,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>选择发送PIVX coin的地址</translation>
+        <translation>选择发送BTCA coin的地址</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>选择接收PIVX coin的地址</translation>
+        <translation>选择接收BTCA coin的地址</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -87,12 +114,12 @@
         <translation>接收地址</translation>
     </message>
     <message>
-        <source>These are your PIVX addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>这是用于发送PIVX的地址。在发送PIVX之前，请认真核查发送金额和接收地址。</translation>
+        <source>These are your BTCA addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>这是用于发送BTCA的地址。在发送BTCA之前，请认真核查发送金额和接收地址。</translation>
     </message>
     <message>
-        <source>These are your PIVX addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>这是用于接收PIVX的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
+        <source>These are your BTCA addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>这是用于接收BTCA的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -124,6 +151,21 @@
     </message>
 </context>
 <context>
+    <name>AddressLabelRow</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>Bob Allen</source>
+        <translation>Bob Allen</translation>
+    </message>
+    <message>
+        <source>DN6i46dytMPVhV1JMGZFuQBh7BZZ6nNLox</source>
+        <translation>DN6i46dytMPVhV1JMGZFuQBh7BZZ6nNLox</translation>
+    </message>
+</context>
+<context>
     <name>AddressTableModel</name>
     <message>
         <source>Label</source>
@@ -148,6 +190,10 @@
 </context>
 <context>
     <name>AddressesWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Contact name</source>
         <translation>联系人名字</translation>
@@ -236,6 +282,14 @@ Are you sure?</source>
         <translation>密码输入框</translation>
     </message>
     <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
+        <source>PushButton</source>
+        <translation>按钮</translation>
+    </message>
+    <message>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
         <translation>输入一个新的钱包密码&lt;br/&gt;钱包密码&lt;b&gt;建议使用10位以上的随机字符&lt;/b&gt;，或者&lt;b&gt; 3个以上的单词&lt;/b&gt;。并建议有序使用大小写字母。</translation>
     </message>
@@ -294,6 +348,10 @@ for staking</source>
         <translation>删除</translation>
     </message>
     <message>
+        <source>BTCA will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your BTCAs from being stolen by malware infecting your computer.</source>
+        <translation>BTCA将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取BTCAs。</translation>
+    </message>
+    <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
         <translation>您确定加密您的钱包吗？</translation>
     </message>
@@ -350,25 +408,6 @@ for staking</source>
     </message>
 </context>
 <context>
-    <name>CSRow</name>
-    <message>
-        <source>Savings</source>
-        <translation>存款</translation>
-    </message>
-    <message>
-        <source>address</source>
-        <translation>地址</translation>
-    </message>
-    <message>
-        <source>Not Staking</source>
-        <translation>不可加薪</translation>
-    </message>
-    <message>
-        <source>Own delegation</source>
-        <translation>自己的代表团</translation>
-    </message>
-</context>
-<context>
     <name>ClientModel</name>
     <message>
         <source>Total: %1 (IPv4: %2 / IPv6: %3 / Tor: %4 / Unknown: %5)</source>
@@ -394,8 +433,12 @@ for staking</source>
         <translation>币选择</translation>
     </message>
     <message>
-        <source>Select PIV Outputs to Spend</source>
-        <translation>选择PIV支出花费</translation>
+        <source>Select BTCA Outputs to Spend</source>
+        <translation>选择BTCA支出花费</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Dust:</translation>
     </message>
     <message>
         <source>Change:</source>
@@ -416,6 +459,14 @@ for staking</source>
     <message>
         <source>Amount</source>
         <translation>金额</translation>
+    </message>
+    <message>
+        <source>0.00 BTCA</source>
+        <translation>0.00 BTCA</translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation>0</translation>
     </message>
     <message>
         <source>Select all</source>
@@ -482,6 +533,10 @@ for staking</source>
         <translation>全都不选</translation>
     </message>
     <message>
+        <source>Please switch to "List mode" to use this function.</source>
+        <translation>请切换到“列表模式”使用此功能。</translation>
+    </message>
+    <message>
         <source>Quantity Copied</source>
         <translation>数量完成复制</translation>
     </message>
@@ -510,16 +565,52 @@ for staking</source>
         <translation>修改完成复制</translation>
     </message>
     <message>
+        <source>highest</source>
+        <translation>最高级</translation>
+    </message>
+    <message>
+        <source>higher</source>
+        <translation>更高级</translation>
+    </message>
+    <message>
+        <source>high</source>
+        <translation>高级</translation>
+    </message>
+    <message>
+        <source>medium-high</source>
+        <translation>中高级</translation>
+    </message>
+    <message>
+        <source>medium</source>
+        <translation>中级</translation>
+    </message>
+    <message>
+        <source>low-medium</source>
+        <translation>低中级</translation>
+    </message>
+    <message>
+        <source>low</source>
+        <translation>低级</translation>
+    </message>
+    <message>
+        <source>lower</source>
+        <translation>更低级</translation>
+    </message>
+    <message>
+        <source>lowest</source>
+        <translation>最低级</translation>
+    </message>
+    <message>
         <source>(%1 locked)</source>
         <translation>(%1已锁住)</translation>
     </message>
     <message>
-        <source>yes</source>
-        <translation>是</translation>
+        <source>none</source>
+        <translation>无</translation>
     </message>
     <message>
-        <source>delegated to %1 for cold staking</source>
-        <translation>委托到%1进行冷加注</translation>
+        <source>yes</source>
+        <translation>是</translation>
     </message>
     <message>
         <source>Select All</source>
@@ -530,8 +621,36 @@ for staking</source>
         <translation>否</translation>
     </message>
     <message>
+        <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
+        <translation>如果交易大小大于1000字节，则此标签变为红色。</translation>
+    </message>
+    <message>
+        <source>This means a fee of at least %1 per kB is required.</source>
+        <translation>这意味着每kB至少需要%1的费用。</translation>
+    </message>
+    <message>
+        <source>Can vary +/- 1 byte per input.</source>
+        <translation>每个输入可以浮动+/- 1 字节。</translation>
+    </message>
+    <message>
+        <source>Transactions with higher priority are more likely to get included into a block.</source>
+        <translation>具有更高优先级的交易更有可能被包含到区块中。</translation>
+    </message>
+    <message>
+        <source>This label turns red, if the priority is smaller than "medium".</source>
+        <translation>如果优先级小于“中级”，则此标签变为红色。</translation>
+    </message>
+    <message>
+        <source>This label turns red, if any recipient receives an amount smaller than %1.</source>
+        <translation>如果任何收件人收到的金额小于%1，此标签将变为红色。</translation>
+    </message>
+    <message>
         <source>(no label)</source>
         <translation>未设置标签</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>从 %1 (%2)更改</translation>
     </message>
     <message>
         <source>(change)</source>
@@ -539,264 +658,29 @@ for staking</source>
     </message>
 </context>
 <context>
-    <name>ColdStakingWidget</name>
+    <name>ContactDropdownRow</name>
     <message>
-        <source>Owner address (optional, if empty a new address will be created)</source>
-        <translation>所有者地址(可选项，如果为空，将创建一个新地址)</translation>
-    </message>
-    <message>
-        <source>Total Staking:</source>
-        <translation>加注总额：</translation>
-    </message>
-    <message>
-        <source>Cold Staking</source>
-        <translation>冷堆</translation>
-    </message>
-    <message>
-        <source>Staker</source>
-        <translation>利益相关者</translation>
-    </message>
-    <message>
-        <source>Delegation</source>
-        <translation>宪法</translation>
-    </message>
-    <message>
-        <source>Delegate</source>
-        <translation>分配</translation>
-    </message>
-    <message>
-        <source>Clear All</source>
-        <translation>清除全部</translation>
-    </message>
-    <message>
-        <source>Delegated balance history</source>
-        <translation>委托余额历史</translation>
-    </message>
-    <message>
-        <source>No delegations yet</source>
-        <translation>没有代表团</translation>
-    </message>
-    <message>
-        <source>Total Staking: %1</source>
-        <translation>总积累：%1</translation>
-    </message>
-    <message>
-        <source>Error loading delegations: %1</source>
-        <translation>加载委托时出错：%1</translation>
-    </message>
-    <message>
-        <source>You can delegate your PIVs, letting a hot node (24/7 online node)
-stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>您可以委托您的PIV并让一个热节点(24/7在线节点)
-代表你加注，而且保持密钥离线安全。</translation>
-    </message>
-    <message>
-        <source>Enter owner address</source>
-        <translation>输入所有者地址</translation>
-    </message>
-    <message>
-        <source>Accept PIV delegation / Delegate PIV</source>
-        <translation>接受PIV委托／委托PIV </translation>
-    </message>
-    <message>
-        <source>Cold Staking address</source>
-        <translation>冷加注地址</translation>
-    </message>
-    <message>
-        <source>No receive addresses available, you can go to the receive screen and create some there!</source>
-        <translation>没有可用接收地址，您可以到接收屏幕那里创建!</translation>
-    </message>
-    <message>
-        <source>No contacts available, you can go to the contacts screen and add some there!</source>
-        <translation>没有可用的联系人，您可以到联系人界面那里添加!</translation>
-    </message>
-    <message>
-        <source>Cannot send delegation, wallet locked</source>
-        <translation>无法发送委托，钱包被锁了</translation>
-    </message>
-    <message>
-        <source>Cold staking is networkely disabled</source>
-        <translation>禁用网络冷积累</translation>
-    </message>
-    <message>
-        <source>Coin Control</source>
-        <translation>币控制</translation>
-    </message>
-    <message>
-        <source>Invalid entry</source>
-        <translation>条目无效</translation>
-    </message>
-    <message>
-        <source>Invalid entry, minimum delegable amount is </source>
-        <translation>输入无效，最小委托数量为</translation>
-    </message>
-    <message>
-        <source>Owner address invalid</source>
-        <translation>所有者地址无效</translation>
-    </message>
-    <message>
-        <source>ALERT!</source>
-        <translation>警报！</translation>
-    </message>
-    <message>
-        <source>Delegating to an external owner address!
-
-The delegated coins will NOT be spendable by this wallet.
-Spending these coins will need to be done from the wallet or
-device containing the owner address.
-
-Do you wish to proceed?</source>
-        <translation>委托给外部所有者地址！
-
-授权的硬币将无法在此钱包中消费。
-花费这些硬币需要从钱包或
-包含所有者地址的设备。
-
-你想继续吗？</translation>
-    </message>
-    <message>
-        <source>Staking address corresponds to this wallet, change it to an external node</source>
-        <translation>放样地址对应于此钱包，将其更改为外部节点</translation>
-    </message>
-    <message>
-        <source>Cannot create transaction.</source>
-        <translation>无法创建交易</translation>
-    </message>
-    <message>
-        <source>Coins delegated</source>
-        <translation>委托硬币</translation>
-    </message>
-    <message>
-        <source>Cannot perform operation, wallet locked</source>
-        <translation>无法进行操作，钱包被锁了</translation>
-    </message>
-    <message>
-        <source>URI copied to clipboard</source>
-        <translation>URI已经复制到剪贴板</translation>
-    </message>
-    <message>
-        <source>Address copied to clipboard</source>
-        <translation>地址已经复制到剪贴板</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation>复制</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
-    <message>
-        <source>Stake</source>
-        <translation>赌注</translation>
-    </message>
-    <message>
-        <source>Blacklist</source>
-        <translation>黑名单</translation>
-    </message>
-    <message>
-        <source>Edit Label</source>
-        <translation>编辑标签</translation>
-    </message>
-    <message>
-        <source>Copy owner
-address</source>
-        <translation>复制所有者
-地址</translation>
-    </message>
-    <message>
-        <source>Address copied</source>
-        <translation>地址已复制</translation>
-    </message>
-    <message>
-        <source>Edit Cold Address Label</source>
-        <translation>编辑冷地址标签</translation>
-    </message>
-    <message>
-        <source>Whitelist failed, please check the logs</source>
-        <translation>白名单失败，请检查日志</translation>
-    </message>
-    <message>
-        <source> staking!</source>
-        <translation>提高</translation>
-    </message>
-    <message>
-        <source>Blacklist failed, please check the logs</source>
-        <translation>黑名单失败，请检查日志</translation>
-    </message>
-    <message>
-        <source> blacklisted from staking</source>
-        <translation>放样被列入黑名单</translation>
-    </message>
-    <message>
-        <source>Owner address copied</source>
-        <translation>所有者地址已复制</translation>
-    </message>
-    <message>
-        <source>Edit Owner Address Label</source>
-        <translation>编辑所有者地址标签</translation>
-    </message>
-    <message>
-        <source>Address label saved</source>
-        <translation>地址标签已保存</translation>
-    </message>
-    <message>
-        <source>Error storing address label</source>
-        <translation>保存地址标签出错</translation>
-    </message>
-</context>
-<context>
-    <name>CreateProposalDialog</name>
-    <message>
-        <source>Name</source>
-        <translation>名称</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>地址</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>金额</translation>
-    </message>
-    <message>
-        <source>Months</source>
-        <translation>月</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>好的</translation>
-    </message>
-    <message>
-        <source>NEXT</source>
-        <translation>下一步</translation>
-    </message>
-    <message>
-        <source>BACK</source>
-        <translation>返回</translation>
-    </message>
-    <message>
-        <source>Invalid amount</source>
-        <translation>金额无效</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation>发送</translation>
-    </message>
-    <message>
-        <source>No contacts available, you can go to the contacts screen and add some there!</source>
-        <translation>没有可用的联系人，您可以到联系人界面那里添加!</translation>
+        <source>Form</source>
+        <translation>来自</translation>
     </message>
 </context>
 <context>
     <name>DashboardWidget</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Transactions</source>
         <translation>交易</translation>
+    </message>
+    <message>
+        <source>Staking Rewards</source>
+        <translation>加注奖励</translation>
+    </message>
+    <message>
+        <source>Staking statistics</source>
+        <translation>加注数据</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -817,6 +701,10 @@ address</source>
     <message>
         <source>Filter by</source>
         <translation>过滤</translation>
+    </message>
+    <message>
+        <source>Amount of BTCA staked.</source>
+        <translation>已加注的BTCA 金额</translation>
     </message>
     <message>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
@@ -859,6 +747,10 @@ It will start automatically as soon as the wallet has enough confirmations on an
 </context>
 <context>
     <name>DefaultDialog</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>OK</source>
         <translation>好的</translation>
@@ -907,8 +799,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>编辑发送地址</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid PIVX address.</source>
-        <translation>所输入的地址“%1”不是有效的PIVX地址。</translation>
+        <source>The entered address "%1" is not a valid BTCA address.</source>
+        <translation>所输入的地址“%1”不是有效的BTCA地址。</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -921,6 +813,13 @@ It will start automatically as soon as the wallet has enough confirmations on an
     <message>
         <source>New key generation failed.</source>
         <translation>新密钥生成失败。</translation>
+    </message>
+</context>
+<context>
+    <name>ExpandableButton</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
     </message>
 </context>
 <context>
@@ -947,41 +846,62 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
 </context>
 <context>
-    <name>GovernanceWidget</name>
-    <message>
-        <source>Date</source>
-        <translation>日期</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>金额</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>名称</translation>
-    </message>
-    <message>
-        <source>Sort by</source>
-        <translation>分类</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>所有</translation>
-    </message>
-    <message>
-        <source>Please wait until the node is fully synced</source>
-        <translation>请等到节点完全同步</translation>
-    </message>
-    </context>
-<context>
     <name>HelpMessageDialog</name>
     <message>
         <source>version</source>
         <translation>版本</translation>
     </message>
     <message>
+        <source>BTCa</source>
+        <translation>BTCa</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-位)</translation>
+    </message>
+    <message>
+        <source>About BTCa</source>
+        <translation>关于BTCa</translation>
+    </message>
+    <message>
         <source>Command-line options</source>
         <translation>命令行选</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>用法：</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>命令行选项</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>UI 选项：</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>在启动时选择数据目录(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>启动时显示启动画面(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Hide QT staking charts on startup (default: %u)</source>
+        <translation>在启动时隐藏QT标记图表(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>设置语言，例如“de_DE”(默认:系统语言环境)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>开始最小化</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>为支付请求设置SSL根证书(默认值:-s系统-)</translation>
     </message>
     <message>
         <source>OK</source>
@@ -993,6 +913,18 @@ It will start automatically as soon as the wallet has enough confirmations on an
     <message>
         <source>Welcome</source>
         <translation>欢迎</translation>
+    </message>
+    <message>
+        <source>Welcome to BTCa.</source>
+        <translation>欢迎使用 BTCa</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where BTCa will store its data.</source>
+        <translation>由于这是该程序第一次启动，您可以选择存储BTCa 数据的位置。</translation>
+    </message>
+    <message>
+        <source>BTCa will download and store a copy of the BTCA block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>BTCa将下载并存储BTCA区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1009,6 +941,10 @@ It will start automatically as soon as the wallet has enough confirmations on an
     <message>
         <source>OK</source>
         <translation>好的</translation>
+    </message>
+    <message>
+        <source>BTCa</source>
+        <translation>BTCa</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1030,12 +966,28 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>LoadingDialog</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
         <source>Loading</source>
         <translation>正在下载</translation>
+    </message>
+    <message>
+        <source>.</source>
+        <translation>.</translation>
     </message>
 </context>
 <context>
     <name>LockUnlock</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Unlock Wallet</source>
         <translation>解锁钱包</translation>
@@ -1050,7 +1002,30 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
 </context>
 <context>
+    <name>MNRow</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    </context>
+<context>
     <name>MasterNodeWizardDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
     <message>
         <source>Intro</source>
         <translation>简介</translation>
@@ -1068,6 +1043,10 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>创建新的主节点控制器</translation>
     </message>
     <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a BTCA Masternode you must dedicate a collateral amount of BTCA (the unit of BTCA) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个BTCA主节点，你必须奉献10,000 BTCA（BTCA的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>Set Masternode Name</source>
         <translation>设置主节点名称</translation>
     </message>
@@ -1082,6 +1061,10 @@ It will start automatically as soon as the wallet has enough confirmations on an
     <message>
         <source>Make sure you have this amount of coins.</source>
         <translation>确保你有这么多币</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of collateral amount will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行10,000 BTCA的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1111,9 +1094,51 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <source>Invalid IP address</source>
         <translation> IP地址无效</translation>
     </message>
-    </context>
+    <message>
+        <source>Prepare master node failed.
+
+%1
+</source>
+        <translation>准备主节点失败。
+
+%1
+</translation>
+    </message>
+    <message>
+        <source>Invalid collateral output index</source>
+        <translation>输出指标无效</translation>
+    </message>
+    <message>
+        <source>Master node created! Wait %1 confirmations before starting it.</source>
+        <translation>主节点创建完成!在启动它之前，请等待%1确认。</translation>
+    </message>
+    <message>
+        <source>Cannot send collateral transaction.
+
+%1</source>
+        <translation>不能发送抵押品交易。
+
+%1</translation>
+    </message>
+    <message>
+        <source>Invalid masternode.conf file</source>
+        <translation>主节点配置文件无效</translation>
+    </message>
+    <message>
+        <source>Error parsing masternode.conf file</source>
+        <translation>解析主节点配置文件出错</translation>
+    </message>
+    <message>
+        <source>masternode.conf file doesn't exists</source>
+        <translation>主节点配置文件不存在</translation>
+    </message>
+</context>
 <context>
     <name>MasterNodesWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Start All</source>
         <translation>启动所有项</translation>
@@ -1221,7 +1246,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the pivx.conf file
+You will only have to paste the data in the btca.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1229,7 +1254,7 @@ this controller wallet (select the Masternode in the list and press "start").
 到剪贴板的远程服务器上。
 
 
-您只需将数据粘贴到pivx.conf文件中
+您只需将数据粘贴到btca.conf文件中
 ，然后使用主节点启动它
 这个控制器钱包(在列表中选择主节点并按“开始”)。
 </translation>
@@ -1249,6 +1274,18 @@ Are you sure?</source>
 确定吗？</translation>
     </message>
     <message>
+        <source>Invalid masternode.conf file</source>
+        <translation>主节点配置文件无效</translation>
+    </message>
+    <message>
+        <source>Error parsing masternode.conf file</source>
+        <translation>解析主节点配置文件出错</translation>
+    </message>
+    <message>
+        <source>masternode.conf file doesn't exists</source>
+        <translation>主节点配置文件不存在</translation>
+    </message>
+    <message>
         <source>Cannot create Masternode controller, wallet locked</source>
         <translation>无法创建主节点控制器，钱包被锁了</translation>
     </message>
@@ -1259,6 +1296,10 @@ Are you sure?</source>
 </context>
 <context>
     <name>MnInfoDialog</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Masternode Information</source>
         <translation>主节点信息</translation>
@@ -1293,37 +1334,40 @@ Are you sure?</source>
     </message>
     </context>
 <context>
-    <name>MnSelectionDialog</name>
+    <name>MyAddressRow</name>
     <message>
-        <source>Select All</source>
-        <translation>选择所有</translation>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+</context>
+<context>
+    <name>NavMenuWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation>名称</translation>
+        <source>V 1.0.0</source>
+        <translation>V 1.0.0</translation>
     </message>
     <message>
-        <source>Status</source>
-        <translation>状态</translation>
+        <source>v%1</source>
+        <translation>v%1</translation>
     </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>是</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>否</translation>
-    </message>
-    </context>
+</context>
 <context>
     <name>OpenURIDialog</name>
     <message>
         <source>Open URI</source>
         <translation>开源URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>需要 从URI 或文件打开支付</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -1333,9 +1377,293 @@ Are you sure?</source>
         <source>OK</source>
         <translation>好的</translation>
     </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>选择支付请求文件</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>选择支付请求文件打开</translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation>文件未找到</translation>
+    </message>
+    <message>
+        <source>Parsed data too large</source>
+        <translation>解析的数据太大</translation>
+    </message>
+    <message>
+        <source>Invalid URI, not starting with "btca" prefix</source>
+        <translation>无效的URI，不是以“ btca”前缀开头</translation>
+    </message>
+</context>
+<context>
+    <name>OptionButton</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>选项</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;主</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>缓存&amp;database 大小</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>脚本&amp;验证线程数</translation>
+    </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation>(0 = 自动, &lt;0 = 保留空闲的内核)</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>W&amp;钱包</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction&lt;br/&gt;cannot be used until that transaction has at least one confirmation.&lt;br/&gt;This also affects how your balance is computed.</source>
+        <translation>如果您要禁用未经确认发送，在至少有一个确认之前&lt;br/&gt;不能更改。&lt;br/&gt;这也将影响您的余额计算。</translation>
+    </message>
+    <message>
+        <source>Automatically open the BTCA client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>自动打开路由器上的BTCA钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside</source>
+        <translation>从外部接受连接</translation>
+    </message>
+    <message>
+        <source>Allow incoming connections</source>
+        <translation>允许进来的连接</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>&amp;使用SOCKS5代理（默认代理）</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>专家</translation>
+    </message>
+    <message>
+        <source>Automatically start BTCA after logging in to the system.</source>
+        <translation>登录系统后自动启动BTCA。</translation>
+    </message>
+    <message>
+        <source>&amp;Start BTCA on system login</source>
+        <translation>&amp;开机启动BTCA</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>是否显示硬币控制功能</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>启用硬币&amp;控制功能</translation>
+    </message>
+    <message>
+        <source>Show additional tab listing all your masternodes in first sub-tab&lt;br/&gt;and all masternodes on the network in second sub-tab.</source>
+        <translation>显示附加的标签，列出所有您的主节点在第一子列表上&lt;br/&gt;所有主节点的网络在第二个子列表上。</translation>
+    </message>
+    <message>
+        <source>Show Masternodes Tab</source>
+        <translation>显示主节点选项卡</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>&amp;花费未经证实的变化</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;网络</translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting BTCA.</source>
+        <translation>可以在这里设置用户界面语言。此设置将在重新启动BTCA后生效。</translation>
+    </message>
+    <message>
+        <source>Language missing or translation incomplete? Help contributing translations here:
+        https://discord.gg/</source>
+        <translation>语言缺失或翻译不完整?帮助贡献翻译在这里:
+        https://discord.gg/</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>端口使用&amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Enable Automint Addresses</source>
+        <translation>启动自动铸造地址</translation>
+    </message>
+    <message>
+        <source>Stake split threshold:</source>
+        <translation>股权分割阈值:</translation>
+    </message>
+    <message>
+        <source>Connect to the BTCA network through a SOCKS5 proxy.</source>
+        <translation>通过SOCKS5代理连接到BTCA网络。</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>代理&amp;IP地址:</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>代理的IP地址(例如IPv4: 127.0.0.1 / IPv6:::1)</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;端口：</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>代理端口(例如9050)</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;视窗</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>在最小化窗口后，只显示一个托盘图标。</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;最小化到托盘而不是任务栏</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
+        <translation>当窗口关闭时，最小化而不是退出应用程序。当启用此选项时，只有在菜单中选择Quit后应用程序才会关闭。</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;关闭最小化</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;显示</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>选择&amp;语言包</translation>
+    </message>
+    <message>
+        <source>User Interface Theme:</source>
+        <translation>界面主题（语言包）:</translation>
+    </message>
+    <message>
+        <source>Unit to show amounts in:</source>
+        <translation>显示金额的单位:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>选择显示发送BTCA的默认单位。</translation>
+    </message>
+    <message>
+        <source>Decimal digits</source>
+        <translation>小数位数</translation>
+    </message>
+    <message>
+        <source>Hide empty balances</source>
+        <translation>隐藏空余额</translation>
+    </message>
+    <message>
+        <source>Hide orphan stakes in transaction lists</source>
+        <translation>在交易列表中隐藏孤股份</translation>
+    </message>
+    <message>
+        <source>Hide orphan stakes</source>
+        <translation>隐藏孤股份</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>第三方网址(如区块浏览器中)出现的交易选项卡，上下文菜单项。 在URL %s 被交易哈希取代。 多个URL被竖线分隔|。</translation>
+    </message>
+    <message>
+        <source>Third party transaction URLs</source>
+        <translation>第三方交易URLs</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>激活上述选项的命令行选项：</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>清空当前设置，恢复为初始状态</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;重置选项</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;取消</translation>
+    </message>
+    <message>
+        <source>Any</source>
+        <translation>任意</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>默认</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>无</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>确认选项重置</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>钱包重启后修改才能生效。</translation>
+    </message>
+    <message>
+        <source>Client will be shutdown, do you want to proceed?</source>
+        <translation>软件将要关闭，您确定嘛？</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>修改需要重启钱包。</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>提供的代理地址无效。</translation>
+    </message>
+    <message>
+        <source>The supplied proxy port is invalid.</source>
+        <translation>所提供的代理端口无效。</translation>
+    </message>
+    <message>
+        <source>The supplied proxy settings are invalid.</source>
+        <translation>提供的代理设置无效。</translation>
+    </message>
 </context>
 <context>
     <name>PIVXGUI</name>
+    <message>
+        <source>BTCa</source>
+        <translation>BTCa</translation>
+    </message>
     <message>
         <source>Wallet</source>
         <translation>钱包</translation>
@@ -1361,6 +1689,10 @@ Are you sure?</source>
         <translation>关闭应用</translation>
     </message>
     <message>
+        <source>BTCa client</source>
+        <translation>BTCa 客户端</translation>
+    </message>
+    <message>
         <source>Error</source>
         <translation>出错</translation>
     </message>
@@ -1375,6 +1707,10 @@ Are you sure?</source>
     <message>
         <source>System Message</source>
         <translation>系统消息</translation>
+    </message>
+    <message>
+        <source>Sent MultiSend transaction</source>
+        <translation>发送MultiSend交易</translation>
     </message>
     <message>
         <source>Sent transaction</source>
@@ -1408,16 +1744,84 @@ Address: %4
         <translation>URI 处理当中</translation>
     </message>
     <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>支付请求获取URL无效:%1</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>付款申请文件处理</translation>
+    </message>
+    <message>
         <source>Invalid payment address %1</source>
         <translation>无效支付地址%1</translation>
     </message>
     <message>
-        <source>Cannot start pivx: click-to-pay handler</source>
-        <translation>无法启动pivx:点击支付处理程序</translation>
+        <source>Cannot start btca: click-to-pay handler</source>
+        <translation>无法启动btca:点击支付处理程序</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid PIVX address or malformed URI parameters.</source>
-        <translation>URI不能被解析!这可能是由无效的PIVX地址或格式错误的URI参数造成的。</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid BTCA address or malformed URI parameters.</source>
+        <translation>URI不能被解析!这可能是由无效的BTCA地址或格式错误的URI参数造成的。</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>无法读取付款请求文件!这可能是由一个无效的支付请求文件引起的。</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>支付请求被拒绝</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>支付请求网络与客户端网络不匹配。</translation>
+    </message>
+    <message>
+        <source>Payment request has expired.</source>
+        <translation>付款请求已过期。</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>未初始化付款请求。</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>不支持对自定义付款脚本的未验证的付款请求。</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>请求支付的金额%1太小(基于dust的考虑)。</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>从%1退款</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>付款请求%1太大(%2字节，允许%3字节)。</translation>
+    </message>
+    <message>
+        <source>Payment request DoS protection</source>
+        <translation>支付请求DoS保护</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>与%1的通信错误:%2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>无法解析付款请求!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>服务器%1的响应错误</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>网络请求错误</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>付款确认</translation>
     </message>
 </context>
 <context>
@@ -1436,36 +1840,14 @@ Address: %4
     </message>
     </context>
 <context>
-    <name>ProposalCard</name>
-    <message>
-        <source>No</source>
-        <translation>否</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>是</translation>
-    </message>
-    </context>
-<context>
-    <name>ProposalInfoDialog</name>
-    <message>
-        <source>Amount</source>
-        <translation>金额</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>状态</translation>
-    </message>
-    </context>
-<context>
     <name>QObject</name>
     <message>
         <source>Amount</source>
         <translation>金额</translation>
     </message>
     <message>
-        <source>Enter PIVX address (e.g. %1)</source>
-        <translation>输入PIVX a地址(e.g. %1)</translation>
+        <source>Enter BTCA address (e.g. %1)</source>
+        <translation>输入BTCA a地址(e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1500,12 +1882,20 @@ Address: %4
         <translation>无</translation>
     </message>
     <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
         <source>%1 ms</source>
         <translation>%1 毫秒</translation>
     </message>
     <message>
-        <source>A fatal error occurred. PIVX can no longer continue safely and will quit.</source>
-        <translation>发生了一个致命的错误。PIVX不能继续安全，将退出。</translation>
+        <source>A fatal error occurred. BTCA can no longer continue safely and will quit.</source>
+        <translation>发生了一个致命的错误。BTCA不能继续安全，将退出。</translation>
+    </message>
+    <message>
+        <source>BTCa</source>
+        <translation>BTCa</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -1516,24 +1906,24 @@ Address: %4
         <translation>错误:无法解析配置文件:%1。只使用key=value语法。</translation>
     </message>
     <message>
+        <source>Error: Invalid combination of -regtest and -testnet.</source>
+        <translation>错误:-regtest和-testnet的组合无效。</translation>
+    </message>
+    <message>
+        <source>Error reading masternode configuration file: %1</source>
+        <translation>读取主节点配置文件出错:%1</translation>
+    </message>
+    <message>
+        <source>BTCa didn't yet exit safely...</source>
+        <translation>BTCa心尚未安全退出……</translation>
+    </message>
+    <message>
         <source>Contact</source>
         <translation>联系人</translation>
     </message>
     <message>
         <source>Receiving</source>
         <translation>正在接收</translation>
-    </message>
-    <message>
-        <source>Delegator</source>
-        <translation>委托人</translation>
-    </message>
-    <message>
-        <source>Cold Staking</source>
-        <translation>冷堆</translation>
-    </message>
-    <message>
-        <source>Cold Staking Contact</source>
-        <translation>冷加注联系人</translation>
     </message>
     <message>
         <source>Hidden</source>
@@ -1596,20 +1986,8 @@ Address: %4
         <translation>给您自己</translation>
     </message>
     <message>
-        <source>Cold stakes</source>
-        <translation>感冒</translation>
-    </message>
-    <message>
         <source>Hot stakes</source>
         <translation>热提</translation>
-    </message>
-    <message>
-        <source>Delegated</source>
-        <translation>委托</translation>
-    </message>
-    <message>
-        <source>Delegations</source>
-        <translation>宪法</translation>
     </message>
     <message>
         <source>by Label</source>
@@ -1647,6 +2025,10 @@ Address: %4
         <translation>客户名称</translation>
     </message>
     <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
         <source>Number of connections</source>
         <translation>连接数量</translation>
     </message>
@@ -1671,6 +2053,10 @@ Address: %4
         <translation>调试日志文件</translation>
     </message>
     <message>
+        <source>Build date</source>
+        <translation>建立日期</translation>
+    </message>
+    <message>
         <source>Current number of blocks</source>
         <translation>当前区块数量</translation>
     </message>
@@ -1687,8 +2073,8 @@ Address: %4
         <translation>区块链</translation>
     </message>
     <message>
-        <source>Open the PIVX debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>从当前数据目录打开PIVX调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
+        <source>Open the BTCA debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>从当前数据目录打开BTCA调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -1827,6 +2213,14 @@ Address: %4
         <translation>时间偏移量</translation>
     </message>
     <message>
+        <source>Custom Backup Path:</source>
+        <translation>自定义备份路径:</translation>
+    </message>
+    <message>
+        <source>Custom Backups Threshold:</source>
+        <translation>自定义备份阈值:</translation>
+    </message>
+    <message>
         <source>Salvage wallet</source>
         <translation>Salvage 钱包：</translation>
     </message>
@@ -1867,6 +2261,10 @@ Address: %4
         <translation>从当前的blk000??.dat文件重建块链索引。</translation>
     </message>
     <message>
+        <source>-resync:</source>
+        <translation>-重新同步:</translation>
+    </message>
+    <message>
         <source>Deletes all local blockchain folders so the wallet synchronizes from scratch.</source>
         <translation>删除所有本地区块链文件夹，使钱包从零开始同步。</translation>
     </message>
@@ -1895,8 +2293,8 @@ Address: %4
         <translation>出：</translation>
     </message>
     <message>
-        <source>Welcome to the PIVX RPC console.</source>
-        <translation>欢迎访问PIVX RPC控制台</translation>
+        <source>Welcome to the BTCA RPC console.</source>
+        <translation>欢迎访问BTCA RPC控制台</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -1951,8 +2349,28 @@ Address: %4
         <translation>使用向上和向下箭头导航历史记录，%1清除屏幕。</translation>
     </message>
     <message>
+        <source>Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
+        <translation>键入&lt;b&gt;帮助&lt;/b&gt;来浏览可用命令</translation>
+    </message>
+    <message>
         <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
         <translation>警告:骗子一直活跃，告诉用户在这里输入命令，窃取他们的钱包内容。在完全理解命令的后果之前，不要使用此控制台。</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
     </message>
     <message>
         <source>(node id: %1)</source>
@@ -1990,6 +2408,10 @@ Address: %4
 <context>
     <name>ReceiveDialog</name>
     <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
+    <message>
         <source>My Address</source>
         <translation>我的地址</translation>
     </message>
@@ -2000,6 +2422,14 @@ Address: %4
 </context>
 <context>
     <name>ReceiveWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>No address</source>
+        <translation>无地址</translation>
+    </message>
     <message>
         <source>Add Label</source>
         <translation>添加标签</translation>
@@ -2015,6 +2445,10 @@ Address: %4
     <message>
         <source>Receive</source>
         <translation>接收</translation>
+    </message>
+    <message>
+        <source>No available address, try unlocking the wallet</source>
+        <translation>没有可用地址，尝试解锁钱包</translation>
     </message>
     <message>
         <source>Error generating address</source>
@@ -2062,10 +2496,57 @@ Address: %4
     </message>
 </context>
 <context>
-    <name>RequestDialog</name>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>日期</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>标签</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>消息 </translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>地址</translation>
+    </message>
     <message>
         <source>Amount</source>
         <translation>金额</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>未设置标签</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(没有消息)</translation>
+    </message>
+    <message>
+        <source>(no amount)</source>
+        <translation>(无金额)</translation>
+    </message>
+</context>
+<context>
+    <name>RequestDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>金额</translation>
+    </message>
+    <message>
+        <source>BTCA</source>
+        <translation>BTCA</translation>
+    </message>
+    <message>
+        <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
+        <translation>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </translation>
     </message>
     <message>
         <source>COPY ADDRESS</source>
@@ -2108,14 +2589,6 @@ Address: %4
         <translation>生成</translation>
     </message>
     <message>
-        <source>Creates an address to receive coin delegations and be able to stake them.</source>
-        <translation>创建一个地址以接收代币授权并可以放样。</translation>
-    </message>
-    <message>
-        <source>New Cold Staking Address</source>
-        <translation>新冷堆地址</translation>
-    </message>
-    <message>
         <source>Amount (optional)</source>
         <translation>金额（可选项）</translation>
     </message>
@@ -2127,6 +2600,10 @@ Address: %4
 <context>
     <name>SendChangeAddressDialog</name>
     <message>
+        <source>Dialog</source>
+        <translation>对话框</translation>
+    </message>
+    <message>
         <source>CANCEL</source>
         <translation>删除</translation>
     </message>
@@ -2135,8 +2612,8 @@ Address: %4
         <translation>自定义更改地址</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" PIVX address</source>
-        <translation>输入值减去输出值所得的值的其余部分归为“更改”PIVX地址</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" BTCA address</source>
+        <translation>输入值减去输出值所得的值的其余部分归为“更改”BTCA地址</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -2154,8 +2631,20 @@ Address: %4
 <context>
     <name>SendCustomFeeDialog</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Recommended</source>
         <translation>已推荐</translation>
+    </message>
+    <message>
+        <source>BTCA/kilobyte</source>
+        <translation>BTCA/k字节</translation>
+    </message>
+    <message>
+        <source>0.00 KB</source>
+        <translation>0.00 KB</translation>
     </message>
     <message>
         <source>Custom</source>
@@ -2187,22 +2676,11 @@ Address: %4
     </message>
     </context>
 <context>
-    <name>SendMemoDialog</name>
-    <message>
-        <source>SAVE</source>
-        <translation>保存</translation>
-    </message>
-    <message>
-        <source>RESET</source>
-        <translation>重置</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>删除</translation>
-    </message>
-</context>
-<context>
     <name>SendMultiRow</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Enter address</source>
         <translation>输入地址</translation>
@@ -2211,7 +2689,7 @@ Address: %4
         <source>Enter label</source>
         <translation>输入标签</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>SendWidget</name>
     <message>
@@ -2243,10 +2721,6 @@ Do you want to continue?</source>
         <translation>条目无效，在添加新条目之前，先前的条目必须有效</translation>
     </message>
     <message>
-        <source>Possibly spend coins delegated for cold-staking (currently available: %1</source>
-        <translation>可能花费委托用于冷加注到币（当前可用：%1</translation>
-    </message>
-    <message>
         <source>Invalid entry</source>
         <translation>条目无效</translation>
     </message>
@@ -2259,12 +2733,8 @@ Do you want to continue?</source>
         <translation>无法发送，钱包被锁了</translation>
     </message>
     <message>
-        <source>WARNING:
-Transaction spends a cold-stake delegation, voiding it.
-These coins will no longer be cold-staked.</source>
-        <translation>警告：
-交易花费了冷积累委派，使它无效。
-这些硬币将不再被冷积累。</translation>
+        <source>Cannot create transaction.</source>
+        <translation>无法创建交易</translation>
     </message>
     <message>
         <source>Transaction sent</source>
@@ -2334,6 +2804,10 @@ These coins will no longer be cold-staked.</source>
 <context>
     <name>SettingsBackupWallet</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Change Wallet Passphrase</source>
         <translation>变更钱包密码</translation>
     </message>
@@ -2372,6 +2846,10 @@ These coins will no longer be cold-staked.</source>
 </context>
 <context>
     <name>SettingsBitToolWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Import Address</source>
         <translation>导入地址</translation>
@@ -2413,8 +2891,8 @@ These coins will no longer be cold-staked.</source>
         <translation>解密钥匙</translation>
     </message>
     <message>
-        <source>PIVX address</source>
-        <translation>PIVX地址</translation>
+        <source>BTCA address</source>
+        <translation>BTCA地址</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -2512,6 +2990,10 @@ These coins will no longer be cold-staked.</source>
 <context>
     <name>SettingsConsoleWidget</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Console</source>
         <translation>控制台</translation>
     </message>
@@ -2534,12 +3016,16 @@ Verify that you have installed a predetermined text editor.</source>
 确认您已经安装了预定的文本编辑器</translation>
     </message>
     <message>
-        <source>Welcome to the PIVX RPC console.</source>
-        <translation>欢迎访问PIVX RPC控制台</translation>
+        <source>Welcome to the BTCA RPC console.</source>
+        <translation>欢迎访问BTCA RPC控制台</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
         <translation>使用向上和向下箭头导航历史记录，%1清除屏幕。</translation>
+    </message>
+    <message>
+        <source>Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
+        <translation>键入&lt;b&gt;帮助&lt;/b&gt;来浏览可用命令</translation>
     </message>
     <message>
         <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
@@ -2548,6 +3034,10 @@ Verify that you have installed a predetermined text editor.</source>
 </context>
 <context>
     <name>SettingsDisplayOptionsWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Hide stake charts in the dashboard</source>
         <translation>把加注图表隐藏在仪表板中</translation>
@@ -2604,6 +3094,10 @@ Verify that you have installed a predetermined text editor.</source>
 <context>
     <name>SettingsExportCSV</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Export Accounting</source>
         <translation>导出账单</translation>
     </message>
@@ -2612,8 +3106,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>导出你的钱包账单到一个csv文件。</translation>
     </message>
     <message>
-        <source>Export Transaction History</source>
-        <translation>导出交易历史</translation>
+        <source>Where</source>
+        <translation>哪里</translation>
     </message>
     <message>
         <source>Select folder...</source>
@@ -2624,8 +3118,20 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>导出地址簿</translation>
     </message>
     <message>
-        <source>Comma separated file (*.csv)</source>
-        <translation>存成(.csv)格式</translation>
+        <source>Export CSV</source>
+        <translation>导出CSV</translation>
+    </message>
+    <message>
+        <source>Export Address List</source>
+        <translation>导出地址列表</translation>
+    </message>
+    <message>
+        <source>PIVX_tx_csv_export(*.csv)</source>
+        <translation>PIVX_tx_csv_export(*.csv)</translation>
+    </message>
+    <message>
+        <source>PIVX_addresses_csv_export(*.csv)</source>
+        <translation>PIVX_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -2654,6 +3160,10 @@ Verify that you have installed a predetermined text editor.</source>
     <message>
         <source>Address</source>
         <translation>地址</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
     </message>
     <message>
         <source>Exporting Successful
@@ -2687,20 +3197,94 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsFaqWidget</name>
     <message>
-        <source>1) What is PIVX?</source>
-        <translation>1）什么是PIVX?</translation>
+        <source>Form</source>
+        <translation>来自</translation>
     </message>
     <message>
-        <source>2) Why are my PIV unspendable?</source>
-        <translation>2) 我的PIV为什么不能用？</translation>
+        <source>1) What is BTCA?</source>
+        <translation>1）什么是BTCA?</translation>
     </message>
     <message>
-        <source>What is PIVX?</source>
-        <translation>PIVX是什么?</translation>
+        <source>2) Why are my BTCA unspendable?</source>
+        <translation>2) 我的BTCA为什么不能用？</translation>
     </message>
     <message>
-        <source>Why are my PIV unspendable?</source>
-        <translation>我的PIV为什么不能用？</translation>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <source>What is BTCA?</source>
+        <translation>BTCA是什么?</translation>
+    </message>
+    <message>
+        <source>
+                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+                           BTCA is a form of digital online money using blockchain technology
+                           that can be easily transferred globally, instantly, and with near
+                           zero fees.  BTCA incorporates market leading security &amp;
+                           privacy.
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+                           BTCA utilizes a Proof of Stake (PoS) consensus system algorithm,
+                           allowing all owners of BTCA to participate in earning block rewards
+                           while securing the network with full node wallets, as well as to
+                           run Masternodes to earn additional income regularly.
+                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                         </source>
+        <translation>
+&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+BTCA is a form of digital online money using blockchain technology
+that can be easily transferred globally, instantly, and with near
+zero fees.  BTCA incorporates market leading security &amp;
+privacy.
+&lt;/p&gt;&lt;p align="justify"&gt;
+BTCA utilizes a Proof of Stake (PoS) consensus system algorithm,
+allowing all owners of BTCA to participate in earning block rewards
+while securing the network with full node wallets, as well as to
+run Masternodes to create and vote on proposals</translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <source>Why are my BTCA unspendable?</source>
+        <translation>我的BTCA为什么不能用？</translation>
+    </message>
+    <message>
+        <source>
+                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+                           Newly received BTCA requires 6 confirmations on the network
+                           to become eligible for spending which can take ~6 minutes.
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+                           Your BTCA wallet also needs to be completely synchronized
+                           to see and spend balances on the network.
+                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                         </source>
+        <translation>
+&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+接收到的BTCA需要网络上的6个确认
+才能成为有资格的花费，可以花~6分钟。
+&lt;/p&gt;&lt;p align="justify"&gt;
+您的BTCA钱包也需要完全同步
+查看网络收支余额。
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation>4</translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <source>6</source>
+        <translation>6</translation>
     </message>
     <message>
         <source>Where should I go if I need support?</source>
@@ -2715,6 +3299,91 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>什么是主节点控制器？</translation>
     </message>
     <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the collateral amount can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间10,000 BTCA抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>
+                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+                           A masternode is a computer running a full node BTCA wallet with a
+                           required amount of secured collateral to provide extra services
+                           to the network and in return, receive a portion of the block reward
+                           regularly.  These services include:
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+
+                           &lt;ul&gt;
+                           &lt;li&gt;Validation of transactions within each block&lt;/li&gt;
+                           &lt;li&gt;Act as an additional full node in the network&lt;/li&gt;
+                           &lt;/ul&gt;
+
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+                           For providing such services, masternodes are also paid a certain portion
+                           of reward for each block. This can serve as a passive income to the
+                           masternode owners minus their running cost.
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+
+                           Masternode Perks:
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+                           &lt;ul&gt;
+                           &lt;li&gt;Participate in BTCA Governance&lt;/li&gt;
+                           &lt;li&gt;Earn Masternode Rewards&lt;/li&gt;
+                           &lt;li&gt;Commodity option for future sale&lt;/li&gt;
+                           &lt;li&gt;Help secure the BTCA network&lt;/li&gt;
+                           &lt;/ul&gt;
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+
+                           Requirements:
+                           &lt;/p&gt;&lt;p align="justify"&gt;
+                           &lt;ul&gt;
+                           &lt;li&gt;Enough collateral balance per single Masternode instance&lt;/li&gt;
+                           &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
+                           &lt;li&gt;Need dedicated IP address&lt;/li&gt;
+                           &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
+                           &lt;/ul&gt;
+                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                         </source>
+        <translation>
+&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
+主节点是运行完整节点BTCA核心钱包的计算机
+需要10,000个BTCA作抵押以提供额外服务
+到网络，会收到一部分的区块奖励作为定期
+回报
+这些服务包括:
+&lt;/p&gt;&lt;p align="justify"&gt;
+
+&lt;ul&gt;
+&lt;li&gt;验证每个区块交易&lt;/li&gt;
+&lt;li&gt;充当网络中的另一个完整节点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/p&gt;&lt;p align="justify"&gt;
+为了提供这样的服务，主节点也会为每一个区块
+支付一定的报酬。
+这可以作为主节点所有者减去其运行成本的被动收入。
+&lt;/p&gt;&lt;p align="justify"&gt;
+主节点福利：
+&lt;/p&gt;&lt;p align="justify"&gt;
+&lt;ul&gt;
+&lt;li&gt;参与BTCA治理&lt;/li&gt;
+&lt;li&gt;赢取主节点奖励&lt;/li&gt;
+&lt;li&gt;商品期货期权&lt;/li&gt;
+&lt;li&gt;帮助保护BTCA网络&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;&lt;p align="justify"&gt;
+
+要求：
+&lt;/p&gt;&lt;p align="justify"&gt;
+&lt;ul&gt;
+&lt;li&gt;每个主节点实例有10,000 BTCA&lt;/li&gt;
+&lt;li&gt;必须存储在核心钱包&lt;/li&gt;
+&lt;li&gt;需要专用IP地址&lt;/li&gt;
+主节点钱包保持在线&lt;li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</translation>
+    </message>
+    <message>
         <source>Frequently Asked Questions</source>
         <translation>常见问题</translation>
     </message>
@@ -2722,9 +3391,17 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>You can read more here</source>
         <translation>查看这里了解更多内容</translation>
     </message>
-    </context>
+    <message>
+        <source>Exit</source>
+        <translation>退出</translation>
+    </message>
+</context>
 <context>
     <name>SettingsInformationWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Network Monitor</source>
         <translation>网络监视器</translation>
@@ -2818,8 +3495,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>无法打开备份文件夹</translation>
     </message>
     <message>
-        <source>Unable to open pivx.conf with default application</source>
-        <translation>无法使用默认应用程序打开pivx.conf</translation>
+        <source>Unable to open btca.conf with default application</source>
+        <translation>无法使用默认应用程序打开btca.conf</translation>
     </message>
     <message>
         <source>In:</source>
@@ -2829,9 +3506,13 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>Out:</source>
         <translation>出：</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>SettingsMainOptionsWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Window</source>
         <translation>窗口</translation>
@@ -2865,6 +3546,10 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>脚本&amp;验证线程数</translation>
     </message>
     <message>
+        <source>Start BTCA on system login</source>
+        <translation>开机启动BTCA</translation>
+    </message>
+    <message>
         <source>Minimize to the tray instead of the taskbar</source>
         <translation>最小化到托盘而不是任务栏</translation>
     </message>
@@ -2892,7 +3577,161 @@ Are you sure?
     </message>
 </context>
 <context>
+    <name>SettingsMultisendDialog</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>Transaction Details</source>
+        <translation>交易明细</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <source>New recipient for multisend</source>
+        <translation>多重发送新接收人</translation>
+    </message>
+    <message>
+        <source>Address Label (optional)</source>
+        <translation>地址标签（可选项）</translation>
+    </message>
+    <message>
+        <source>Enter label to be saved with this address</source>
+        <translation>输入要用此地址保存的标签</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation>百分百</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsMultisendWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation>查看列表</translation>
+    </message>
+    <message>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other BTCA addresses after it matures.</source>
+        <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他BTCA地址列表</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>激活</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>不可用</translation>
+    </message>
+    <message>
+        <source>No active recipient yet</source>
+        <translation>还没激活接收人</translation>
+    </message>
+    <message>
+        <source>Send stakes</source>
+        <translation>发送加注</translation>
+    </message>
+    <message>
+        <source>Send masternode rewards</source>
+        <translation>发送主节点奖励</translation>
+    </message>
+    <message>
+        <source>ADD RECIPIENT</source>
+        <translation>添加接收人</translation>
+    </message>
+    <message>
+        <source>CLEAR ALL</source>
+        <translation>清除所有</translation>
+    </message>
+    <message>
+        <source>Cannot perform operation, wallet locked</source>
+        <translation>无法进行操作，钱包被锁了</translation>
+    </message>
+    <message>
+        <source>Clear succeed</source>
+        <translation>清除成功</translation>
+    </message>
+    <message>
+        <source>Clear all failed, could not locate address in wallet file</source>
+        <translation>清除所有失败，无法找到钱包文件中的地址</translation>
+    </message>
+    <message>
+        <source>Cannot add multisend recipient, wallet locked</source>
+        <translation>无法添加多重发送接收人，钱包被锁了</translation>
+    </message>
+    <message>
+        <source>The entered address: %1 is invalid.
+Please check the address and try again.</source>
+        <translation>输入的地址:%1无效。
+请检查地址，然后再试一次。</translation>
+    </message>
+    <message>
+        <source>Invalid percentage, please enter values from 1 to 100.</source>
+        <translation>百分比无效，请输入从1到100的值。</translation>
+    </message>
+    <message>
+        <source>Error saving  MultiSend, failed saving properties to the database.</source>
+        <translation>保存多重发送出错，将属性保存到数据库失败</translation>
+    </message>
+    <message>
+        <source>Unable to activate MultiSend, no available recipients</source>
+        <translation>无法激活多重发送，没有可用的收件人</translation>
+    </message>
+    <message>
+        <source>Unable to activate MultiSend
+Check one or both of the check boxes to send on stake and/or masternode rewards</source>
+        <translation>无法激活多重发送
+选中一个或两个复选框来发送加注和/或主节点奖励</translation>
+    </message>
+    <message>
+        <source>MultiSend activated but writing settings to DB failed</source>
+        <translation>多重发送已激活，但将设置写入DB失败</translation>
+    </message>
+    <message>
+        <source>MultiSend activated</source>
+        <translation>多重发送激活</translation>
+    </message>
+    <message>
+        <source>First multiSend address invalid</source>
+        <translation>第一个多重发送地址无效</translation>
+    </message>
+    <message>
+        <source>MultiSend deactivated but writing settings to DB failed</source>
+        <translation>多重发送未激活，但设置写入DB失败</translation>
+    </message>
+    <message>
+        <source>MultiSend deactivated</source>
+        <translation>多重发送未激活</translation>
+    </message>
+</context>
+<context>
     <name>SettingsSignMessageWidgets</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Sign/Verify Message</source>
         <translation>签署/验证消息</translation>
@@ -2914,8 +3753,8 @@ Are you sure?
         <translation>消息 </translation>
     </message>
     <message>
-        <source>PIVX address or contact label</source>
-        <translation>PIVX 地址或者联系人标签</translation>
+        <source>BTCA address or contact label</source>
+        <translation>BTCA 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -2982,6 +3821,10 @@ Are you sure?
         <translation>请检查签名，并重试。</translation>
     </message>
     <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>签名与消息摘要不符。</translation>
+    </message>
+    <message>
         <source>Message verification failed.</source>
         <translation>消息验证失败。</translation>
     </message>
@@ -2996,6 +3839,10 @@ Are you sure?
 </context>
 <context>
     <name>SettingsWalletOptionsWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Reset to default</source>
         <translation>重置到默认值</translation>
@@ -3048,9 +3895,13 @@ Are you sure?
         <source>Options reset succeed</source>
         <translation>选项重置成功</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>SettingsWalletRepairWidget</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Wallet Repair</source>
         <translation>钱包修复</translation>
@@ -3111,12 +3962,20 @@ Are you sure?
 <context>
     <name>SettingsWidget</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Wallet Data</source>
         <translation>钱包数据</translation>
     </message>
     <message>
         <source>Wallet</source>
         <translation>钱包</translation>
+    </message>
+    <message>
+        <source>Multisend</source>
+        <translation>多重发送</translation>
     </message>
     <message>
         <source>Export Accounting</source>
@@ -3171,8 +4030,8 @@ Are you sure?
         <translation>常见问题</translation>
     </message>
     <message>
-        <source>About PIVX</source>
-        <translation>关于PIVX </translation>
+        <source>About BTCA</source>
+        <translation>关于BTCA </translation>
     </message>
     <message>
         <source>Settings</source>
@@ -3238,15 +4097,38 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
+        <source>BTCa is shutting down...</source>
+        <translation>BTCa 核心正在关闭...</translation>
+    </message>
+    <message>
         <source>Do not shut down the computer until this window disappears.</source>
         <translation>在此窗口消失之前不要关闭计算机。</translation>
     </message>
 </context>
 <context>
+    <name>SnackBar</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>Contact Stored</source>
+        <translation>新联系方式已保存</translation>
+    </message>
+</context>
+<context>
     <name>Splash</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Loading…</source>
         <translation>正在下载…</translation>
+    </message>
+    <message>
+        <source>BTCa</source>
+        <translation>BTCa</translation>
     </message>
 </context>
 <context>
@@ -3258,6 +4140,10 @@ Are you sure?
 </context>
 <context>
     <name>TooltipMenu</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Copy</source>
         <translation>复制</translation>
@@ -3277,6 +4163,10 @@ Are you sure?
 </context>
 <context>
     <name>TopBar</name>
+    <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
     <message>
         <source>Available</source>
         <translation>可用</translation>
@@ -3306,36 +4196,16 @@ Are you sure?
         <translation>加注激活</translation>
     </message>
     <message>
-        <source>Staking not active</source>
+        <source>Staking inactive</source>
         <translation>加注没激活</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s)</source>
-        <translation><numerusform>%n 激活连接 （秒）</numerusform></translation>
     </message>
     <message>
         <source>Synchronized - Block: %1</source>
         <translation>已同步区块：%1</translation>
     </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation><numerusform>%n小时</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation><numerusform> %n天</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation><numerusform>%n周</numerusform></translation>
-    </message>
     <message>
         <source>%1 and %2</source>
         <translation>%1 和 %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation><numerusform>%n年</numerusform></translation>
     </message>
     <message>
         <source>Wallet Upgrade</source>
@@ -3364,6 +4234,10 @@ backup will be created.
     <message>
         <source>Wallet unlock cancelled</source>
         <translation>解锁钱包已取消</translation>
+    </message>
+    <message>
+        <source>Tor Active: %1</source>
+        <translation>Tor 激活: %1</translation>
     </message>
     <message>
         <source>Tor Disabled</source>
@@ -3423,6 +4297,13 @@ backup will be created.
     </message>
 </context>
 <context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
     <name>TransactionTableModel</name>
     <message>
         <source>Date</source>
@@ -3435,10 +4316,6 @@ backup will be created.
     <message>
         <source>Address</source>
         <translation>地址</translation>
-    </message>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>打开％n更多的区块</numerusform></translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -3477,10 +4354,6 @@ backup will be created.
         <translation>接收</translation>
     </message>
     <message>
-        <source>Stake delegation</source>
-        <translation>股权委托</translation>
-    </message>
-    <message>
         <source>Sent to</source>
         <translation>发送</translation>
     </message>
@@ -3491,10 +4364,6 @@ backup will be created.
     <message>
         <source>Payment to yourself</source>
         <translation>支付给您自己</translation>
-    </message>
-    <message>
-        <source>Stake delegation spent by</source>
-        <translation>加注花费委托</translation>
     </message>
     <message>
         <source>Mined</source>
@@ -3511,6 +4380,10 @@ backup will be created.
     <message>
         <source>No information</source>
         <translation>无信息</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(n/a)</translation>
     </message>
     <message>
         <source>Transaction status. Hover over this field to show number of confirmations.</source>
@@ -3540,6 +4413,10 @@ backup will be created.
 <context>
     <name>TxDetailDialog</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Transaction Details</source>
         <translation>交易明细</translation>
     </message>
@@ -3554,6 +4431,18 @@ backup will be created.
     <message>
         <source>Output Index</source>
         <translation>导出索引</translation>
+    </message>
+    <message>
+        <source>D7VFR83SQbie…BhjcWJtcfip5krte2Z </source>
+        <translation>D7VFR83SQbie…BhjcWJtcfip5krte2Z </translation>
+    </message>
+    <message>
+        <source>May 25, 2017</source>
+        <translation>2017年5月25</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
     </message>
     <message>
         <source>Sending to</source>
@@ -3592,6 +4481,10 @@ backup will be created.
         <translation>日期</translation>
     </message>
     <message>
+        <source>TextLabel</source>
+        <translation>文本标签</translation>
+    </message>
+    <message>
         <source>CANCEL</source>
         <translation>删除</translation>
     </message>
@@ -3617,20 +4510,12 @@ backup will be created.
     </message>
 </context>
 <context>
-    <name>VoteDialog</name>
+    <name>TxRow</name>
     <message>
-        <source>CANCEL</source>
-        <translation>删除</translation>
+        <source>Form</source>
+        <translation>来自</translation>
     </message>
-    <message>
-        <source>No</source>
-        <translation>否</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>是</translation>
-    </message>
-    </context>
+</context>
 <context>
     <name>WalletModel</name>
     <message>
@@ -3640,6 +4525,22 @@ backup will be created.
     </context>
 <context>
     <name>WelcomeContentWidget</name>
+    <message>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation>4</translation>
+    </message>
     <message>
         <source>Language</source>
         <translation>语言</translation>
@@ -3661,20 +4562,26 @@ backup will be created.
         <translation>选择语言</translation>
     </message>
     <message>
-        <source>PIVX is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>PIVX是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
+        <source>Welcome to
+BTCa Wallet</source>
+        <translation>欢迎
+BTCa心钱包</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - PIVX believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——PIVX相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>BTCA is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>BTCA是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
     </message>
     <message>
-        <source>The masternode network is PIVX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>主节点网络是PIVX在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - BTCA believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——BTCA相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>How PIVX respects your privacy?</source>
-        <translation>PIVX 到底是怎么尊重你的隐私的？</translation>
+        <source>The masternode network is BTCA's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>主节点网络是BTCA在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
+    </message>
+    <message>
+        <source>How BTCA respects your privacy?</source>
+        <translation>BTCA 到底是怎么尊重你的隐私的？</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -3686,25 +4593,198 @@ backup will be created.
     </message>
 </context>
 <context>
-    <name>governancewidget</name>
-    <message>
-        <source>Available</source>
-        <translation>可用</translation>
-    </message>
-    </context>
-<context>
     <name>pivx-core</name>
+    <message>
+        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
+        <translation>(1 =保留tx元数据，例如帐户所有者和付款请求信息，2 =删除tx元数据)</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>允许来自指定源的JSON-RPC连接。适用于&lt;ip&gt;单一IP(如1.2.3.4)、网络/网掩码(如1.2.3.4/255.255.255.0)或网络/CIDR(如1.2.3.4/24)。可以多次指定此选项</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>绑定到给定的地址，并一直进行监听。使用[host]: IPv6的端口符号</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>绑定到连接它的给定地址和白名单。使用[主机]: IPv6的端口符号</translation>
+    </message>
+    <message>
+        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
+        <translation>绑定到给定地址监听JSON-RPC连接。使用[主机]: IPv6的端口符号。可以多次指定此选项(默认:绑定到所有接口)</translation>
+    </message>
+    <message>
+        <source>Cannot obtain a lock on data directory %s. BTCa is probably already running.</source>
+        <translation>无法获取数据目录%s锁。BTCa心可能已经在运行了。</translation>
+    </message>
+    <message>
+        <source>Continuously rate-limit free transactions to &lt;n&gt;*1000 bytes per minute (default:%u)</source>
+        <translation>连续速率限制免费交易可达&lt;n&gt;每分钟*1000字节(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>创建系统默认权限新文件，而不是使用umask 077(仅对禁用钱包功能有效)</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>删除所有钱包交易，只恢复那些部分的区块链-通过启动时进行重新扫描</translation>
+    </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
         <translation>在MIT软件许可下发布，参见附带的文件复制或&lt;http://www.opensource.org/licenses/mit-license.php&gt;。</translation>
+    </message>
+    <message>
+        <source>Enable spork administration functionality with the appropriate private key.</source>
+        <translation>使用适当的私钥启用spork管理功能。</translation>
+    </message>
+    <message>
+        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
+        <translation>进入回归测试模式，该模式使用一个特殊的链，其中区块可以立即被解决。</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>错误:监听传入连接失败(监听返回错误%s)</translation>
     </message>
     <message>
+        <source>Error: The transaction is larger than the maximum allowed transaction size!</source>
+        <translation>错误:交易大于交易最大限制值!</translation>
+    </message>
+    <message>
+        <source>Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
+        <translation>错误:发现不支持的参数-socks。设置SOCKS版本已经不可能了，只支持SOCKS5代理。</translation>
+    </message>
+    <message>
+        <source>Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.</source>
+        <translation>排除调试信息类别。可以与-debug=1一起使用，输出一个或多个指定类别外的所有类别的调试日志。</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>在收到相关警报时执行命令，或者看到一个很长的分叉（cmd中的%s被消息替换）</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>当钱包交易更改时执行命令(将cmd中的%s替换为TxID)</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>当最佳区块更改时执行命令(cmd中的%s被块散列替换)</translation>
+    </message>
+    <message>
+        <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
+        <translation>每&lt;n&gt;兆字节将数据库活动从内存池刷新到磁盘日志(默认:%u)</translation>
+    </message>
+    <message>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>如果未设置支付tx费用，则包含足够的费用，以便在n个区块内平均开始确认交易(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
+        <translation>在这种模式下，genproclimit控制立即生成的区块的数量。</translation>
+    </message>
+    <message>
+        <source>Insufficient or insufficient confirmed funds, you might need to wait a few minutes and try again.</source>
+        <translation>资金不足或确认资金不足，您可能需要等待几分钟，然后再试一次。</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation>最大tx费用金额无效=&lt;amount&gt;:'%s'(必须至少是%s的最小中继费用，以防止交易中断)</translation>
+    </message>
+    <message>
+        <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
+        <translation>区块挖矿时候的日志交易优先级和每kB的费用(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation>维护一个完整的交易索引，由获取原始交易 rpc调用使用(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Maximum average size of an index occurrence in the block spam filter (default: %u)</source>
+        <translation>在区块垃圾邮件过滤器的索引出现的最大平均大小(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>我们中继和挖掘的数据载体事务中的最大数据大小(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Maximum size of the list of indexes in the block spam filter (default: %u)</source>
+        <translation>区块垃圾邮件过滤器中索引列表的最大值大小(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Maximum total fees to use in a single wallet transaction, setting too low may abort large transactions (default: %s)</source>
+        <translation>单个钱包交易中使用的最大总费用，设置过低可能会中止大型交易(默认值:%s)</translation>
+    </message>
+    <message>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation>防止行为不端的节点重新连接的秒数(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
+        <translation>输出调试信息(默认:%u，&lt;category&gt;可选提供)</translation>
+    </message>
+    <message>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>为每个代理连接随机分配凭据。这启用了Tor流隔离(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
+        <translation>需要高优先转接免费或低收费交易(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file (default: %u)</source>
+        <translation>将跟踪/调试信息发送到控制台，而不是debug.log文件(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
+        <translation>设置高优先级/低费用交易的最大值字节大小(默认:%d)</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>设置脚本验证线程的数量(%u为%d, 0 = 自动， &lt;0 =保留多个内核空闲，默认为%d)</translation>
+    </message>
+    <message>
+        <source>Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)</source>
+        <translation>如果启用，设置生成硬币的线程数(-1 =所有核心，默认:%d)</translation>
+    </message>
+    <message>
+        <source>Show N confirmations for a successfully locked transaction (0-9999, default: %u)</source>
+        <translation>显示一个成功锁定的交易的N个确认(0-9999，默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <translation>支持使用bloom过滤器过滤区块和交易(默认:%u)</translation>
+    </message>
+    <message>
         <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
         <translation>区块数据库包含一个看似来自未来的区块。有可能因为您的计算机的日期和时间设置不正确。只有在确定计算机的日期和时间正确的情况下，才能重新构建区块数据库</translation>
+    </message>
+    <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit &lt;https://www.openssl.org/&gt; and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>本产品包括OpenSSL项目开发的用于OpenSSL Toolkit &lt;https://www.openssl.org/&gt;的软件，以及Eric Young编写的加密软件和Thomas Bernard编写的UPnP软件。</translation>
+    </message>
+    <message>
+        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
+        <translation>网络版本字符串的总长度(%i)超过最大长度(%i)。减少任务的数量或大小。</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer. BTCa is probably already running.</source>
+        <translation>无法绑定到此计算机上的%s。BTCa心可能已经在运行了。</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
+        <translation>使用单独的SOCKS5代理通过Tor隐藏服务(默认:%s)到达节点</translation>
+    </message>
+    <message>
+        <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation>警告:-最大值tx费用设置得非常高!这么大的费用可以在一笔交易中支付。</translation>
+    </message>
+    <message>
+        <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
+        <translation>警告:-支付tx费用设置的非常高!这是您发送交易时要支付的交易费。</translation>
+    </message>
+    <message>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong BTCa will not work properly.</source>
+        <translation>注意：请检查您的电脑的日期和时间是否正确！ 如果您的时间设置不正确，BTCa将无法正常工作。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -3715,12 +4795,72 @@ backup will be created.
         <translation>警告:我们似乎不完全同意我们端口!您可能需要升级，或者其他节点可能需要升级。</translation>
     </message>
     <message>
+        <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
+        <translation>从给定的网络掩码或IP地址连接的白名单端口。可以多次指定。</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>白名单的端口不能被DoS禁止，它们的交易一直被中继，即使它们已经在内存池里面，这对网关很有用</translation>
+    </message>
+    <message>
+        <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
+        <translation>您必须在配置中指定一个主节点privkey。有关帮助，请参阅文档。</translation>
+    </message>
+    <message>
+        <source>(default: %s)</source>
+        <translation>(默认: %s)</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>接受命令行和JSON-RPC命令</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>接受公共REST请求(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Add a node to connect to and attempt to keep the connection open</source>
+        <translation>添加要连接的节点并尝试保持连接打开</translation>
+    </message>
+    <message>
+        <source>Always query for peer addresses via DNS lookup (default: %u)</source>
+        <translation>始终通过DNS查询端口地址(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>将注释附加到用户代理字符串</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>自动创建Tor隐藏服务(默认:%d)</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>区块创建选项:</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>通过SOCKS5代理连接</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>连接到节点以检索端口地址，然后断开连接</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>连接选项：</translation>
+    </message>
+    <message>
         <source>Copyright (C) 2009-%i The Bitcoin Core Developers</source>
         <translation>版权所有(C) 2009-%i比特币核心开发者</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
         <translation>版权所有(C) 2014-%i的达世核心开发者</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2015-%i The PIVX Core Developers</source>
+        <translation>版权所有(C) 2015-%i PIVX核心开发者</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -3731,12 +4871,36 @@ backup will be created.
         <translation>无法解析主节点配置</translation>
     </message>
     <message>
+        <source>Debugging/Testing options:</source>
+        <translation>调试/测试选项:</translation>
+    </message>
+    <message>
+        <source>Delete blockchain folders and resync from scratch</source>
+        <translation>删除区块链文件夹，重新同步</translation>
+    </message>
+    <message>
+        <source>Disable OS notifications for incoming transactions (default: %u)</source>
+        <translation>禁用OS交易通知(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
+        <translation>发现自己的IP地址(监听时默认为1，没有-externalip)</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>不加载钱包并禁用钱包RPC调用</translation>
+    </message>
+    <message>
         <source>Do you want to rebuild the block database now?</source>
         <translation>现在要重新构建区块数据库吗?</translation>
     </message>
     <message>
         <source>Done loading</source>
         <translation>下载完成</translation>
+    </message>
+    <message>
+        <source>Enable the client to act as a masternode (0-1, default: %u)</source>
+        <translation>允许客户端充当主节点(0-1，默认值:%u)</translation>
     </message>
     <message>
         <source>Error initializing block database</source>
@@ -3771,12 +4935,48 @@ backup will be created.
         <translation>错误:磁盘空间不足!</translation>
     </message>
     <message>
+        <source>Error: Unsupported argument -tor found, use -onion.</source>
+        <translation>误:发现不支持的参数-tor，使用-onion。</translation>
+    </message>
+    <message>
+        <source>Error: Wallet locked, unable to create transaction!</source>
+        <translation>错误:钱包锁定，无法创建交易!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>监听任何端口失败。使用-listen=0即可。</translation>
+    </message>
+    <message>
         <source>Failed to parse host:port string</source>
         <translation>未能解析:主机端口字符串</translation>
     </message>
     <message>
+        <source>Force safe mode (default: %u)</source>
+        <translation>安全模式原力(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Generate coins (default: %u)</source>
+        <translation>生成币(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation>启动时检查多少区块(默认值:%u, 0 = 所有)</translation>
+    </message>
+    <message>
+        <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
+        <translation>如果没有提供&lt;category&gt;，则输出所有调试信息。</translation>
+    </message>
+    <message>
         <source>Importing...</source>
         <translation>正在导入...</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file</source>
+        <translation>从外部blk000??.dat文件导入区块</translation>
+    </message>
+    <message>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation>在调试输出中包含IP地址(默认:%u)</translation>
     </message>
     <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
@@ -3787,28 +4987,148 @@ backup will be created.
         <translation>信息</translation>
     </message>
     <message>
+        <source>Initialization sanity check failed. BTCa is shutting down.</source>
+        <translation>初始化完整性检查失败。BTCa心快要关闭了。</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>资金不足</translation>
+    </message>
+    <message>
         <source>Insufficient funds.</source>
         <translation>资金不足</translation>
+    </message>
+    <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>无效的-洋葱地址或主机名:'%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>支付tx费用金额无效=:'&lt;amount&gt;%s'(必须至少是%s)</translation>
+    </message>
+    <message>
+        <source>Invalid amount</source>
+        <translation>金额无效</translation>
+    </message>
+    <message>
+        <source>Invalid masternodeprivkey. Please see documenation.</source>
+        <translation>主节点私钥无效。请参阅文件。</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>白名单中指定的无效网络掩码:'%s'</translation>
+    </message>
+    <message>
+        <source>Recalculating BTCA supply...</source>
+        <translation>重新计算BTCA供应量……</translation>
+    </message>
+    <message>
+        <source>Selected coins value is less than payment target</source>
+        <translation>所选择币价值低于支付目标金额</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for staking or merchant applications!</source>
         <translation>这是一个预发行测试版本 - 您自己承担风险 - 不要用于商业应用！</translation>
     </message>
     <message>
+        <source>Disable all BTCA specific functionality (Masternodes) (0-1, default: %u)</source>
+        <translation>禁用所有BTCA特定功能(主节点)(0-1，默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Error: Unsupported argument -checklevel found. Checklevel must be level 4.</source>
+        <translation>错误:不支持参数-找到checklevel。Checklevel必须是第4级。</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</source>
+        <translation>当最佳区块发生变化且大小超过时执行命令(cmd中的%s被替换为区块散列，%d是区块大小)</translation>
+    </message>
+    <message>
+        <source>Failed to find coin set amongst held coins with less than maxNumber of Spends</source>
+        <translation>在持有的币中找到小于最大花费数的币集失败</translation>
+    </message>
+    <message>
+        <source>In rare cases, a spend with 7 coins exceeds our maximum allowable transaction size, please retry spend using 6 or less coins</source>
+        <translation>在极少数情况下，7个硬币的花费超过了我们的最大允许交易大小，请重试使用6个或更少的硬币</translation>
+    </message>
+    <message>
+        <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
+        <translation>指定自定义备份路径去添加任何钱包备份的副本。如果将其设置为dir，则每个备份将生成一个时间戳文件。如果设置为文件，将重写到每次备份的该文件</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt;可以是：</translation>
+    </message>
+    <message>
+        <source>Attempt to force blockchain corruption recovery</source>
+        <translation>尝试强制区块链腐败恢复</translation>
+    </message>
+    <message>
+        <source>Cannot create public spend input</source>
+        <translation>不能创造公共花费投入</translation>
+    </message>
+    <message>
+        <source>Display the stake modifier calculations in the debug.log file.</source>
+        <translation>在debug.log文件中显示股权修改器计算。</translation>
+    </message>
+    <message>
+        <source>Display verbose coin stake messages in the debug.log file.</source>
+        <translation>在debug.log文件中显示详细的投币加注消息。</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>启用&lt;address&gt;发布散列区块</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>启用在&lt;address&gt;发布散列交易</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>启在&lt;address&gt;发布原始区块</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>启用在&lt;address&gt;发布原始交易</translation>
+    </message>
+    <message>
+        <source>Enable staking functionality (0-1, default: %u)</source>
+        <translation>启用打标功能(0-1，默认:%u)</translation>
+    </message>
+    <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
         <translation>错误:出现一个致命的内部错误，详情请参阅debug.log</translation>
     </message>
     <message>
-        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
-        <translation>监听任何端口失败。使用-listen=0即可。</translation>
+        <source>Error: No valid utxo!</source>
+        <translation>错误:没有有效的utxo!</translation>
+    </message>
+    <message>
+        <source>Failed to parse public spend</source>
+        <translation>解析公共花费失败</translation>
+    </message>
+    <message>
+        <source>Failed to write coin serial number into wallet</source>
+        <translation>硬币序列号写入钱包失败</translation>
     </message>
     <message>
         <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
         <translation>金额无效-%s=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation>在内存中保留最多&lt;n&gt;不可连接的交易(默认值:%u)</translation>
+    </message>
+    <message>
         <source>Line: %d</source>
         <translation>行：%d</translation>
+    </message>
+    <message>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>在&lt;port&gt;(默认:%u或者测试网: %u)监听JSON-RPC连接</translation>
+    </message>
+    <message>
+        <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>在&lt;port&gt;(默认:%u或测试网: %u)监听连接</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
@@ -3821,10 +5141,6 @@ backup will be created.
     <message>
         <source>Loading block index...</source>
         <translation>正在下载区块索引...</translation>
-    </message>
-    <message>
-        <source>Loading budget cache...</source>
-        <translation>正在下载加载预算…</translation>
     </message>
     <message>
         <source>Loading masternode cache...</source>
@@ -3843,36 +5159,260 @@ backup will be created.
         <translation>正在下载钱包……</translation>
     </message>
     <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>auth cookie的位置(默认:data dir)</translation>
+    </message>
+    <message>
+        <source>Lock masternodes from masternode configuration file (default: %u)</source>
+        <translation>从主节点配置文件中锁定主节点(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Lookup(): Invalid -proxy address or hostname: '%s'</source>
+        <translation>查找():无效-代理地址或主机名:'%s'</translation>
+    </message>
+    <message>
         <source>MNs synchronization pending...</source>
         <translation>MNs同步正在进行...</translation>
+    </message>
+    <message>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>最多&lt;n&gt;保持与端口连接(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Masternode options:</source>
+        <translation>主节点选项：</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>每个连接最大接收缓冲区，&lt;n&gt;*1000字节(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>每个连接最大发送缓冲区，&lt;n&gt;*1000字节(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Mint did not make it into blockchain</source>
+        <translation>没有进入区块链铸造</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>需要使用-whitebind指定端口:'%s'</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>节点中继选择:</translation>
     </message>
     <message>
         <source>Not enough file descriptors available.</source>
         <translation>可用的文件描述符不足</translation>
     </message>
     <message>
+        <source>Number of custom location backups to retain (default: %d)</source>
+        <translation>要保留的自定义位置备份的数量(默认值:%d)</translation>
+    </message>
+    <message>
+        <source>On first run, create a legacy wallet instead of a HD wallet</source>
+        <translation>第一次运行，创建一个遗留钱包而不是HD钱包</translation>
+    </message>
+    <message>
+        <source>Only accept block chain matching built-in checkpoints (default: %u)</source>
+        <translation>只接受与内置检查点匹配的区块链(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>只连接网络中的节点(ipv4、ipv6或onion)</translation>
+    </message>
+    <message>
+        <source>Options:</source>
+        <translation>选项：</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>SON-RPC连接的密码</translation>
+    </message>
+    <message>
         <source>Peers are being disconnected due time differences.</source>
         <translation>由于时间差异，节点被断开连接。</translation>
     </message>
     <message>
-        <source>Wallet %s resides outside data directory %s</source>
-        <translation>钱包%s驻留在数据目录%s之外</translation>
+        <source>Unable to find transaction containing mint %s</source>
+        <translation>无法找到包含铸造 %s的交易</translation>
+    </message>
+    <message>
+        <source>Unable to find transaction containing mint, txHash: %s</source>
+        <translation>无法找到包含铸造, tx哈希: %s的交易</translation>
+    </message>
+    <message>
+        <source>Use block spam filter (default: %u)</source>
+        <translation>使用垃圾邮件过滤器块(默认:%u)</translation>
+    </message>
+    <message>
+        <source>isValid(): Invalid -proxy address or hostname: '%s'</source>
+        <translation>isValid():无效-代理地址或主机名:'%s'</translation>
     </message>
     <message>
         <source>Preparing for resync...</source>
         <translation>准备重新同步……</translation>
     </message>
     <message>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong BTCa will not work properly.</source>
+        <translation>请检查您的电脑的日期和时间是否正确!如果你的时间错误，BTCa将无法正常工作。</translation>
+    </message>
+    <message>
+        <source>Specify location of debug log file: this can be an absolute path or a path relative to the data directory (default: %s)</source>
+        <translation>指定调试日志文件的位置:可以是绝对路径，也可以是相对于数据目录的路径(默认值:%s)</translation>
+    </message>
+    <message>
         <source>Cannot resolve -%s address: '%s'</source>
         <translation>无法解析-%s地址:'%s'</translation>
+    </message>
+    <message>
+        <source>Need destination or change address because change is not exact</source>
+        <translation>需要目的地或更改地址，因为更改不准确</translation>
+    </message>
+    <message>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation>在调试输出前加上时间戳(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>打印版本并退出</translation>
+    </message>
+    <message>
+        <source>Pubcoin not found in mint tx</source>
+        <translation>公共币没有发现在铸造tx</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>RPC服务器选项:</translation>
+    </message>
+    <message>
+        <source>Randomly drop 1 of every &lt;n&gt; network messages</source>
+        <translation>随机删除1每条&lt;n&gt;网络消息</translation>
+    </message>
+    <message>
+        <source>Randomly fuzz 1 of every &lt;n&gt; network messages</source>
+        <translation>每个&lt;n&gt;网络消息的随机模糊1</translation>
+    </message>
+    <message>
+        <source>Rebuild block chain index from current blk000??.dat files</source>
+        <translation>从当前的blk000??.dat文件重建块链索引。</translation>
+    </message>
+    <message>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation>中继和铸造数据载体交易(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation>非p2sh多重签名中继器(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Rescan the block chain for missing wallet transactions</source>
+        <translation>重新扫描丢失钱包交易的区块链</translation>
     </message>
     <message>
         <source>Rescanning...</source>
         <translation>重新扫描……</translation>
     </message>
     <message>
+        <source>Run a thread to flush wallet periodically (default: %u)</source>
+        <translation>运行一个线程定期刷新钱包(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>作为守护进程在后台运行并接受命令</translation>
+    </message>
+    <message>
+        <source>Send transactions as zero-fee transactions if possible (default: %u)</source>
+        <translation>可以的话，以零费用方式发送交易(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>设置数据库缓存大小(从%d到%d，默认为%d)</translation>
+    </message>
+    <message>
+        <source>Set external address:port to get to this masternode (example: %s)</source>
+        <translation>设置外部地址:到达这个主节点的端口(例如:%s)</translation>
+    </message>
+    <message>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation>将密钥池大小设置为&lt;n&gt;(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Set maximum block size in bytes (default: %d)</source>
+        <translation>以字节为单位设置最大区块大小(默认:%d)</translation>
+    </message>
+    <message>
+        <source>Set minimum block size in bytes (default: %u)</source>
+        <translation>以字节为单位设置最小区块大小(默认: %u)</translation>
+    </message>
+    <message>
+        <source>Set the Maximum reorg depth (default: %u)</source>
+        <translation>设置最大reorg深度(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Set the masternode private key</source>
+        <translation>设置主节点私钥</translation>
+    </message>
+    <message>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation>设置服务RPC调用的线程数(默认:%d)</translation>
+    </message>
+    <message>
+        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: %u)</source>
+        <translation>在wallet db环境中设置DB_PRIVATE标志(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>显示所有调试选项(用法:——help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>客户端启动时收缩debug.log文件(没有-debug时默认为1)</translation>
+    </message>
+    <message>
         <source>Signing transaction failed</source>
         <translation>签署交易失败</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>指定配置文件(默认:%s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>以毫秒为单位指定连接超时(最小值:1，默认值:%d)</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>指定数据目录</translation>
+    </message>
+    <message>
+        <source>Specify masternode configuration file (default: %s)</source>
+        <translation>指定主节点配置文件(默认:%s)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>指定pid文件(默认值:%s)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>指定钱包文件(在数据目录中)</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>指定您自己的公共地址</translation>
+    </message>
+    <message>
+        <source>Spend Valid</source>
+        <translation>花费有效</translation>
+    </message>
+    <message>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation>发送交易时花费未确认更改(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Stop running after importing blocks from disk (default: %u)</source>
+        <translation>从磁盘导入区块后停止运行(默认值:%u)</translation>
     </message>
     <message>
         <source>Synchronization failed</source>
@@ -3881,10 +5421,6 @@ backup will be created.
     <message>
         <source>Synchronization finished</source>
         <translation>同步已完成</translation>
-    </message>
-    <message>
-        <source>Synchronizing budgets...</source>
-        <translation>正在同步预算...</translation>
     </message>
     <message>
         <source>Synchronizing masternode winners...</source>
@@ -3899,8 +5435,40 @@ backup will be created.
         <translation>正在同步分叉...</translation>
     </message>
     <message>
+        <source>This help message</source>
+        <translation>这个帮助信息</translation>
+    </message>
+    <message>
         <source>This is experimental software.</source>
         <translation>这是一个实验软件。</translation>
+    </message>
+    <message>
+        <source>This is intended for regression testing tools and app development.</source>
+        <translation>用于回归测试工具和应用程序开发。</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>断开错误的端口的阈值(默认值:%u)</translation>
+    </message>
+    <message>
+        <source>Too many spends needed</source>
+        <translation>太多花费被需求</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Tor控制端口密码(默认:空)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>洋葱监听启用时使用的Tor控制端口(默认:%s)</translation>
+    </message>
+    <message>
+        <source>Transaction Created</source>
+        <translation>交易已创建</translation>
+    </message>
+    <message>
+        <source>Transaction Mint Started</source>
+        <translation>交易铸造已经开始</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
@@ -3919,6 +5487,10 @@ backup will be created.
         <translation>交易过大</translation>
     </message>
     <message>
+        <source>Trying to spend an already spent serial #, try again.</source>
+        <translation>尝试使用已使用的序列号，再试一次。</translation>
+    </message>
+    <message>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
         <translation>无法绑定到此计算机上的%s(绑定返回的错误%s)</translation>
     </message>
@@ -3935,16 +5507,56 @@ backup will be created.
         <translation>无法启动HTTP服务器。有关详细信息，请参阅调试日志。</translation>
     </message>
     <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>在-onlynet中指定的未知网络:'%s'</translation>
+    </message>
+    <message>
         <source>Unsupported logging category %s=%s.</source>
         <translation>不支持此日志记录类别%s=%s。</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format</source>
+        <translation>升级钱包到最新的格式</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>使用UPnP映射监听端口(默认:%u)</translation>
+    </message>
+    <message>
+        <source>Use the test network</source>
+        <translation>使用测试网络</translation>
     </message>
     <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
         <translation>用户代理注释(%s)包含不安全字符</translation>
     </message>
     <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>JSON-RPC连接的用户名</translation>
+    </message>
+    <message>
         <source>Verifying blocks...</source>
         <translation>正在验证区块……</translation>
+    </message>
+    <message>
+        <source>Verifying wallet...</source>
+        <translation>正在验证钱包……</translation>
+    </message>
+    <message>
+        <source>Wallet %s resides outside data directory %s</source>
+        <translation>钱包%s驻留在数据目录%s之外</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart BTCa to complete</source>
+        <translation>钱包需要重写:重新启动BTCa心完成</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>钱包选项：</translation>
+    </message>
+    <message>
+        <source>Wallet window title</source>
+        <translation>钱包窗口标题</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -3955,15 +5567,43 @@ backup will be created.
         <translation>警告:此版本已过时，需要升级!</translation>
     </message>
     <message>
+        <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation>警告:不支持的argument -benchmark 被忽略，使用-debug=bench。</translation>
+    </message>
+    <message>
+        <source>Warning: Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation>警告:不支持的参数-debugnet被忽略，使用-debug=net。</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to change -txindex</source>
+        <translation>您需要使用-reindex来更改-txindex来重新构建数据库</translation>
+    </message>
+    <message>
         <source>Zapping all transactions from wallet...</source>
         <translation>从钱包中删除所有交易…</translation>
+    </message>
+    <message>
+        <source>ZeroMQ notification options:</source>
+        <translation>ZeroMQ通知选项:</translation>
+    </message>
+    <message>
+        <source>on startup</source>
+        <translation>启动</translation>
     </message>
 </context>
 <context>
     <name>send</name>
     <message>
+        <source>Form</source>
+        <translation>来自</translation>
+    </message>
+    <message>
         <source>Send</source>
         <translation>发送</translation>
+    </message>
+    <message>
+        <source>BTCA address or contact label</source>
+        <translation>BTCA 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Amount</source>
@@ -3988,10 +5628,6 @@ backup will be created.
     <message>
         <source>Reset to default</source>
         <translation>重置到默认值</translation>
-    </message>
-    <message>
-        <source>Include delegated</source>
-        <translation>包含委托</translation>
     </message>
 </context>
 </TS>

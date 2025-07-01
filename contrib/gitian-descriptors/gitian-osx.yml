@@ -1,5 +1,5 @@
 ---
-name: "pivx-osx-6.0"
+name: "btca-osx-2.0.1"
 enable_cache: true
 distro: "ubuntu"
 suites:
@@ -28,25 +28,26 @@ packages:
 - "python3-dev"
 - "python3-setuptools"
 - "fonts-tuffy"
-- "xorriso"
 remotes:
-- "url": "https://github.com/pivx-project/pivx.git"
-  "dir": "pivx"
+- "url": "https://github.com/bitcoinadditional/BTCA.git"
+  "dir": "btca"
 files:
-- "Xcode-11.3.1-11C505-extracted-SDK-with-libcxx-headers.tar.gz"
+- "MacOSX10.11.sdk.tar.gz"
 script: |
   set -e -o pipefail
 
   WRAP_DIR=$HOME/wrapped
-  HOSTS="x86_64-apple-darwin16"
-  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-gui-tests --disable-online-rust XORRISOFS=${WRAP_DIR}/xorrisofs DMG=$WRAP_DIR/dmg"
+  HOSTS="x86_64-apple-darwin14"
+  CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
   FAKETIME_HOST_PROGS=""
-  FAKETIME_PROGS="ar ranlib date dmg xorrisofs"
+  FAKETIME_PROGS="ar ranlib date dmg genisoimage"
 
   export QT_RCC_TEST=1
   export QT_RCC_SOURCE_DATE_OVERRIDE=1
+  export GZIP="-9n"
+  export TAR_OPTIONS="--mtime="$REFERENCE_DATE\\\ $REFERENCE_TIME""
   export TZ="UTC"
-  export BUILD_DIR="$PWD"
+  export BUILD_DIR=`pwd`
   mkdir -p ${WRAP_DIR}
   if test -n "$GBUILD_CACHE_ENABLED"; then
     export SOURCES_PATH=${GBUILD_COMMON_CACHE}
@@ -86,11 +87,11 @@ script: |
   create_per-host_faketime_wrappers "2000-01-01 12:00:00"
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd pivx
-  BASEPREFIX="${PWD}/depends"
+  cd btca
+  BASEPREFIX=`pwd`/depends
 
   mkdir -p ${BASEPREFIX}/SDKs
-  tar -C ${BASEPREFIX}/SDKs -xf ${BUILD_DIR}/Xcode-11.3.1-11C505-extracted-SDK-with-libcxx-headers.tar.gz
+  tar -C ${BASEPREFIX}/SDKs -xf ${BUILD_DIR}/MacOSX10.11.sdk.tar.gz
 
   # Build dependencies for each host
   for i in $HOSTS; do
@@ -104,18 +105,17 @@ script: |
   export PATH=${WRAP_DIR}:${PATH}
 
   # Create the release tarball using (arbitrarily) the first host
-  git update-index --assume-unchanged src/chiabls/contrib/relic/include/relic_conf.h.in
   ./autogen.sh
-  CONFIG_SITE=${BASEPREFIX}/$(echo "${HOSTS}" | awk '{print $1;}')/share/config.site ./configure --prefix=/
+  CONFIG_SITE=${BASEPREFIX}/`echo "${HOSTS}" | awk '{print $1;}'`/share/config.site ./configure --prefix=/
   make dist
-  SOURCEDIST=$(echo pivx-*.tar.gz)
-  DISTNAME=${SOURCEDIST/%.tar.gz}
+  SOURCEDIST=`echo btca-*.tar.gz`
+  DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
 
   # Correct tar file order
   mkdir -p temp
   pushd temp
-  tar -xf ../$SOURCEDIST
-  find pivx-* | sort | tar --mtime="$REFERENCE_DATETIME" --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
+  tar xf ../$SOURCEDIST
+  find btca-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
   popd
 
   # Workaround for tarball not building with the bare tag version (prep)
@@ -127,7 +127,7 @@ script: |
     export PATH=${BASEPREFIX}/${i}/native/bin:${ORIGPATH}
     mkdir -p distsrc-${i}
     cd distsrc-${i}
-    INSTALLPATH="${PWD}/installed/${DISTNAME}"
+    INSTALLPATH=`pwd`/installed/${DISTNAME}
     mkdir -p ${INSTALLPATH}
     tar --strip-components=1 -xf ../$SOURCEDIST
 
@@ -138,32 +138,31 @@ script: |
 
     CONFIG_SITE=${BASEPREFIX}/${i}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking ${CONFIGFLAGS}
     make ${MAKEOPTS}
-    make ${MAKEOPTS} -C src check-security
-    make ${MAKEOPTS} -C src check-symbols
     make install-strip DESTDIR=${INSTALLPATH}
 
     make osx_volname
     make deploydir
+    OSX_VOLNAME="$(cat osx_volname)"
     mkdir -p unsigned-app-${i}
     cp osx_volname unsigned-app-${i}/
     cp contrib/macdeploy/detached-sig-apply.sh unsigned-app-${i}
     cp contrib/macdeploy/detached-sig-create.sh unsigned-app-${i}
-    cp ${BASEPREFIX}/${i}/native/bin/dmg unsigned-app-${i}
+    cp ${BASEPREFIX}/${i}/native/bin/dmg ${BASEPREFIX}/${i}/native/bin/genisoimage unsigned-app-${i}
     cp ${BASEPREFIX}/${i}/native/bin/${i}-codesign_allocate unsigned-app-${i}/codesign_allocate
     cp ${BASEPREFIX}/${i}/native/bin/${i}-pagestuff unsigned-app-${i}/pagestuff
     mv dist unsigned-app-${i}
     pushd unsigned-app-${i}
-    find . | sort | tar --mtime="$REFERENCE_DATETIME" --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-osx-unsigned.tar.gz
+    find . | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-osx-unsigned.tar.gz
     popd
 
-    make deploy OSX_DMG="${OUTDIR}/${DISTNAME}-osx-unsigned.dmg"
+    make deploy
+    ${WRAP_DIR}/dmg dmg "${OSX_VOLNAME}.dmg" ${OUTDIR}/${DISTNAME}-osx-unsigned.dmg
 
     cd installed
     find . -name "lib*.la" -delete
     find . -name "lib*.a" -delete
     rm -rf ${DISTNAME}/lib/pkgconfig
-    cp ../params/install-params.sh ${DISTNAME}/
-    find ${DISTNAME} | sort | tar --mtime="$REFERENCE_DATETIME" --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${i}.tar.gz
+    find ${DISTNAME} | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${i}.tar.gz
     cd ../../
   done
   mkdir -p $OUTDIR/src

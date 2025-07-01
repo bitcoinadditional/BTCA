@@ -4,17 +4,14 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the REST API."""
 
-from codecs import encode
-from decimal import Decimal
-import http.client
-from io import BytesIO
-import json
-from struct import unpack, pack
-import urllib.parse
-
 from test_framework.test_framework import PivxTestFramework
-from test_framework.util import assert_equal, assert_greater_than, hex_str_to_bytes
+from test_framework.util import *
+from struct import *
+from io import BytesIO
+from codecs import encode
 
+import http.client
+import urllib.parse
 
 def deser_uint256(f):
     r = 0
@@ -52,7 +49,7 @@ class RESTTest (PivxTestFramework):
 
     def setup_network(self, split=False):
         super().setup_network()
-        self.connect_nodes(0, 2)
+        connect_nodes(self.nodes[0], 2)
 
     def run_test(self):
         url = urllib.parse.urlparse(self.nodes[0].url)

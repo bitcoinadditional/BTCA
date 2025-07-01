@@ -1,11 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2013 The Bitcoin developers
-// Copyright (c) 2015-2021 The PIVX Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_PRIMITIVES_BLOCK_H
-#define PIVX_PRIMITIVES_BLOCK_H
+#ifndef BITCOIN_PRIMITIVES_BLOCK_H
+#define BITCOIN_PRIMITIVES_BLOCK_H
 
 #include "primitives/transaction.h"
 #include "keystore.h"
@@ -23,7 +24,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int32_t CURRENT_VERSION=11;    // since v5.2.99
+    static const int32_t CURRENT_VERSION=7;     //!> Version 7 removes nAccumulatorCheckpoint from serialization
     int32_t nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
@@ -31,23 +32,26 @@ public:
     uint32_t nBits;
     uint32_t nNonce;
     uint256 nAccumulatorCheckpoint;             // only for version 4, 5 and 6.
-    uint256 hashFinalSaplingRoot;               // only for version 8+
 
     CBlockHeader()
     {
         SetNull();
     }
 
-    SERIALIZE_METHODS(CBlockHeader, obj) {
-        READWRITE(obj.nVersion, obj.hashPrevBlock, obj.hashMerkleRoot, obj.nTime, obj.nBits, obj.nNonce);
+    ADD_SERIALIZE_METHODS;
 
-        //zerocoin active, header changes to include accumulator checksum
-        if(obj.nVersion > 3 && obj.nVersion < 7)
-            READWRITE(obj.nAccumulatorCheckpoint);
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(nVersion);
+        READWRITE(hashPrevBlock);
+        READWRITE(hashMerkleRoot);
+        READWRITE(nTime);
+        READWRITE(nBits);
+        READWRITE(nNonce);
 
-        // Sapling active
-        if (obj.nVersion >= 8)
-            READWRITE(obj.hashFinalSaplingRoot);
+        // Header changes to include accumulator checksum
+        if(nVersion > 3 && nVersion < 7)
+            READWRITE(nAccumulatorCheckpoint);
     }
 
     void SetNull()
@@ -59,7 +63,6 @@ public:
         nBits = 0;
         nNonce = 0;
         nAccumulatorCheckpoint.SetNull();
-        hashFinalSaplingRoot.SetNull();
     }
 
     bool IsNull() const
@@ -80,13 +83,13 @@ class CBlock : public CBlockHeader
 {
 public:
     // network and disk
-    std::vector<CTransactionRef> vtx;
+    std::vector<CTransaction> vtx;
 
     // ppcoin: block signature - signed by one of the coin base txout[N]'s owner
     std::vector<unsigned char> vchBlockSig;
 
     // memory only
-    mutable bool fChecked{false};
+    mutable bool fChecked;
 
     CBlock()
     {
@@ -96,15 +99,17 @@ public:
     CBlock(const CBlockHeader &header)
     {
         SetNull();
-        *(static_cast<CBlockHeader*>(this)) = header;
+        *((CBlockHeader*)this) = header;
     }
 
-    SERIALIZE_METHODS(CBlock, obj)
-    {
-        READWRITEAS(CBlockHeader, obj);
-        READWRITE(obj.vtx);
-        if(obj.vtx.size() > 1 && obj.vtx[1]->IsCoinStake())
-            READWRITE(obj.vchBlockSig);
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(*(CBlockHeader*)this);
+        READWRITE(vtx);
+	if(vtx.size() > 1 && vtx[1].IsCoinStake())
+		READWRITE(vchBlockSig);
     }
 
     void SetNull()
@@ -126,20 +131,20 @@ public:
         block.nNonce         = nNonce;
         if(nVersion > 3 && nVersion < 7)
             block.nAccumulatorCheckpoint = nAccumulatorCheckpoint;
-        if (nVersion >= 8)
-            block.hashFinalSaplingRoot   = hashFinalSaplingRoot;
         return block;
     }
 
     bool IsProofOfStake() const
     {
-        return (vtx.size() > 1 && vtx[1]->IsCoinStake());
+        return (vtx.size() > 1 && vtx[1].IsCoinStake());
     }
 
     bool IsProofOfWork() const
     {
         return !IsProofOfStake();
     }
+
+    CScript GetPaidPayee(CAmount nAmount) const;
 
     std::string ToString() const;
     void print() const;
@@ -156,17 +161,19 @@ struct CBlockLocator
 
     CBlockLocator() {}
 
-    explicit CBlockLocator(const std::vector<uint256>& vHaveIn)
+    CBlockLocator(const std::vector<uint256>& vHaveIn)
     {
         vHave = vHaveIn;
     }
 
-    SERIALIZE_METHODS(CBlockLocator, obj)
-    {
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         int nVersion = s.GetVersion();
         if (!(s.GetType() & SER_GETHASH))
             READWRITE(nVersion);
-        READWRITE(obj.vHave);
+        READWRITE(vHave);
     }
 
     void SetNull()
@@ -174,10 +181,10 @@ struct CBlockLocator
         vHave.clear();
     }
 
-    bool IsNull() const
+    bool IsNull()
     {
         return vHave.empty();
     }
 };
 
-#endif // PIVX_PRIMITIVES_BLOCK_H
+#endif // BITCOIN_PRIMITIVES_BLOCK_H

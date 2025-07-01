@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -13,29 +14,22 @@
 
 #include <string>
 
-std::string EncodeDestination(const CTxDestination& dest, bool isStaking, bool isExchange);
-std::string EncodeDestination(const CTxDestination& dest, const CChainParams::Base58Type addrType = CChainParams::PUBKEY_ADDRESS);
-// DecodeDestination isStaking flag is set to true when the string arg is from an staking address
-CTxDestination DecodeDestination(const std::string& str, bool& isStaking, bool& isExchange);
-CTxDestination DecodeDestination(const std::string& str);
-
-// Return true if the address is valid and is following the fStaking flag type (true means that the destination must be a staking address, false the opposite).
-bool IsValidDestinationString(const std::string& str, bool fStaking);
-bool IsValidDestinationString(const std::string& str, bool fStaking, const CChainParams& params);
-
 namespace KeyIO {
 
     CKey DecodeSecret(const std::string &str);
 
     std::string EncodeSecret(const CKey &key);
 
+    std::string EncodeSecret(const CKey &key, const CChainParams::Base58Type addrType);
+
     CExtKey DecodeExtKey(const std::string &str);
 
     std::string EncodeExtKey(const CExtKey &extkey);
 
-    CExtPubKey DecodeExtPubKey(const std::string& str);
-    std::string EncodeExtPubKey(const CExtPubKey& extpubkey);
+    CExtPubKey DecodeExtPubKey(const std::string &str);
 
+    std::string EncodeExtPubKey(const CExtPubKey &extkey);
+    
 }
 
-#endif // PIVX_KEY_IO_H
+#endif //PIVX_KEY_IO_H

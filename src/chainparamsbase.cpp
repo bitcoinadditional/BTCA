@@ -1,52 +1,114 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2016-2021 The PIVX Core developers
+// Copyright (c) 2016-2020 The PIVX developers
+// Copyright (c) 2022-2024 The Bitcoin Additional Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chainparamsbase.h"
 
-#include "tinyformat.h"
-#include "util/system.h"
+#include "util.h"
 
 #include <assert.h>
 
-const std::string CBaseChainParams::MAIN = "main";
-const std::string CBaseChainParams::TESTNET = "test";
-const std::string CBaseChainParams::REGTEST = "regtest";
+#include <boost/assign/list_of.hpp>
 
-void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp)
+/**
+ * Main network
+ */
+class CBaseMainParams : public CBaseChainParams
 {
-    strUsage += HelpMessageGroup("Chain selection options:");
-    strUsage += HelpMessageOpt("-testnet", "Use the test chain");
-    if (debugHelp) {
-        strUsage += HelpMessageOpt("-regtest", "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. "
-                                               "This is intended for regression testing tools and app development.");
+public:
+    CBaseMainParams() 
+    {
+        networkID = CBaseChainParams::MAIN;
+        nRPCPort = 22024;
     }
-}
+};
+static CBaseMainParams mainParams;
 
-static std::unique_ptr<CBaseChainParams> globalChainBaseParams;
+/**
+ * Testnet (v1)
+ */
+class CBaseTestNetParams : public CBaseMainParams
+{
+public:
+    CBaseTestNetParams()
+    {
+        networkID = CBaseChainParams::TESTNET;
+        nRPCPort = 51475;
+        strDataDir = "testnet1";
+    }
+};
+static CBaseTestNetParams testNetParams;
+
+/*
+ * Regression test
+ */
+class CBaseRegTestParams : public CBaseTestNetParams
+{
+public:
+    CBaseRegTestParams()
+    {
+        networkID = CBaseChainParams::REGTEST;
+        strDataDir = "regtest";
+    }
+};
+static CBaseRegTestParams regTestParams;
+
+static CBaseChainParams* pCurrentBaseParams = 0;
 
 const CBaseChainParams& BaseParams()
 {
-    assert(globalChainBaseParams);
-    return *globalChainBaseParams;
+    assert(pCurrentBaseParams);
+    return *pCurrentBaseParams;
 }
 
-std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const std::string& chain)
+CBaseChainParams& BaseParams(CBaseChainParams::Network network)
 {
-    if (chain == CBaseChainParams::MAIN)
-        return std::make_unique<CBaseChainParams>("", 51473);
-    else if (chain == CBaseChainParams::TESTNET)
-        return std::make_unique<CBaseChainParams>("testnet5", 51475);
-    else if (chain == CBaseChainParams::REGTEST)
-        return std::make_unique<CBaseChainParams>("regtest", 51477);
-    else
-        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
+    switch (network) {
+    case CBaseChainParams::MAIN:
+        return mainParams;
+    case CBaseChainParams::TESTNET:
+        return testNetParams;
+    case CBaseChainParams::REGTEST:
+        return regTestParams;
+    default:
+        assert(false && "Unimplemented network");
+        return mainParams;
+    }
 }
 
-void SelectBaseParams(const std::string& chain)
+void SelectBaseParams(CBaseChainParams::Network network)
 {
-    globalChainBaseParams = CreateBaseChainParams(chain);
-    gArgs.SelectConfigNetwork(chain);
+    pCurrentBaseParams = &BaseParams(network);
+}
+
+CBaseChainParams::Network NetworkIdFromCommandLine()
+{
+    bool fRegTest = GetBoolArg("-regtest", false);
+    bool fTestNet = GetBoolArg("-testnet", false);
+
+    if (fTestNet && fRegTest)
+        return CBaseChainParams::MAX_NETWORK_TYPES;
+    if (fRegTest)
+        return CBaseChainParams::REGTEST;
+    if (fTestNet)
+        return CBaseChainParams::TESTNET;
+    return CBaseChainParams::MAIN;
+}
+
+bool SelectBaseParamsFromCommandLine()
+{
+    CBaseChainParams::Network network = NetworkIdFromCommandLine();
+    if (network == CBaseChainParams::MAX_NETWORK_TYPES)
+        return false;
+
+    SelectBaseParams(network);
+    return true;
+}
+
+bool AreBaseParamsConfigured()
+{
+    return pCurrentBaseParams != NULL;
 }
