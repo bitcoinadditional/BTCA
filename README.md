@@ -11,8 +11,8 @@ BTCa wallet repository
 • Maturity: 100 Confirmations   
 • Prefix: BTCA addresses start with the capital letter "B"   
 • Ports: 22022 (p2p) / 22024 (rpc)   
-• Explorer https://cryptoscope.io/btca/blocks/
-Website https://btcadd.io   
+• Explorer https://cryptoscope.io/btca/blocks/   
+• Website https://btcadd.io   
 
 ### Rewards Breakdown
 ---
